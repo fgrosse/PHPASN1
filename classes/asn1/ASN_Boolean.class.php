@@ -20,21 +20,36 @@
  
 class ASN_Boolean extends ASN_Object {
     
-    function __construct($value) {
-        $this->type = ASN1_BOOLEAN;
+    public function __construct($value) {
         $this->value = $value;
         $this->lenght  = 1;
     }
     
-    function getEncodedValue() {
-        $result;
-        if($this->value == false) $result = chr(0x00);
-        else $result = chr(0xFF);
-        return $result;
+    public function getType() {
+        return self::ASN1_BOOLEAN;
     }
     
-    function getContentLength() {
+    public function getContentLength() {
         return 1;
     }
+    
+    protected function getEncodedValue() {
+        if($this->value == false) {
+            return chr(0x00);
+        }
+        else {
+            return chr(0xFF);
+        }        
+    }       
+    
+    public function getValue() {
+        if ($this->value == true) {
+            return "TRUE";
+        } 
+        else {
+            return "FALSE";
+        };
+    }
+    
 }
 ?>

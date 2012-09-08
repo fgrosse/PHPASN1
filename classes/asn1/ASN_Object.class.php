@@ -18,20 +18,35 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */	
 
-require_once("includes\constants.php");
-
 abstract class ASN_Object {
-	protected $type;
-	protected $lenght;
+    
+    const ASN1_BOOLEAN           = 0x01;
+    const ASN1_INTEGER           = 0x02;
+    const ASN1_BITSTRING         = 0x03;
+    const ASN1_OCTETSTRING       = 0x04;
+    const ASN1_NULL              = 0x05;
+    const ASN1_OBJECTIDENTIFIER  = 0x06;
+    const ASN1_OBJECT_DESCRIPTOR = 0x07;
+    const ASN1_UTF8String        = 0x0c;
+    const ASN1_SEQUENCE          = 0x30;
+    const ASN1_SET               = 0x31;
+    const ASN1_NUMERIC_STRING    = 0x12;
+    const ASN1_PRINTABLE_STRING  = 0x13;
+    const ASN1_TELETEXT_STRING   = 0x14;
+    const ASN1_IA5_STRING        = 0x16;
+    const ASN1_UTCTime           = 0x17;
+    const ASN1_GENERALIZED_TIME  = 0x18;
+    
 	protected $value;
 	
+    abstract public function getType();
 	abstract public function getContentLength();
 	abstract protected function getEncodedValue();
 	
 	public function getBinary() {
 		$size = $this->getContentLength();
 		
-		$result  = chr($this->type);			//ID-TAG
+		$result  = chr($this->getType());
 					
 		//Create the Length octet(s)
 		if($size <= 127) $result .= chr($size);
@@ -72,19 +87,20 @@ abstract class ASN_Object {
 	}
 	
 	public function getValue() {
-		if(is_bool($this->value)) 
-			if ($this->value == true) return "TRUE";
-			else return "FALSE";
 		return $this->value;
 	}
 	
 	public function getHexValue() {
-		if(is_string($this->value)) return "not Supported";
-		else return dechex($this->value);
+		if(is_string($this->value)) {
+		    return "not Supported";
+		}
+		else {
+            return dechex($this->value);
+        }
 	}
 
 	public function __toString() {
-		return $this->value;
+		return $this->getValue();
 	}
 	
 	public function getObjectLength() {
@@ -111,5 +127,6 @@ abstract class ASN_Object {
 		
 		return $count;
 	}
+    
 }
 ?>

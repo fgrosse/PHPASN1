@@ -20,20 +20,20 @@
 
 class ASN_NULL extends ASN_Object {
         
-    function __construct() {            
-        $this->type = ASN1_NULL;
+    public function getType() {
+        return self::ASN1_NULL;
     }
     
-    function getEncodedValue() {            
-        return null;
-    }
-    
-    function getContentLength() {
+    public function getContentLength() {
         return 0;   
     }
     
-    public function __toString() {
-        return "NULL";
+    protected function getEncodedValue() {            
+        return null;
+    }       
+    
+    public function getValue() {
+        return 'NULL';
     }
 }
 ?>

@@ -20,17 +20,21 @@
 
 class ASN_PrintableString extends ASN_Object {
         
-    function __construct($value) {
-        $this->type = ASN1_PrintableString;
+    function __construct($value) {        
         $this->value = $value;
     }
     
-    function getEncodedValue() {
-        return $this->value;
+    public function getType() {
+        return self::ASN1_PRINTABLE_STRING;
     }
     
     function getContentLength() {
         return strlen($this->value);
     }
+    
+    function getEncodedValue() {
+        return $this->value;
+    }
+           
 }
 ?>

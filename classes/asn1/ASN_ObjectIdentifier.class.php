@@ -20,19 +20,28 @@
 
 class ASN_ObjectIdentifier extends ASN_Object {
 		
-	function __construct($value) {
-		//Test der eingegebenen Daten
-		$subIdents = explode(".", $value);
-		for($i=0 ; $i < count($subIdents) ; $i++)
-			if(!is_numeric($subIdents[$i]))
-				throw new Exception("[$value] is no Nummeric Value - ASN1_OBJECTIDENTIFIER does only allow numeric values!");
+	public function __construct($value) {		
+		$subIdentifiers = explode('.', $value);
+		foreach($subIdentifiers as $subIdentifier) {
+			if(is_numeric($subIdentifier) == false) {
+				throw new Exception("[{$value}] is no valid object identifier (some sub identifier is not numeric)!");
+            }
+        }
 				
-		$this->type = ASN1_OBJECTIDENTIFIER;
 		$this->value = $value;
 	}
 	
-	function getEncodedValue() {
-		$result="";
+    public function getType() {
+        return self::ASN1_OBJECTIDENTIFIER;
+    }
+    
+    public function getContentLength() {
+        $this->getEncodedValue();
+        return $this->length;
+    }
+    
+	protected function getEncodedValue() {
+		$result = '';
 		$value = $this->value;
 		$subIdents = explode(".", $value);
 		$subIdentHexArr = array();
@@ -106,12 +115,7 @@ class ASN_ObjectIdentifier extends ASN_Object {
 		}
 		
 		return $result;
-	}
-
-	function getContentLength() {
-		$this->getEncodedValue();
-		return $this->length;
-	}
+	}	
 	
 	function getHexValue() {
 		$result="";

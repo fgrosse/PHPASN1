@@ -20,28 +20,37 @@
  
 class ASN_Integer extends ASN_Object {
         
-    function __construct($value) {
-        if(!is_numeric($value)) throw new Exception("Invalid VALUE [".$value."] for ASN1_INTEGER");
-        $this->type = ASN1_INTEGER;
+    public function __construct($value) {
+        if(is_numeric($value) == false) {
+            throw new Exception("Invalid VALUE [{$value}] for ASN1_INTEGER");
+        }
         $this->value = $value;
     }
     
-    function getEncodedValue() {
-        //Value von Int in Hex umwandeln
+    public function getType() {
+        return self::ASN1_INTEGER;
+    }
+    
+    public function getContentLength() {
         $value = dechex($this->value);
-        $result = "";
-        if(strlen($value) %2 != 0) $value = "0".$value; //1F2 auf Wert álá 01F2 bringen 
-        while(strlen($value) >= 2) {
-            //Hexwerte Byte für Byte aus dem String parsen und in chr umwandeln
+        return ceil((strlen($value)/2));    
+    }
+    
+    protected function getEncodedValue() {        
+        $value = dechex($this->value);
+        $result = '';
+        if(strlen($value) %2 != 0) {
+            // transform values like 1F2 to 01F2
+            $value = "0".$value;
+        }
+         
+        while(strlen($value) >= 2) {            
+            // get the hex value byte by byte from the string and and add it to binary result
             $result .= chr(hexdec(substr($value,0,2)));
             $value = substr($value,2);
         }
         return $result;
     }
     
-    function getContentLength() {
-        $value = dechex($this->value);
-        return ceil((strlen($value)/2));    
-    }
 }
 ?>

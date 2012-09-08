@@ -20,26 +20,41 @@
 
 class ASN_BitString extends ASN_Object {
         
-    function __construct($value) {      
-        if(!is_string($value) && !is_numeric($value)) 
-            throw new Exception("CASN_BitString: Unrecognized Input-Typ!");
+    public function __construct($value) {      
+        if(!is_string($value) && !is_numeric($value)) {
+            throw new Exception("ASN_BitString: unrecognized input type!");
+        }
         
-        $this->type = ASN1_BITSTRING;
         $this->value = $value;
     }
     
-    function getEncodedValue() {
+    public function getType() {
+        return self::ASN1_BITSTRING;
+    }
+    
+    public function getContentLength() {
         $value = $this->value;
-        if(is_string($value)) {
-            //do nothing everything is fine :)
-        }
-        else if(is_numeric($value)) {
+        if(strlen($value) %2 != 0) {
+            // transform values like 1F2 to 01F2
+            $value = "0".$value;
+        } 
+        $length = 1 + ceil((strlen($value)/2));
+        return $length;
+    }
+    
+    protected function getEncodedValue() {
+        $value = $this->value;
+        
+        if(is_numeric($value)) {
             $value = dechex($value);                
         }
         
-        if(strlen($value) %2 != 0) $value = "0".$value; //1F2 auf Wert álá 01F2 bringen 
+        if(strlen($value) %2 != 0) {
+            // transform values like 1F2 to 01F2
+            $value = "0".$value;
+        } 
         
-        //Number of Unused Bits in the last Octet
+        // number of unused bits in the last octet
         $nrOfUnused = 0;
         $tmpval = decbin(hexdec(substr($value,strlen($value)-2,2)));
         while($tmpval[strlen($tmpval)-1] == "0") {
@@ -50,19 +65,13 @@ class ASN_BitString extends ASN_Object {
         
         //Actual content
         while(strlen($value) >= 2) {
-            //Hexwerte Byte für Byte aus dem String parsen und in chr umwandeln
+            // get the hex value byte by byte from the string and and add it to binary result
             $result .= chr(hexdec(substr($value,0,2)));
             $value = substr($value,2);
         }
-        //die(base64_encode($result));
+        
         return $result;
     }
-    
-    function getContentLength() {
-        $value = $this->value;
-        if(strlen($value) %2 != 0) $value = "0".$value; //1F2 auf Wert álá 01F2 bringen 
-        $length = 1 + ceil((strlen($value)/2));
-        return $length;
-    }
+           
 }
 ?>
