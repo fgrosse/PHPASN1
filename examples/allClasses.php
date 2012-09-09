@@ -61,22 +61,27 @@ $startSequence = new ASN_Sequence(array($mainSequence, $signatureAlgorithm, $sig
 // check if openssl is installed on this system
 $openSSLVersionOutput = shell_exec('openssl version');
 if(substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
-    $openSSLisInstalled = true;    
+    $openSSLisAvailable = true;    
 }
 else {
-    $openSSLisInstalled = false;
+    $openSSLisAvailable = false;
 }
     
 function printVariableInfo(ASN_Object $variable) {
-    echo '<tr>';
-    echo '<td class="ASNclass">'.get_class($variable).'</td>';
-    echo '<td>'.$variable->__toString().'</td>';
-    
+    $className = get_class($variable);
+    $stringValue = $variable->__toString();
     $base64Binary = base64_encode($variable->getBinary());
     
+    echo '<tr>';
+    echo "<td class='ASNclass'>{$className}</td>";
+    echo "<td>\"<span class='red'>{$stringValue}</span>\"</td>";           
     echo "<td class='monospace'>{$base64Binary}</td>";
-    $openSSLOutput = nl2br(shell_exec("echo '{$base64Binary}' | openssl asn1parse -inform PEM"));
-    echo "<td class='monospace'>{$openSSLOutput}</td>";
+    
+    global $openSSLisAvailable;
+    if($openSSLisAvailable) {
+        $openSSLOutput = shell_exec("echo '{$base64Binary}' | openssl asn1parse -inform PEM -dump -i");
+        echo "<td><pre>{$openSSLOutput}</pre></td>";   
+    }    
     echo '</tr>';
 }
 
@@ -92,14 +97,21 @@ function printVariableInfo(ASN_Object $variable) {
 </head>
 <body>
     <h1>Examples for all available PHPASN1 classes</h1>
+    
+    <?php
+    if($openSSLisAvailable == false)
+        echo "<p class='notice'>Note: OpenSSL could not be found on this system. This is absolutely no problem
+        for PHPASN1 but it could have been used to show you that the generated binaries are indeed correct :)</p>";
+    ?>
+    
     <table>
         <th>Class</th>
         <th>toString()</th>
         <th>Binary (base64)</th>
         
         <?php        
-            if($openSSLisInstalled) {
-                echo '<th>openSSL ASN1 decode</th>';
+            if($openSSLisAvailable) {
+                echo '<th>OpenSSL asn1parse output</th>';
             }
             
             printVariableInfo($asnBool);
@@ -111,11 +123,6 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo($asnSequence);
             printVariableInfo($asnSet);
         ?>
-    </table>
-    
-    <?php
-    if($openSSLisInstalled == false)
-        echo "<p>OpenSSL could not be found on this system (Output was <code>{$openSSLVersionOutput}</code>)</p>";
-    ?>
+    </table>       
 </body>
 </html>

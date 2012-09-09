@@ -6,7 +6,7 @@ th {
 	text-align: left;	
 }
 
-td{
+td {
 	word-break: break-all;
 	word-wrap: break-word;
 	border-top: black 1px solid;
@@ -19,4 +19,17 @@ td.ASNclass {
 
 td.monospace {
 	font-family: monospace;
+}
+
+p.notice {
+	margin-bottom: 30px;
+	color: gray;
+}
+
+.red {
+	color: red;
+}
+
+pre {
+	margin: 7px
 }
