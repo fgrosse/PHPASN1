@@ -18,8 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
-class ASN_ObjectIdentifier extends ASN_Object {
-		
+class ASN_ObjectIdentifier extends ASN_Object {		   
+        
 	public function __construct($value) {		
 		$subIdentifiers = explode('.', $value);
 		foreach($subIdentifiers as $subIdentifier) {
