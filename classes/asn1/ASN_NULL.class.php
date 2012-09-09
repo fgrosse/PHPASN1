@@ -32,7 +32,7 @@ class ASN_NULL extends ASN_Object {
         return null;
     }       
     
-    public function getValue() {
+    public function getContent() {
         return 'NULL';
     }
 }

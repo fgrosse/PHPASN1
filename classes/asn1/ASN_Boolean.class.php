@@ -42,7 +42,7 @@ class ASN_Boolean extends ASN_Object {
         }        
     }       
     
-    public function getValue() {
+    public function getContent() {
         if ($this->value == true) {
             return "TRUE";
         } 

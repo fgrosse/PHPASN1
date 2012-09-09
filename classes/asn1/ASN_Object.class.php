@@ -86,12 +86,12 @@ abstract class ASN_Object {
 		return $result;
 	}
 	
-	public function getValue() {
+	public function getContent() {
 		return $this->value;
 	}		
 
 	public function __toString() {
-		return $this->getValue();
+		return $this->getContent();
 	}
 	
 	public function getObjectLength() {
