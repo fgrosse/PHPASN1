@@ -20,9 +20,10 @@
 
 class ASN_IA5String extends ASN_PrintableString {
     
-    function __construct($value) {
+    public function __construct($value) {
         $this->type = ASN1_IA5String;
         $this->value = $value;
     }
+    
 }
 ?>

@@ -20,7 +20,7 @@
 
 class ASN_PrintableString extends ASN_Object {
         
-    function __construct($value) {        
+    public function __construct($value) {        
         $this->value = $value;
     }
     
@@ -28,11 +28,11 @@ class ASN_PrintableString extends ASN_Object {
         return self::ASN1_PRINTABLE_STRING;
     }
     
-    function getContentLength() {
+    protected function getContentLength() {
         return strlen($this->value);
     }
     
-    function getEncodedValue() {
+    protected function getEncodedValue() {
         return $this->value;
     }
            

@@ -31,7 +31,7 @@ class ASN_Integer extends ASN_Object {
         return self::ASN1_INTEGER;
     }
     
-    public function getContentLength() {
+    protected function getContentLength() {
         $value = dechex($this->value);
         return ceil((strlen($value)/2));    
     }

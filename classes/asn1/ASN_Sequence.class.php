@@ -20,44 +20,43 @@
 	
 class ASN_Sequence extends ASN_Object {
 	
-	function __construct($param = null) {
-		$this->type = ASN1_SEQUENCE;
+	public function __construct(ASN_Object $child1 = null, ASN_Object $child2 = null, ASN_Object $childN = null) {
 		$this->value = array();
 		
-		if( isset($param) ) {
-			if( is_array($param) ) {
-				for($i=0 ; $i < count($param) ; $i++)
-					$this->addChild($param[$i]);
-			}
-			else if( $param instanceof ASN_Object ) {
-				$this->addChild($param);
-			}
-			else throw new Exception("[$param] is no ASN_OBJECT!");
-		}
-	}
-	
-	function getEncodedValue() {
-		//var_dump($this->value);die;
-		$result = "";
-		for($i=0 ; $i < count($this->value) ; $i++) {
-			$result .= $this->value[$i]->getBinary();
+        $children = func_get_args();
+        
+        foreach ($children as $child) {
+            $this->addChild($child);
+        }		
+	}	
+    
+    public function getType() {
+        return self::ASN1_SEQUENCE;
+    }
+    
+    protected function getContentLength() {
+        $length = 0;
+        foreach($this->value as $component) {
+            $length += $component->getObjectLength();
+        }             
+        return $length;
+    }
+    
+	protected function getEncodedValue() {		
+		$result = '';
+		foreach($this->value as $component) {
+			$result .= $component->getBinary();
 		}
 		return $result;
-	}
-	
-	function getContentLength() {
-		$length = 0;
-		for($i=0 ; $i < count($this->value) ; $i++) 
-			$length += $this->value[$i]->getObjectLength();
-		return $length;
-	}
+	}	
 	
 	public function addChild(ASN_Object $child) {
 		$this->value[] = $child;
 	}
 	
 	public function __toString() {
-		return "Constructed";
+		return "[Constructed]";
 	}
+    
 }
 ?>

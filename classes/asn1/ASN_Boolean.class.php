@@ -29,7 +29,7 @@ class ASN_Boolean extends ASN_Object {
         return self::ASN1_BOOLEAN;
     }
     
-    public function getContentLength() {
+    protected function getContentLength() {
         return 1;
     }
     

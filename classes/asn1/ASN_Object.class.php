@@ -40,7 +40,7 @@ abstract class ASN_Object {
 	protected $value;
 	
     abstract public function getType();
-	abstract public function getContentLength();
+	abstract protected function getContentLength();
 	abstract protected function getEncodedValue();
 	
 	public function getBinary() {
@@ -88,16 +88,7 @@ abstract class ASN_Object {
 	
 	public function getValue() {
 		return $this->value;
-	}
-	
-	public function getHexValue() {
-		if(is_string($this->value)) {
-		    return "not Supported";
-		}
-		else {
-            return dechex($this->value);
-        }
-	}
+	}		
 
 	public function __toString() {
 		return $this->getValue();

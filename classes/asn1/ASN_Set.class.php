@@ -20,20 +20,9 @@
 
 class ASN_Set extends ASN_Sequence {
 	
-	function __construct($param = null) {
-		$this->type = ASN1_SET;
-		$this->value = array();
-		
-		if( isset($param) ) {
-			if( is_array($param) ) {
-				for($i=0 ; $i < count($paramArr) ; $i++)
-					$this->addChild($paramArr[$i]);
-			}
-			else if( $param instanceof ASN_Object ) {
-				$this->addChild($param);
-			}
-			else throw new Exception("[$param] is no ASN_OBJECT!");
-		}
-	}
+    public function getType() {
+        return self::ASN1_SET;
+    }
+    
 }
 ?>

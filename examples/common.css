@@ -1,4 +1,22 @@
+table {
+	border-collapse: collapse;	
+}
+
+th {
+	text-align: left;	
+}
+
 td{
- word-break: break-all;
- word-wrap: break-word;;
+	word-break: break-all;
+	word-wrap: break-word;
+	border-top: black 1px solid;
+	padding-right: 30px;	
+}
+
+td.ASNclass {
+	font-weight: bold;	
+}
+
+td.monospace {
+	font-family: monospace;
 }
