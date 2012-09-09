@@ -18,16 +18,29 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CSR_StringObject extends CSR_SimpleObject{
-            
-    public function __construct($objectIdentifierString, $value) {                       
-        $this->value = new ASN_Set(
-            new ASN_Sequence(
-                new ASN_ObjectIdentifier($objectIdentifierString),
-                new ASN_PrintableString($value)
-            )
+class ASN_SimpleObject extends ASN_Object{
+	
+	public function __construct($objectIdentifierString, ASN_Object $value) {						
+		$this->value = new ASN_Set(
+			new ASN_Sequence(new ASN_ObjectIdentifier($objectIdentifierString), $value)
         );
+	}
+	
+    public function getType() {
+        return self::ASN1_SET;
     }
     
+	protected function getContentLength(){
+		return $this->value->getContentLength();
+	}
+	
+	public function getBinary() {
+		return $this->value->getBinary();
+	}
+	
+	protected function getEncodedValue(){
+		return $this->value->getEncodedValue();
+	}
+		
 }
 ?>

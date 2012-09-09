@@ -18,7 +18,7 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CSR_SignatureKeyAlgorithm extends CSR_SimpleObject {
+class CSR_SignatureKeyAlgorithm extends ASN_SimpleObject {
         
     public function __construct($objectIdentifierString) {      
         $this->value = new ASN_Sequence(

@@ -20,12 +20,22 @@
 
 class ASN_BitString extends ASN_Object {
         
-    public function __construct($value) {      
+    private $nrOfUnusedBits;
+        
+    public function __construct($value, $nrOfUnusedBits=0) {      
         if(!is_string($value) && !is_numeric($value)) {
             throw new Exception("ASN_BitString: unrecognized input type!");
         }
+        if(!is_numeric($nrOfUnusedBits) || $nrOfUnusedBits < 0) {
+            throw new Exception("ASN_BitString: second parameter needs to be a positive number (or zero)!");
+        }
+        
+        if(is_numeric($value)) {
+            $value = dechex($value);                
+        }
         
         $this->value = $value;
+        $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
     
     public function getType() {
@@ -43,25 +53,15 @@ class ASN_BitString extends ASN_Object {
     }
     
     protected function getEncodedValue() {
-        $value = $this->value;
-        
-        if(is_numeric($value)) {
-            $value = dechex($value);                
-        }
+        $value = $this->value;               
         
         if(strlen($value) %2 != 0) {
             // transform values like 1F2 to 01F2
             $value = "0".$value;
         } 
         
-        // number of unused bits in the last octet
-        $nrOfUnused = 0;
-        $tmpval = decbin(hexdec(substr($value,strlen($value)-2,2)));
-        while($tmpval[strlen($tmpval)-1] == "0") {
-            $nrOfUnused++;
-            $tmpval = substr($tmpval,0,strlen($tmpval)-1);
-        }
-        $result = chr($nrOfUnused);
+        // the first octet determines the number of unused bits
+        $result = chr($this->nrOfUnusedBits);
         
         //Actual content
         while(strlen($value) >= 2) {

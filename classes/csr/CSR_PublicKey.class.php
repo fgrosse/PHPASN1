@@ -18,7 +18,7 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CSR_PublicKey extends CSR_SimpleObject {
+class CSR_PublicKey extends ASN_SimpleObject {
         
     function __construct($hexKey) {     
         $this->value = new ASN_Sequence(

@@ -24,7 +24,7 @@ PHPASN_Autoloader::register();
 $asnBool = new ASN_Boolean(false);
 $asnInt = new ASN_Integer(123456);
 $asnPrintStr = new ASN_PrintableString("Hello World");
-$asnBitStr = new ASN_BitString("3082010a02820101009e2a7");
+$asnBitStr = new ASN_BitString("3082010a02820101009e2a7", 0);
 $asnObjIdent = new ASN_ObjectIdentifier(OID::EMAIL);
 $asnNull = new ASN_NULL();
 $asnSequence = new ASN_Sequence($asnBool, $asnInt, $asnPrintStr);
