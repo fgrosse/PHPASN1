@@ -20,12 +20,16 @@
 
 class CSR_SignatureKeyAlgorithm extends CSR_SimpleObject {
         
-    function __construct($algorithm) {      
-        $this->value = new ASN_Sequence(array(
-            new ASN_ObjectIdentifier($algorithm),
+    public function __construct($objectIdentifierString) {      
+        $this->value = new ASN_Sequence(
+            new ASN_ObjectIdentifier($objectIdentifierString),
             new ASN_NULL()
-        ));
-        $this->type = ASN1_SEQUENCE;
+        );
     }
+    
+    public function getType() {
+        return self::ASN1_SEQUENCE;
+    }
+    
 }
 ?>

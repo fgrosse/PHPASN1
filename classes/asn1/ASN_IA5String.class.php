@@ -18,11 +18,10 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ASN_IA5String extends ASN_PrintableString {
-    
-    public function __construct($value) {
-        $this->type = ASN1_IA5String;
-        $this->value = $value;
+class ASN_IA5String extends ASN_PrintableString {      
+ 
+    public function getType() {
+        return self::ASN1_IA5_STRING;
     }
     
 }

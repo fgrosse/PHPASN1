@@ -21,14 +21,18 @@
 class CSR_PublicKey extends CSR_SimpleObject {
         
     function __construct($hexKey) {     
-        $this->value = new ASN_Sequence(array(
-            new ASN_Sequence(array(
-                new ASN_ObjectIdentifier(OID_RSA_ENCRYPTION),
+        $this->value = new ASN_Sequence(
+            new ASN_Sequence(
+                new ASN_ObjectIdentifier(OID::RSA_ENCRYPTION),
                 new ASN_NULL()
-            )),
+            ),
             new ASN_BitString($hexKey)
-        ));
-        $this->type = ASN1_SEQUENCE;
+        );
     }
+    
+    public function getType() {
+        return self::ASN1_SEQUENCE;
+    }
+    
 }
 ?>

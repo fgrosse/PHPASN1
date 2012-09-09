@@ -30,32 +30,18 @@ $asnNull = new ASN_NULL();
 $asnSequence = new ASN_Sequence($asnBool, $asnInt, $asnPrintStr);
 $asnSet = new ASN_Set($asnObjIdent, $asnSequence);
 
-//Build CSR        
-/*$versionNr          = new ASN_Integer(0);
-$set_commonName     = new CSR_StringObject($OID["COMMON_NAME"], "CommonName");
-$set_email          = new CSR_SimpleObject($OID["EMAIL"], new ASN_IA5String("DNEmail"));
-$set_orgName        = new CSR_StringObject($OID["ORGANIZATION_NAME"], "Organisation");
-$set_localName      = new CSR_StringObject($OID["LOCALITY_NAME"], "Locality City Town");
-$set_state          = new CSR_StringObject($OID["STATE_OR_PROVINCE_NAME"], "State");
-$set_country        = new CSR_StringObject($OID["COUNTRY_NAME"], "DE");
-$set_ou             = new CSR_StringObject($OID["OU_NAME"], "Organisation Units");
-$publicKey          = new CSR_PublicKey("3082010a02820101009e2a7defae93720c91c43c46ff4a1f2e8eef7949289e281f788f3a07d9b94da26fb2e721009caceddd0e6b59daa596df20f871fc30a43f4b80798f94fa3d13cb2db79eb6d8f07b4065d0b09a541564ba3baa1201e20ee923ea16be31fa785c300635c4e881df7acb5b52c7c3d923067902cc55e77c00694f319d2b9e81edbbfe70ef1a462aef4960c567f33aa5264a05fdf24cd7bc36941cd7746fb767631a241b7a97fc4cdc42a68692b906406403599380c7586ce6f22fac34949caf1072c724ba5397e6440f957e2678c3a4bc92268fe6815d41fa210ab45364c11e3731c6c039832b54f54b51fdaf6afb351e1da9720b3c322f7fbaefb72d96d4ce5ec07b0203010001");
-$signature          = new ASN_BitString("4adf270d347047192573cf245a94cd2e69594c1cdac1d7c99d7ed5856c926ee62c65188f21d893e634b213595cc4564d5a8d39bed0ca01e0b45e3182ab89310c129017f2a7a68d8603694ddc8d1c2ebfee39b3b5dfc9dbc2db667a089b1b51386f2cf7ec70140d185bae5c2f3b3148b9ef613ce068f94db13a230b1133e4b4a48ec5c8b4066d64a2199c0cfb6c4d0cfe105f21a89b2900d0a5c87bef5eded941ba93ae1b7e84aaeabcb46fa4a3844ffc683ebb4ee80717ff51cba5d82afe9d2633b760a66449e57e06d73eeeb151bc050a66825996d7f5ec821d31891c620a677c8271db13bbc22fcf91e1b7ac8f6f109eb8e3a2c61a3c8a4336b40a499e1404");
-$signatureAlgorithm = new CSR_SignatureKeyAlgorithm(OID_SHA1_WITH_RSA_ENCRYPTION);      
-
-$subjectSequence = new ASN_Sequence(array(
-    $set_commonName,
-    $set_email,
-    $set_orgName,
-    $set_localName,
-    $set_state,
-    $set_country,
-    $set_ou
-));
-
-$mainSequence  = new ASN_Sequence(array($versionNr, $subjectSequence, $publicKey));
-$startSequence = new ASN_Sequence(array($mainSequence, $signatureAlgorithm, $signature));
-    */
+$csr = new CSR(
+    0,
+    "Friedrich Grosse",
+    "friedrich.grosse@gmail.com",
+    "PHPASN1",
+    "Berlin",
+    "Berlin",
+    "DE",
+    "Development Department",
+    "3082010a02820101009e2a7defae93720c91c43c46ff4a1f2e8eef7949289e281f788f3a07d9b94da26fb2e721009caceddd0e6b59daa596df20f871fc30a43f4b80798f94fa3d13cb2db79eb6d8f07b4065d0b09a541564ba3baa1201e20ee923ea16be31fa785c300635c4e881df7acb5b52c7c3d923067902cc55e77c00694f319d2b9e81edbbfe70ef1a462aef4960c567f33aa5264a05fdf24cd7bc36941cd7746fb767631a241b7a97fc4cdc42a68692b906406403599380c7586ce6f22fac34949caf1072c724ba5397e6440f957e2678c3a4bc92268fe6815d41fa210ab45364c11e3731c6c039832b54f54b51fdaf6afb351e1da9720b3c322f7fbaefb72d96d4ce5ec07b0203010001",
+    "4adf270d347047192573cf245a94cd2e69594c1cdac1d7c99d7ed5856c926ee62c65188f21d893e634b213595cc4564d5a8d39bed0ca01e0b45e3182ab89310c129017f2a7a68d8603694ddc8d1c2ebfee39b3b5dfc9dbc2db667a089b1b51386f2cf7ec70140d185bae5c2f3b3148b9ef613ce068f94db13a230b1133e4b4a48ec5c8b4066d64a2199c0cfb6c4d0cfe105f21a89b2900d0a5c87bef5eded941ba93ae1b7e84aaeabcb46fa4a3844ffc683ebb4ee80717ff51cba5d82afe9d2633b760a66449e57e06d73eeeb151bc050a66825996d7f5ec821d31891c620a677c8271db13bbc22fcf91e1b7ac8f6f109eb8e3a2c61a3c8a4336b40a499e1404"
+);
     
 
 // check if openssl is installed on this system
@@ -69,13 +55,13 @@ else {
     
 function printVariableInfo(ASN_Object $variable) {
     $className = get_class($variable);
-    $stringValue = $variable->__toString();
+    $stringValue = nl2br($variable->__toString());
     $base64Binary = base64_encode($variable->getBinary());
     
     echo '<tr>';
     echo "<td class='ASNclass'>{$className}</td>";
-    echo "<td>\"<span class='red'>{$stringValue}</span>\"</td>";           
-    echo "<td class='monospace'>{$base64Binary}</td>";
+    echo "<td class='monospace'>\"<span class='red'>{$stringValue}</span>\"</td>";           
+    echo "<td class='monospace base64'>{$base64Binary}</td>";
     
     global $openSSLisAvailable;
     if($openSSLisAvailable) {
@@ -122,6 +108,7 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo($asnNull);
             printVariableInfo($asnSequence);
             printVariableInfo($asnSet);
+            printVariableInfo($csr);
         ?>
     </table>       
 </body>

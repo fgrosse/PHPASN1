@@ -20,13 +20,17 @@
 
 class CSR_SimpleObject extends ASN_Object{
 	
-	function __construct($type, ASN_Object $value) {						
+	public function __construct($objectIdentifierString, ASN_Object $value) {						
 		$this->value = new ASN_Set(
-			new ASN_Sequence(array(new ASN_ObjectIdentifier($type), $value)));
-		$this->type = ASN1_SET;
+			new ASN_Sequence(new ASN_ObjectIdentifier($objectIdentifierString), $value)
+        );
 	}
 	
-	public function getContentLength(){
+    public function getType() {
+        return self::ASN1_SET;
+    }
+    
+	protected function getContentLength(){
 		return $this->value->getContentLength();
 	}
 	
@@ -37,9 +41,6 @@ class CSR_SimpleObject extends ASN_Object{
 	protected function getEncodedValue(){
 		return $this->value->getEncodedValue();
 	}
-	
-	public function getHexValue() {
-		return "Not Supported";
-	}
+		
 }
 ?>

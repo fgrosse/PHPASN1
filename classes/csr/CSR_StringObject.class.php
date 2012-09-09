@@ -20,14 +20,14 @@
 
 class CSR_StringObject extends CSR_SimpleObject{
             
-    function __construct($type, $value) {                       
+    public function __construct($objectIdentifierString, $value) {                       
         $this->value = new ASN_Set(
-            new ASN_Sequence(array(
-                new ASN_ObjectIdentifier($type),
+            new ASN_Sequence(
+                new ASN_ObjectIdentifier($objectIdentifierString),
                 new ASN_PrintableString($value)
-            ))
+            )
         );
-        $this->type = ASN1_SET;
     }
+    
 }
 ?>

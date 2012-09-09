@@ -18,7 +18,7 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 	
-class CSR {
+class CSR extends ASN_Sequence {
 	
 	protected $version;
 	protected $commonName;
@@ -34,38 +34,40 @@ class CSR {
 	
 	protected $startSequence;
 	
-	public function __construct($version, $commonName, $email, $orgName, $localName, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID_SHA1_WITH_RSA_ENCRYPTION) {						
-		if( !is_numeric($version)) throw new Exception("Version must be an int value (Given:[$version])!");
+	public function __construct($version, $commonName, $email, $orgName, $localName, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_ENCRYPTION) {						
+		if( !is_numeric($version)) {
+		    throw new Exception("Version must be a number (given:[{$version}])!");
+        }
 	
-		$this->version				= $version;
-		$this->commonName			= $commonName;
-		$this->email				= $email;
-		$this->orgName				= $orgName;
-		$this->localName			= $localName;
-		$this->state				= $state;
-		$this->country				= $country;
-		$this->ou					= $ou;
-		$this->publicKey			= $publicKey;
-		$this->signature			= $signature;
-		$this->signatureAlgorithm	= $signatureAlgorithm;
+		$this->version = $version;
+		$this->commonName = $commonName;
+		$this->email = $email;
+		$this->orgName = $orgName;
+		$this->localName = $localName;
+		$this->state = $state;
+		$this->country = $country;
+		$this->ou = $ou;
+		$this->publicKey = $publicKey;
+		$this->signature = $signature;
+		$this->signatureAlgorithm = $signatureAlgorithm;
 		
-		$this->startSequence = $this->createStartSequence();
+		$this->createCSRSequence();
 	}
 	
-	protected function createStartSequence() {
+	protected function createCSRSequence() {
 		$versionNr			= new ASN_Integer($this->version);
-		$set_commonName		= new CSR_StringObject(OID_COMMON_NAME, $this->commonName);
-		$set_email			= new CSR_SimpleObject(OID_EMAIL, new ASN_IA5String($this->email));
-		$set_orgName		= new CSR_StringObject(OID_ORGANIZATION_NAME, $this->orgName);
-		$set_localName		= new CSR_StringObject(OID_LOCALITY_NAME, $this->localName);
-		$set_state			= new CSR_StringObject(OID_STATE_OR_PROVINCE_NAME, $this->state);
-		$set_country		= new CSR_StringObject(OID_COUNTRY_NAME, $this->country);
-		$set_ou				= new CSR_StringObject(OID_OU_NAME, $this->ou);
+		$set_commonName		= new CSR_StringObject(OID::COMMON_NAME, $this->commonName);
+		$set_email			= new CSR_SimpleObject(OID::EMAIL, new ASN_IA5String($this->email));
+		$set_orgName		= new CSR_StringObject(OID::ORGANIZATION_NAME, $this->orgName);
+		$set_localName		= new CSR_StringObject(OID::LOCALITY_NAME, $this->localName);
+		$set_state			= new CSR_StringObject(OID::STATE_OR_PROVINCE_NAME, $this->state);
+		$set_country		= new CSR_StringObject(OID::COUNTRY_NAME, $this->country);
+		$set_ou				= new CSR_StringObject(OID::OU_NAME, $this->ou);
 		$publicKey 			= new CSR_PublicKey($this->publicKey);
 		$signature			= new ASN_BitString($this->signature);
 		$signatureAlgorithm	= new CSR_SignatureKeyAlgorithm($this->signatureAlgorithm);		
 		
-		$subjectSequence = new ASN_Sequence(array(
+		$subjectSequence = new ASN_Sequence(
 			$set_commonName,
 			$set_email,
 			$set_orgName,
@@ -73,16 +75,17 @@ class CSR {
 			$set_state,
 			$set_country,
 			$set_ou
-		));
+		);
 
-		$mainSequence  = new ASN_Sequence(array($versionNr, $subjectSequence, $publicKey));
-		$startSequence = new ASN_Sequence(array($mainSequence, $signatureAlgorithm, $signature));
+		$mainSequence  = new ASN_Sequence($versionNr, $subjectSequence, $publicKey);
 		
-		return $startSequence;
+        $this->addChild($mainSequence);
+        $this->addChild($signatureAlgorithm);
+        $this->addChild($signature);
 	}
 	
-	public function getBase64DER() {
-		$tmp = base64_encode($this->startSequence->getBinary());
+	public function __toString() {
+		$tmp = base64_encode($this->getBinary());
 		
 		for( $i = 0 ; $i < strlen($tmp) ; $i++ ) {
 			if(($i+2) % 65 == 0) {
@@ -90,16 +93,12 @@ class CSR {
 			}
 		}
 	
-		$result = "-----BEGIN CERTIFICATE REQUEST-----\n";
-		$result .= $tmp;
-		$result .= "\n-----END CERTIFICATE REQUEST-----";
+		$result = "-----BEGIN CERTIFICATE REQUEST-----" . PHP_EOL;
+		$result .= $tmp . PHP_EOL;
+		$result .= "-----END CERTIFICATE REQUEST-----";
 		
 		return $result;
-	}
-
-	public function getDERByteSize() {
-		return $this->startSequence->getObjectLength();
-	}
+	}	
 
 	public function getVersion() 			{ return $this->version; }
 	public function getCommonName()			{ return $this->commonName; }
