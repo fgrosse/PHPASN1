@@ -40,9 +40,9 @@ or the right to create the folder if it does not exist.
 More information about PHP Autoloading  can be found [here](http://php.net/manual/en/language.oop5.autoload.php).
 
 
-## Examples
+### Examples
 
-To see some example usage of the API or some generated output check out the examples folder.
+To see some example usage of the API classes or some generated output check out the examples folder.
 
 You can also take a look at the **live demo** of the current PHPASN1 exampless [here](http://corvespace.de/phpasn1/examples/).
 
