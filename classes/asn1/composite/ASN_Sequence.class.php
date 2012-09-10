@@ -55,7 +55,7 @@ class ASN_Sequence extends ASN_Object {
 	}
 	
 	public function __toString() {
-		return "[Constructed]";
+		return '['.get_called_class().']';       
 	}
     
 }
