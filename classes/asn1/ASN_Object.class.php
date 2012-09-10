@@ -39,53 +39,63 @@ abstract class ASN_Object {
     
 	protected $value;
 	
+    /**
+     * Must return the identifier octet of the ASN_Object.
+     * All possible values are stored as class constants within
+     * the ASN_Object base class. 
+     */
     abstract public function getType();
 	abstract protected function getContentLength();
 	abstract protected function getEncodedValue();
 	
 	public function getBinary() {
-		$size = $this->getContentLength();
-		
 		$result  = chr($this->getType());
-					
-		//Create the Length octet(s)
-		if($size <= 127) $result .= chr($size);
-		else {//Wenn Size zu groß für 7Bit dann auf mehrere Bytes aufteilen
-			$tmpbin = decbin($size);
-			$tmpArr = array(); //in diesem Array werden die Bytes in umgedrehter Reihenfolge gespeichert
-			$count = 1;
-			while(strlen($tmpbin) > 8) {	
-				//Nimm immer von hinten 8 Bit 
-				$part = substr($tmpbin,strlen($tmpbin)-8);
-				$tmpbin = substr($tmpbin,0,strlen($tmpbin)-8);
-				
-				//Füge diese dem tempArr hinzu
-				$tmpArr[] = bindec($part);
-				//Mizählen wieviel Bytes wir nun hane
-				$count++;
-			}
-			$tmpArr[] = bindec($tmpbin);
-			
-			
-			//Das Erste Byte gibt an, wieviele Length-Bytes (Octets es giebt)
-			$firstByte = decbin($count);
-			//ggf. mit 0len auffüllen
-			while(strlen($firstByte) < 7)
-				$firstByte = "0".$firstByte;
-			//firstbyte muss mit 1 beginnen
-			$firstByte = "1".$firstByte;
-			
-			$result .= chr(bindec($firstByte));
-			//Werte in Richtiger Reihenfolge aus dem tmpArr lesen
-			for($i=count($tmpArr)-1 ; $i >= 0 ; $i--)
-				$result .= chr($tmpArr[$i]);
-		}
-		
-		//Create the Content octet(s)
-		$result .= $this->getEncodedValue();	//VALUE
+		$result .= $this->createLengthPart();						
+		$result .= $this->getEncodedValue();
+        
 		return $result;
 	}
 	
+    private function createLengthPart() {
+        $length = $this->getContentLength();
+        
+        if($length <= 127) {
+            return chr($length);
+        }
+        else {
+            // the contents size is too big for 7 bit so we need more octets for the length part
+            $sizeAsBinaryString = decbin($length);
+            $tmpArr = array(); // this array holds the size octets in reversed order
+            $nrOfLengthOctets = 1;            
+            while(strlen($sizeAsBinaryString) > 8) {    
+                // take the last 8 bit 
+                $last8Bit = substr($sizeAsBinaryString, strlen($sizeAsBinaryString)-8);
+                $sizeAsBinaryString = substr($sizeAsBinaryString, 0, strlen($sizeAsBinaryString)-8);                                
+                $tmpArr[] = bindec($last8Bit);                
+                $nrOfLengthOctets++;
+            }
+            $tmpArr[] = bindec($sizeAsBinaryString);            
+            
+            // the first length octet determines the number subsequent length octets
+            $firstOctet = decbin($nrOfLengthOctets);
+            
+            // add some zeros to fill up all 8 bits
+            //TODO What if there are more than 7 subsequent length octets?           
+            $firstOctet = str_repeat('0', 7-strlen($firstOctet)) . $firstOctet;            
+            
+            // the first octet must start with a 1 to indicate that the long form is used
+            $firstOctet = '1'.$firstOctet;            
+            $lengthOctets = chr(bindec($firstOctet));            
+            
+            // append the values from the tmp array in the right order
+            for($i=$nrOfLengthOctets-1 ; $i >= 0 ; $i--) {
+                $lengthOctets .= chr($tmpArr[$i]);
+            }
+            
+            return $lengthOctets;
+        }
+    }
+    
 	public function getContent() {
 		return $this->value;
 	}		
