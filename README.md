@@ -42,6 +42,7 @@ More information about PHP Autoloading  can be found [here](http://php.net/manua
 ## Examples
 
 To see some example usage of the API or some generated output check out the examples folder.
+You can check out a live demo of the current PHPASN1 exampless [here](http://corvespace.de/phpasn1/examples/).
 
 
 ## Future
