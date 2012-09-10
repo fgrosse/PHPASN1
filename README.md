@@ -34,7 +34,7 @@ Because searching for all the right class files everytime is wasteful, the PHPAS
 It will write the mapping of all classes to the absolut locations of their class files into a cache file.
 You can tell the autoloader where to put that file in the `PHPASN_Autoloader::register(...)` function.
 
-*Note*: Currently, the caching is non-optional and requires php to have write access to the cache directory or if it does exist write access to create it.
+**Note**: Currently, the caching is non-optional and requires php to have write access to the cache directory or if it does exist write access to create it.
 
 More information about PHP Autoloading  can be found [here](http://php.net/manual/en/language.oop5.autoload.php).
 
