@@ -20,33 +20,25 @@
 	
 class CSR extends ASN_Sequence {
 	
-	protected $version;
-	protected $commonName;
-	protected $email;
-	protected $orgName;
-	protected $localName;
-	protected $state;
-	protected $country;
-	protected $ou;
+    const CSR_VERSION_NR = 0;
+    
+	protected $subject;		
 	protected $publicKey;
 	protected $signature;
 	protected $signatureAlgorithm;
 	
 	protected $startSequence;
 	
-	public function __construct($version, $commonName, $email, $orgName, $localName, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_ENCRYPTION) {						
-		if( !is_numeric($version)) {
-		    throw new Exception("Version must be a number (given:[{$version}])!");
-        }
-	
-		$this->version = $version;
-		$this->commonName = $commonName;
-		$this->email = $email;
-		$this->orgName = $orgName;
-		$this->localName = $localName;
-		$this->state = $state;
-		$this->country = $country;
-		$this->ou = $ou;
+	public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_ENCRYPTION) {						
+		$this->subject = new CertificateSubject(
+            $commonName,
+            $email,
+            $orga,
+            $locality,
+            $state,
+            $country,
+            $ou
+        );
 		$this->publicKey = $publicKey;
 		$this->signature = $signature;
 		$this->signatureAlgorithm = $signatureAlgorithm;
@@ -55,29 +47,12 @@ class CSR extends ASN_Sequence {
 	}
 	
 	protected function createCSRSequence() {
-		$versionNr			= new ASN_Integer($this->version);
-		$set_commonName		= new ASN_StringObject(OID::COMMON_NAME, $this->commonName);
-		$set_email			= new ASN_SimpleObject(OID::EMAIL, new ASN_IA5String($this->email));
-		$set_orgName		= new ASN_StringObject(OID::ORGANIZATION_NAME, $this->orgName);
-		$set_localName		= new ASN_StringObject(OID::LOCALITY_NAME, $this->localName);
-		$set_state			= new ASN_StringObject(OID::STATE_OR_PROVINCE_NAME, $this->state);
-		$set_country		= new ASN_StringObject(OID::COUNTRY_NAME, $this->country);
-		$set_ou				= new ASN_StringObject(OID::OU_NAME, $this->ou);
+		$versionNr			= new ASN_Integer(self::CSR_VERSION_NR);
 		$publicKey 			= new CSR_PublicKey($this->publicKey);
 		$signature			= new ASN_BitString($this->signature);
 		$signatureAlgorithm	= new CSR_SignatureKeyAlgorithm($this->signatureAlgorithm);		
-		
-		$subjectSequence = new ASN_Sequence(
-			$set_commonName,
-			$set_email,
-			$set_orgName,
-			$set_localName,
-			$set_state,
-			$set_country,
-			$set_ou
-		);
 
-		$certRequestInfo  = new ASN_Sequence($versionNr, $subjectSequence, $publicKey);
+		$certRequestInfo  = new ASN_Sequence($versionNr, $this->subject, $publicKey);
 		
         $this->addChild($certRequestInfo);
         $this->addChild($signatureAlgorithm);
@@ -100,9 +75,7 @@ class CSR extends ASN_Sequence {
 		return $result;
 	}	
 
-	public function getVersion() 			{ return $this->version; }
-	public function getCommonName()			{ return $this->commonName; }
-	public function getEmail()				{ return $this->email; }
+	public function getVersion() 			{ return $this->version; }	
 	public function getOrgaName()			{ return $this->orgName; }
 	public function getLocalName()			{ return $this->localName; }
 	public function getState()				{ return $this->state; }

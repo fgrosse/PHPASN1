@@ -18,18 +18,12 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CSR_SignatureKeyAlgorithm extends ASN_SimpleObject {
+class CSR_SignatureKeyAlgorithm extends ASN_AttributeTypeAndValue {
         
     public function __construct($objectIdentifierString) {      
-        $this->value = new ASN_Sequence(
-            new ASN_ObjectIdentifier($objectIdentifierString),
-            new ASN_NULL()
-        );
+        parent::__construct($objectIdentifierString, new ASN_NULL());
     }
     
-    public function getType() {
-        return self::ASN1_SEQUENCE;
-    }
     
 }
 ?>

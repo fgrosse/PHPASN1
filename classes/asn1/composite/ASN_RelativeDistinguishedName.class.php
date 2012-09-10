@@ -18,29 +18,13 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ASN_SimpleObject extends ASN_Object{
-	
-	public function __construct($objectIdentifierString, ASN_Object $value) {						
-		$this->value = new ASN_Set(
-			new ASN_Sequence(new ASN_ObjectIdentifier($objectIdentifierString), $value)
-        );
-	}
-	
-    public function getType() {
-        return self::ASN1_SET;
+class ASN_RelativeDistinguishedName extends ASN_Set {
+    
+    public function __construct($objIdentifierString, ASN_Object $value) {
+        // TODO: This does only support one element in the RelativeDistinguishedName Set but it it is defined as follows:
+        // RelativeDistinguishedName ::= SET SIZE (1..MAX) OF AttributeTypeAndValue
+        parent::__construct(new ASN_AttributeTypeAndValue($objIdentifierString, $value));        
     }
     
-	protected function getContentLength(){
-		return $this->value->getContentLength();
-	}
-	
-	public function getBinary() {
-		return $this->value->getBinary();
-	}
-	
-	protected function getEncodedValue(){
-		return $this->value->getEncodedValue();
-	}
-		
 }
 ?>
