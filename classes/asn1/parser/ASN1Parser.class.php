@@ -25,11 +25,13 @@ class ASN1Parser {
         $typeIdentifier = ord($binaryData[$dataIndex++]);
         $objectLength = $this->extractObjectLength($binaryData, $dataIndex);
 
-        switch($typeIdentifier) {
-            case ASN_Object::ASN1_BITSTRING:
-                return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
+        switch($typeIdentifier) {            
             case ASN_Object::ASN1_BOOLEAN:
                 return $this->createASNBoolean($binaryData, $dataIndex, $objectLength);
+            case ASN_Object::ASN1_INTEGER:
+                return $this->createASNInteger($binaryData, $dataIndex, $objectLength);
+            case ASN_Object::ASN1_BITSTRING:
+                return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
         }
     }
     
@@ -46,14 +48,7 @@ class ASN1Parser {
         }
         
         return $contentLength;
-    }
-
-    private function createASNBitString(&$binaryData, &$dataIndex, $objectLength) {
-        $nrOfUnusedBits = ord($binaryData[$dataIndex]);
-        $value = substr($binaryData, $dataIndex+1, $objectLength-1);
-        $dataIndex += $objectLength;
-        return new ASN_BitString(bin2hex($value));
-    }
+    }    
     
     private function createASNBoolean(&$binaryData, &$dataIndex, $objectLength) {
         if($objectLength != 1) {
@@ -61,6 +56,30 @@ class ASN1Parser {
         }
         $value = ord($binaryData[$dataIndex++]);
         return new ASN_Boolean($value==0xFF ? true : false);
+    }
+    
+    private function createASNInteger(&$binaryData, &$dataIndex, $objectLength) {
+        //TODO this might get in trouble with big numbers: rewrite with gmp
+        
+        $isNegative = (ord($binaryData[$dataIndex]) & 0x80) != 0x00;        
+        $value = ord($binaryData[$dataIndex++]) & 0x7F;
+        
+        for ($i=0; $i<$objectLength-1; $i++) {
+            $value = ($value << 8) + ord($binaryData[$dataIndex++]);
+        }
+        
+        if($isNegative) {
+            $value -= pow(2, 8*$objectLength-1);            
+        }
+        
+        return new ASN_Integer($value);
+    }
+    
+    private function createASNBitString(&$binaryData, &$dataIndex, $objectLength) {
+        $nrOfUnusedBits = ord($binaryData[$dataIndex]);
+        $value = substr($binaryData, $dataIndex+1, $objectLength-1);
+        $dataIndex += $objectLength;
+        return new ASN_BitString(bin2hex($value));
     }
 }
 ?>

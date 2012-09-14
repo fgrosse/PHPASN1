@@ -121,6 +121,39 @@ class ASN1ParserTest extends PHPASN1TestCase {
         $binaryData .= chr(0xFF);
         $this->parser->parse($binaryData);        
     }
+    
+    public function testParseASNInteger() {
+        $type = chr(ASN_Object::ASN1_INTEGER);
+        $length = chr(0x01);
+        
+        $value = chr(0);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(0), $object);                            
+        
+        $value = chr(123);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(123), $object);
+        
+        $value = chr(128);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(-128), $object);
+        
+        $value = chr(255);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(-1), $object);
+        
+        // 2 Byte integers
+        $length = chr(0x02);
+        $value = chr(5);
+        $value .= chr(133);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(1413), $object);
+                
+        $value = chr(133);
+        $value .= chr(133);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Integer(-31355), $object);                
+    }
 }
 ?>
     
