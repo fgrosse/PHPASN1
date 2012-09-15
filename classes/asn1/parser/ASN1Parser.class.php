@@ -33,7 +33,7 @@ class ASN1Parser {
             case Identifier::INTEGER:
                 return $this->createASNInteger($binaryData, $dataIndex, $objectLength);
             case Identifier::BITSTRING:
-                return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
+                return $this->createASNBitString($binaryData, $dataIndex, $objectLength);            
             case Identifier::NULL:
                 return $this->createASNNull($binaryData, $dataIndex, $objectLength);
             case Identifier::ENUMERATED:
@@ -102,9 +102,9 @@ class ASN1Parser {
         return new ASN_BitString(bin2hex($value));
     }
     
-    private function createASNNull(&$binaryData, &$dataIndex, $objectLength) {
-        if($objectLength != 0) {
-            throw new ASN1ParserException("An ASN.1 Null should not have a length other than zero. Extracted length was {$objectLength}", $binaryData, $dataIndex, $objectLength);
+    private function createASNNull(&$binaryData, &$dataIndex, $contentLength) {
+        if($contentLength != 0) {
+            throw new ASN1ParserException("An ASN.1 Null should not have a length other than zero. Extracted length was {$contentLength}", $dataIndex);
         }
         
         return new ASN_NULL();

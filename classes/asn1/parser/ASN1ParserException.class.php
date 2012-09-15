@@ -23,15 +23,11 @@ namespace PHPASN1;
 class ASN1ParserException extends \Exception {
 
     private $errorMessage;
-    private $binaryData;
     private $offset;
-    private $objectLength;
 
-    public function __construct($errorMessage, $binaryData, $offset, $objectLength) {
+    public function __construct($errorMessage, $offset) {
         $this->errorMessage = $errorMessage;
-        $this->binaryData = $binaryData;
         $this->offset = $offset;
-        $this->objectLength = $objectLength;
         parent::__construct("ASN.1 Parser Exception at offset {$this->offset}: {$this->errorMessage}");
     }
     

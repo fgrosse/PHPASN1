@@ -83,46 +83,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
         $binaryData .= chr(0x45);
         $object = $this->parser->parse($binaryData);
         $this->assertEquals(new ASN_BitString('a03f0045'), $object);
-    }
-    
-    public function testParseASNBoolean() {
-        $binaryData  = chr(Identifier::BOOLEAN);
-        $binaryData .= chr(0x01); // length
-        
-        $binaryContent = chr(0x00);         
-        $object = $this->parser->parse($binaryData.$binaryContent);
-        $this->assertEquals(new ASN_Boolean(false), $object);
-        
-        $binaryContent = chr(0x3F);
-        $object = $this->parser->parse($binaryData.$binaryContent);
-        $this->assertEquals(new ASN_Boolean(false), $object);
-        
-        $binaryContent = chr(0xFF);
-        $object = $this->parser->parse($binaryData.$binaryContent);
-        $this->assertEquals(new ASN_Boolean(true), $object);                
-    }
-
-    /**
-     * @expectedException PHPASN1\ASN1ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 2
-     */
-    public function testParseASNBooleanWithInvalidLength01() {
-        $binaryData  = chr(Identifier::BOOLEAN);
-        $binaryData .= chr(0x02);
-        $binaryData .= chr(0xFF);
-        $this->parser->parse($binaryData);        
-    }
-    
-    /**
-     * @expectedException PHPASN1\ASN1ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 0
-     */
-    public function testParseASNBooleanWithInvalidLength02() {
-        $binaryData  = chr(Identifier::BOOLEAN);
-        $binaryData .= chr(0x00);
-        $binaryData .= chr(0xFF);
-        $this->parser->parse($binaryData);        
-    }
+    }           
     
     public function testParseASNInteger() {
         $type = chr(Identifier::INTEGER);

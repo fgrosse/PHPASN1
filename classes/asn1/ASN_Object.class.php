@@ -114,5 +114,19 @@ abstract class ASN_Object {
 		return $count;
 	}
     
+    protected static function parseContentLength(&$binaryData, &$offsetIndex) {
+        $contentLength = ord($binaryData[$offsetIndex++]);
+
+        if( ($contentLength & 0x80) != 0) {
+            // bit 8 is set -> this is the long form
+            $nrofOfLengthOctets = $contentLength & 0x7F;
+            $contentLength = 0x00;
+            for ($i=0; $i < $nrofOfLengthOctets; $i++) { 
+                $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
+            }
+        }
+        
+        return $contentLength;
+    }
 }
 ?>
