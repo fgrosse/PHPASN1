@@ -34,7 +34,7 @@ class ASN_ObjectIdentifier extends ASN_Object {
 	}
 	
     public function getType() {
-        return self::ASN1_OBJECTIDENTIFIER;
+        return Identifier::OBJECTIDENTIFIER;
     }
     
     protected function getContentLength() {

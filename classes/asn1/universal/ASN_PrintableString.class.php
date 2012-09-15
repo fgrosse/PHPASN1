@@ -27,7 +27,7 @@ class ASN_PrintableString extends ASN_Object {
     }
     
     public function getType() {
-        return self::ASN1_PRINTABLE_STRING;
+        return Identifier::PRINTABLE_STRING;
     }
     
     protected function getContentLength() {

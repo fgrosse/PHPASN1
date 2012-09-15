@@ -45,7 +45,7 @@ class ASN_BitString extends ASN_Object {
     }
     
     public function getType() {
-        return self::ASN1_BITSTRING;
+        return Identifier::BITSTRING;
     }
     
     protected function getContentLength() {

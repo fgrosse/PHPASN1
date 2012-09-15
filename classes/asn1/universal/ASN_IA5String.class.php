@@ -23,7 +23,7 @@ namespace PHPASN1;
 class ASN_IA5String extends ASN_PrintableString {      
  
     public function getType() {
-        return self::ASN1_IA5_STRING;
+        return Identifier::IA5_STRING;
     }
     
 }

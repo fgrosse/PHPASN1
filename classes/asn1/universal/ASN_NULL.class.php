@@ -23,7 +23,7 @@ namespace PHPASN1;
 class ASN_NULL extends ASN_Object {
         
     public function getType() {
-        return self::ASN1_NULL;
+        return Identifier::NULL;
     }
     
     protected function getContentLength() {

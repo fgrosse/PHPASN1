@@ -74,7 +74,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
  
     public function testParseASNBitString() {
-        $binaryData  = chr(ASN_Object::ASN1_BITSTRING);
+        $binaryData  = chr(Identifier::BITSTRING);
         $binaryData .= chr(0x05); // length
         $binaryData .= chr(0);    // number of unused bits        
         $binaryData .= chr(0xA0); // bit string...
@@ -86,7 +86,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
     
     public function testParseASNBoolean() {
-        $binaryData  = chr(ASN_Object::ASN1_BOOLEAN);
+        $binaryData  = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x01); // length
         
         $binaryContent = chr(0x00);         
@@ -107,7 +107,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 2
      */
     public function testParseASNBooleanWithInvalidLength01() {
-        $binaryData  = chr(ASN_Object::ASN1_BOOLEAN);
+        $binaryData  = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xFF);
         $this->parser->parse($binaryData);        
@@ -118,14 +118,14 @@ class ASN1ParserTest extends PHPASN1TestCase {
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 0
      */
     public function testParseASNBooleanWithInvalidLength02() {
-        $binaryData  = chr(ASN_Object::ASN1_BOOLEAN);
+        $binaryData  = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x00);
         $binaryData .= chr(0xFF);
         $this->parser->parse($binaryData);        
     }
     
     public function testParseASNInteger() {
-        $type = chr(ASN_Object::ASN1_INTEGER);
+        $type = chr(Identifier::INTEGER);
         $length = chr(0x01);
         
         $value = chr(0);
@@ -158,7 +158,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
 
     public function testParseASNNull() {
-        $type = chr(ASN_Object::ASN1_NULL);
+        $type = chr(Identifier::NULL);
         $length = chr(0x00);        
         $object = $this->parser->parse($type.$length);
         $this->assertEquals(new ASN_NULL(), $object);                                                   
@@ -169,13 +169,13 @@ class ASN1ParserTest extends PHPASN1TestCase {
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Null should not have a length other than zero. Extracted length was 1
      */
     public function testParseASNNullWithInvalidLength() {
-        $type = chr(ASN_Object::ASN1_NULL);
+        $type = chr(Identifier::NULL);
         $length = chr(0x01);
         $this->parser->parse($type.$length);        
     }
     
     public function testParseASNEnumerated() {
-        $type = chr(ASN_Object::ASN1_ENUMERATED);
+        $type = chr(Identifier::ENUMERATED);
         $length = chr(0x01);        
         $value = chr(0x01);
         $object = $this->parser->parse($type.$length.$value);

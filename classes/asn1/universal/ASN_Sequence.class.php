@@ -33,7 +33,7 @@ class ASN_Sequence extends ASN_Object {
 	}	
     
     public function getType() {
-        return self::ASN1_SEQUENCE;
+        return Identifier::SEQUENCE;
     }
     
     protected function getContentLength() {

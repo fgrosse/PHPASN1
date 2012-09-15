@@ -22,14 +22,14 @@ namespace PHPASN1;
 
 abstract class Identifier {
        
-    const EOC               = 0x00;  // unsupported for now
+    const EOC               = 0x00; // unsupported for now
     const BOOLEAN           = 0x01;
     const INTEGER           = 0x02;
     const BITSTRING         = 0x03;
-    const OCTETSTRING       = 0x04;
+    const OCTETSTRING       = 0x04; // unsupported for now
     const NULL              = 0x05;
     const OBJECTIDENTIFIER  = 0x06;
-    const OBJECT_DESCRIPTOR = 0x07;
+    const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
     const OBJECT_EXTERNAL   = 0x08; // unsupported for now 
     const FLOAT             = 0x09; // unsupported for now
     const ENUMERATED        = 0x0A; // unsupported for now
@@ -54,6 +54,7 @@ abstract class Identifier {
     const CHARACTER_STRING  = 0x1D; // unsupported for now
     const BMP_STRING        = 0x1E; // unsupported for now
     
+    const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;
     
     public static function getName($identifierOctet) {
@@ -127,7 +128,7 @@ abstract class Identifier {
             case 0x0F:
                 return 'ASN.1 RESERVED (0x0F)';
             
-            case 0x1F:
+            case self::LONG_FORM:
                 throw new NotImplementedException('Long form of identifier octets is not yet implemented');            
         }
     } 

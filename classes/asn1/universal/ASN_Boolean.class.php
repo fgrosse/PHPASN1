@@ -28,7 +28,7 @@ class ASN_Boolean extends ASN_Object {
     }
     
     public function getType() {
-        return self::ASN1_BOOLEAN;
+        return Identifier::BOOLEAN;
     }
     
     protected function getContentLength() {

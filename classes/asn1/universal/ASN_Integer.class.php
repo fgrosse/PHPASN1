@@ -30,7 +30,7 @@ class ASN_Integer extends ASN_Object {
     }
     
     public function getType() {
-        return self::ASN1_INTEGER;
+        return Identifier::INTEGER;
     }
     
     protected function getContentLength() {
