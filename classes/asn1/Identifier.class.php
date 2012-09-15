@@ -28,7 +28,7 @@ abstract class Identifier {
     const BITSTRING         = 0x03;
     const OCTETSTRING       = 0x04; // unsupported for now
     const NULL              = 0x05;
-    const OBJECTIDENTIFIER  = 0x06;
+    const OBJECT_IDENTIFIER = 0x06;
     const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
     const OBJECT_EXTERNAL   = 0x08; // unsupported for now 
     const FLOAT             = 0x09; // unsupported for now
@@ -76,7 +76,7 @@ abstract class Identifier {
                 return 'ASN.1 Octet String';
             case self::NULL:
                 return 'ASN.1 NULL';
-            case self::OBJECTIDENTIFIER:
+            case self::OBJECT_IDENTIFIER:
                 return 'ASN.1 Object Identifier';
             case self::OBJECT_DESCRIPTOR:
                 return 'ASN.1 Object Descriptor';
