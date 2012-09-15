@@ -154,6 +154,23 @@ class ASN1ParserTest extends PHPASN1TestCase {
         $object = $this->parser->parse($type.$length.$value);
         $this->assertEquals(new ASN_Integer(-31355), $object);                
     }
+
+    public function testParseASNNull() {
+        $type = chr(ASN_Object::ASN1_NULL);
+        $length = chr(0x00);        
+        $object = $this->parser->parse($type.$length);
+        $this->assertEquals(new ASN_NULL(), $object);                                                   
+    }
+    
+    /**
+     * @expectedException ASN1ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Null should not have a length other than zero. Extracted length was 1
+     */
+    public function testParseASNNullWithInvalidLength() {
+        $type = chr(ASN_Object::ASN1_NULL);
+        $length = chr(0x01);
+        $this->parser->parse($type.$length);        
+    }
 }
 ?>
     

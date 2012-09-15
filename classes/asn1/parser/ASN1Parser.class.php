@@ -32,6 +32,8 @@ class ASN1Parser {
                 return $this->createASNInteger($binaryData, $dataIndex, $objectLength);
             case ASN_Object::ASN1_BITSTRING:
                 return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
+            case ASN_Object::ASN1_NULL:
+                return $this->createASNNull($binaryData, $dataIndex, $objectLength);
         }
     }
     
@@ -80,6 +82,14 @@ class ASN1Parser {
         $value = substr($binaryData, $dataIndex+1, $objectLength-1);
         $dataIndex += $objectLength;
         return new ASN_BitString(bin2hex($value));
+    }
+    
+    private function createASNNull(&$binaryData, &$dataIndex, $objectLength) {
+        if($objectLength != 0) {
+            throw new ASN1ParserException("An ASN.1 Null should not have a length other than zero. Extracted length was {$objectLength}", $binaryData, $dataIndex, $objectLength);
+        }
+        
+        return new ASN_NULL();
     }
 }
 ?>
