@@ -48,33 +48,28 @@ class ASN_Integer extends ASN_Object implements Parseable{
     protected function getEncodedValue() {
         //TODO make this supported huge numbers
         
-        $value = $this->value;
+        $numericValue = $this->value;
+        $contentLength = $this->getContentLength();
         
-        if($value < 0) {            
-            $value = abs($value);            
-            $value = ~$value & (pow(2, 8 * $this->getContentLength()) - 1);
-            $value += 1;
+        if($numericValue < 0) {            
+            $numericValue = abs($numericValue);            
+            $numericValue = ~$numericValue & (pow(2, 8 * $contentLength) - 1);
+            $numericValue += 1;
         }
         
-        $value = dechex($value);
         $result = '';
-        if(strlen($value) %2 != 0) {
-            // transform values like 1F2 to 01F2
-            $value = "0".$value;
+        for ($shiftLength=($contentLength-1)*8; $shiftLength >= 0; $shiftLength-=8) {
+            $octet = $numericValue >> $shiftLength;
+            $result .= chr($octet);
         }
-         
-        while(strlen($value) >= 2) {            
-            // get the hex value byte by byte from the string and and add it to binary result
-            $result .= chr(hexdec(substr($value,0,2)));
-            $value = substr($value,2);
-        }
+        
         return $result;
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         self::parseIdentifier($binaryData[$offsetIndex++], Identifier::INTEGER, $offsetIndex);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
-                
+           
         //TODO this will get in trouble with big numbers: rewrite with gmp
         
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;        

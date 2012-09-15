@@ -21,7 +21,7 @@
 namespace PHPASN1;
 
 require_once(dirname(__FILE__) . '/../../PHPASN1TestCase.class.php');
- 
+
 class ASN_IntegerTest extends PHPASN1TestCase {
     
     public function testGetType() {
@@ -113,6 +113,12 @@ class ASN_IntegerTest extends PHPASN1TestCase {
         $expectedContent = chr(0x81);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
         
+        $object = new ASN_Integer(200);
+        $expectedLength = chr(0x02);
+        $expectedContent = chr(0x00);
+        $expectedContent .= chr(0xC8);
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
+        
         $object = new ASN_Integer(7420);
         $expectedLength   = chr(0x02);
         $expectedContent  = chr(0x1C);
@@ -130,7 +136,12 @@ class ASN_IntegerTest extends PHPASN1TestCase {
     /**
      * @depends testGetBinary
      */
-    public function testFromBinary() {        
+    public function testFromBinary() {
+        $originalobject = new ASN_Integer(200);
+        $binaryData = $originalobject->getBinary();
+        $parsedObject = ASN_Integer::fromBinary($binaryData);
+        $this->assertEquals($originalobject, $parsedObject);
+                
         $originalobject = new ASN_Integer(12345);
         $binaryData = $originalobject->getBinary();
         $parsedObject = ASN_Integer::fromBinary($binaryData);
