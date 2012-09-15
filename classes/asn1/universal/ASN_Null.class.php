@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_NULL extends ASN_Object {
+class ASN_Null extends ASN_Object implements Parseable {
         
     public function getType() {
         return Identifier::NULL;
@@ -36,6 +36,19 @@ class ASN_NULL extends ASN_Object {
     
     public function getContent() {
         return 'NULL';
+    }
+    
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::NULL, $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);
+        
+        if($contentLength != 0) {
+            throw new ASN1ParserException("An ASN.1 Null should not have a length other than zero. Extracted length was {$contentLength}", $offsetIndex);
+        }        
+        
+        $parsedObject = new self();
+        $parsedObject->setContentLength(0);        
+        return $parsedObject;
     }
 }
 ?>
