@@ -53,21 +53,14 @@ class ASN_Boolean extends ASN_Object implements Parseable {
         };
     }
     
-    public static function fromBinary(&$binaryData, &$offsetIndex=null) {
-        if(!isset($offsetIndex)) {
-            // parse without offset
-            $offsetIndex = 0;
-        }
-        
-        $identifierOctet = ord($binaryData[$offsetIndex++]);
-        if($identifierOctet != Identifier::BOOLEAN) {
-            throw new ASN1ParserException("Can not create an ASN.1 Boolean from a ".Identifier::getName($identifierOctet));
-        }
-        
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::BOOLEAN, $offsetIndex);                
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        
         if($contentLength != 1) {
             throw new ASN1ParserException("An ASN.1 Boolean should not have a length other than one. Extracted length was {$contentLength}", $offsetIndex);
         }
+        
         $value = ord($binaryData[$offsetIndex++]);
         $newObject = new self($value==0xFF ? true : false);
         $newObject->setContentLength($contentLength);

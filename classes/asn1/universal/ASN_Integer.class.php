@@ -71,18 +71,10 @@ class ASN_Integer extends ASN_Object implements Parseable{
         return $result;
     }
     
-    public static function fromBinary(&$binaryData, &$offsetIndex=null) {
-        if(!isset($offsetIndex)) {
-            // parse without offset
-            $offsetIndex = 0;
-        }
-        
-        $identifierOctet = ord($binaryData[$offsetIndex++]);
-        if($identifierOctet != Identifier::INTEGER) {
-            throw new ASN1ParserException("Can not create an ASN.1 Integer from a ".Identifier::getName($identifierOctet));
-        }
-        
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::INTEGER, $offsetIndex);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        
         if($contentLength < 1) {
             throw new ASN1ParserException("An ASN.1 Integer should have a length of at least one. Extracted length was {$contentLength}", $offsetIndex);
         }

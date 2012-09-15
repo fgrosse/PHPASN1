@@ -130,7 +130,18 @@ abstract class ASN_Object {
 		
 		return $count;
 	}
-    
+        
+    protected static function parseIdentifier($identifierOctet, $expectedIdentifier, $offsetForExceptionHandling) {
+        if(!is_numeric($identifierOctet)) {
+            $identifierOctet = ord($identifierOctet);
+        }        
+        
+        if($identifierOctet != $expectedIdentifier) {
+            $message = 'Can not create an '.Identifier::getName($expectedIdentifier).' from an '.Identifier::getName($identifierOctet); 
+            throw new ASN1ParserException($message, $offsetForExceptionHandling);
+        }
+    }
+        
     protected static function parseContentLength(&$binaryData, &$offsetIndex) {
         $contentLength = ord($binaryData[$offsetIndex++]);
 
@@ -144,6 +155,6 @@ abstract class ASN_Object {
         }
         
         return $contentLength;
-    }
+    }        
 }
 ?>
