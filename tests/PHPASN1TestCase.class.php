@@ -20,6 +20,7 @@
 
 namespace PHPASN1;
 
+require_once(dirname(__FILE__) . '/../external/hexdump.php');
 require_once(dirname(__FILE__) . '/../classes/PHPASN_Autoloader.php');
 PHPASN_Autoloader::register();
  

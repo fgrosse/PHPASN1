@@ -26,5 +26,24 @@ class ASN_Enumerated extends ASN_Integer {
         return Identifier::ENUMERATED;
     }    
     
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::ENUMERATED, $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
+                
+        $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;        
+        $number = ord($binaryData[$offsetIndex++]) & 0x7F;
+        
+        for ($i=0; $i<$contentLength-1; $i++) {
+            $number = ($number << 8) + ord($binaryData[$offsetIndex++]);
+        }
+        
+        if($isNegative) {
+            $number -= pow(2, 8*$contentLength-1);            
+        }                
+        
+        $parsedObject = new self($number);
+        $parsedObject->setContentLength($contentLength);
+        return $parsedObject;
+    }
 }
 ?>
