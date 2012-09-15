@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
+namespace PHPASN1;
+ 
 class ASN1Parser {        
     
     public function parse($binaryData, $offset=0) {
@@ -36,6 +38,7 @@ class ASN1Parser {
                 return $this->createASNNull($binaryData, $dataIndex, $objectLength);
             case ASN_Object::ASN1_ENUMERATED:
                 return $this->createASNEnumerated($binaryData, $dataIndex, $objectLength);
+            
             default:
                 $typeIdentifierHex = strtoupper(dechex($typeIdentifier));
                 if(strlen($typeIdentifierHex) == 1) {

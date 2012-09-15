@@ -16,7 +16,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
+ 
+namespace PHPASN1;
 
 require_once('PHPASN1TestCase.class.php');
  
@@ -101,7 +103,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
 
     /**
-     * @expectedException ASN1ParserException
+     * @expectedException PHPASN1\ASN1ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 2
      */
     public function testParseASNBooleanWithInvalidLength01() {
@@ -112,7 +114,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
     
     /**
-     * @expectedException ASN1ParserException
+     * @expectedException PHPASN1\ASN1ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 0
      */
     public function testParseASNBooleanWithInvalidLength02() {
@@ -163,7 +165,7 @@ class ASN1ParserTest extends PHPASN1TestCase {
     }
     
     /**
-     * @expectedException ASN1ParserException
+     * @expectedException PHPASN1\ASN1ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Null should not have a length other than zero. Extracted length was 1
      */
     public function testParseASNNullWithInvalidLength() {

@@ -18,7 +18,9 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
-class ASN1ParserException extends Exception {
+namespace PHPASN1;
+ 
+class ASN1ParserException extends \Exception {
 
     private $errorMessage;
     private $binaryData;

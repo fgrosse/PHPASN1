@@ -17,7 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
-	
+
+namespace PHPASN1;
+
 class ASN_Sequence extends ASN_Object {
 	
 	public function __construct(ASN_Object $child1 = null, ASN_Object $child2 = null, ASN_Object $childN = null) {

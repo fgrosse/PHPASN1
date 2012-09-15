@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace PHPASN1;
+
 class ASN_AttributeTypeAndValue extends ASN_Sequence {
     
     public function __construct($objIdentifierString, ASN_Object $value) {

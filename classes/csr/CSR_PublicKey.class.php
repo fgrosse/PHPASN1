@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace PHPASN1;
+
 class CSR_PublicKey extends ASN_Sequence {
         
     function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION) {        

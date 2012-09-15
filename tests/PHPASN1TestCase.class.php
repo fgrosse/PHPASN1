@@ -18,10 +18,12 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
+namespace PHPASN1;
+ 
 require_once('../classes/PHPASN_Autoloader.php');
 PHPASN_Autoloader::register();
  
-abstract class PHPASN1TestCase extends PHPUnit_Framework_TestCase {
+abstract class PHPASN1TestCase extends \PHPUnit_Framework_TestCase {
     
     /**
      * Call a method on an object regardless of the visibility.
@@ -33,7 +35,7 @@ abstract class PHPASN1TestCase extends PHPUnit_Framework_TestCase {
      */
     protected function callMethod($object, $methodName, $arguments=null) {
         $className = get_class($object);
-        $class = new ReflectionClass($className);
+        $class = new \ReflectionClass($className);
         $method = $class->getMethod($methodName);
         $method->setAccessible(true);
 

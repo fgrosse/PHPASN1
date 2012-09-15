@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */	
 
+namespace PHPASN1;
+
 abstract class ASN_Object {
         
     const ASN1_EOC               = 0x00;  // unsupported for now

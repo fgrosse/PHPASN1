@@ -17,6 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace PHPASN1;
  
 class PHPASN_Autoloader {
 
@@ -66,12 +68,13 @@ class PHPASN_Autoloader {
         }
         self::$cacheDirectoryPath = $cacheDirectoryPath;
 
-        spl_autoload_register('PHPASN_Autoloader::autoload');
+        spl_autoload_register('\PHPASN1\PHPASN_Autoloader::autoload');
     }
 
     public static function autoload($className) {
+        $simpleClassName = substr($className, strpos($className, '\\') + 1);
         $instance = self::getInstance();
-        require_once $instance->getPathOfClass($className);
+        require_once $instance->getPathOfClass($simpleClassName);
     }
 
     private function getPathOfClass($className) {
@@ -80,7 +83,7 @@ class PHPASN_Autoloader {
             $this->saveIndexToCacheFile();
             
             if(!array_key_exists($className, $this->index)) {
-                throw new Exception("Unable to locate file containing class \"{$className}\".");
+                throw new \Exception("Unable to locate file containing class \"{$className}\".");
             }
         }
 
@@ -122,7 +125,7 @@ class PHPASN_Autoloader {
     private function saveIndexToCacheFile() {
         if(file_exists(self::$cacheDirectoryPath) == false) {
             if(mkdir(self::$cacheDirectoryPath) == false) {
-                throw new Exception("Could not create Autoloader cache directory ({self::$cacheDirectoryPath})");
+                throw new \Exception("Could not create Autoloader cache directory ({self::$cacheDirectoryPath})");
             }
         }
         

@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace PHPASN1;
+
 class ASN_StringObject extends ASN_RelativeDistinguishedName {
             
     public function __construct($objectIdentifierString, $value) {                       

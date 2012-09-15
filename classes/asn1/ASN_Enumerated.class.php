@@ -17,7 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
- 
+
+namespace PHPASN1;
+
 class ASN_Enumerated extends ASN_Integer {
             
     public function getType() {

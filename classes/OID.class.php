@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
+namespace PHPASN1;
+
 abstract class OID {
 
     const EMAIL                    = '1.2.840.113549.1.9.1';

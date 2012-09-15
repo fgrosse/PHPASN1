@@ -18,6 +18,8 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace PHPASN1;
+
 require_once '../external/hexdump.php';
 require_once '../classes/PHPASN_Autoloader.php';
 PHPASN_Autoloader::register();
