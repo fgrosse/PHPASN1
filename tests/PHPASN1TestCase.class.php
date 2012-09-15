@@ -19,8 +19,8 @@
  */ 
 
 namespace PHPASN1;
- 
-require_once('../classes/PHPASN_Autoloader.php');
+
+require_once(dirname(__FILE__) . '/../classes/PHPASN_Autoloader.php');
 PHPASN_Autoloader::register();
  
 abstract class PHPASN1TestCase extends \PHPUnit_Framework_TestCase {
