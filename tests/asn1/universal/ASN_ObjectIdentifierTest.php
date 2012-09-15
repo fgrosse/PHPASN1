@@ -96,7 +96,21 @@ class ASN_ObjectIdentifierTest extends PHPASN1TestCase {
         $parsedObject = ASN_ObjectIdentifier::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject2, $parsedObject);
         $this->assertEquals(12, $offset);
-    }        
+    }
+    
+     /**
+     * @expectedException PHPASN1\ASN1ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 4: Malformed ASN.1 Object Identifier
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithMalformedOID() {
+        $binaryData  = chr(Identifier::OBJECT_IDENTIFIER);        
+        $binaryData .= chr(0x03);
+        $binaryData .= chr(42);
+        $binaryData .= chr(128 | 1);
+        $binaryData .= chr(128 | 1);
+        ASN_ObjectIdentifier::fromBinary($binaryData);
+    } 
     
 }
     

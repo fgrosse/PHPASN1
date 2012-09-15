@@ -77,22 +77,24 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
         return $encodedValue;        
 	}	
 	
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {
         self::parseIdentifier($binaryData[$offsetIndex++], Identifier::OBJECT_IDENTIFIER, $offsetIndex);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
                   
         $firstOctet = ord($binaryData[$offsetIndex++]);
         $oidString = floor($firstOctet/40) . '.' . ($firstOctet % 40);       
         
-        for ($i=0; $i < $contentLength-1; $i++) {
-            $octet = ord($binaryData[$offsetIndex++]);
-            $number = ($octet & 0x7F);
-            while($octet & 0x80) {
-                $octet = ord($binaryData[$offsetIndex++]); //TODO check that we do not read more octets than content length permits
-                $i++;
-                $number = $number << 7;
-                $number += ($octet & 0x7F);
-            }
+        $bytesToRead = $contentLength - 1;
+        while($bytesToRead > 0) {
+            $number = 0;
+            do {
+                if($bytesToRead == 0) {
+                    throw new ASN1ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
+                }
+                $octet = ord($binaryData[$offsetIndex++]);
+                $number = ($number << 7) + ($octet & 0x7F);
+                $bytesToRead--;                
+            } while ($octet & 0x80);
             $oidString .= ".{$number}";            
         }         
         
