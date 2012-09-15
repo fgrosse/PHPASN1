@@ -19,7 +19,8 @@
  */	
 
 abstract class ASN_Object {
-    
+        
+    const ASN1_EOC               = 0x00;  // unsupported for now
     const ASN1_BOOLEAN           = 0x01;
     const ASN1_INTEGER           = 0x02;
     const ASN1_BITSTRING         = 0x03;
@@ -27,15 +28,31 @@ abstract class ASN_Object {
     const ASN1_NULL              = 0x05;
     const ASN1_OBJECTIDENTIFIER  = 0x06;
     const ASN1_OBJECT_DESCRIPTOR = 0x07;
-    const ASN1_UTF8String        = 0x0c;
+    const ASN1_OBJECT_EXTERNAL   = 0x08; // unsupported for now 
+    const ASN1_FLOAT             = 0x09; // unsupported for now
+    const ASN1_ENUMERATED        = 0x0A; // unsupported for now
+    const ASN1_EMBEDDED_PDV      = 0x0B; // unsupported for now
+    const ASN1_UTF8_STRING       = 0x0C; // unsupported for now
+    const ASN1_RELATIVE_OID      = 0x0D; // unsupported for now
+    // value 0x0E and 0x0F are reserved for future use
+    
     const ASN1_SEQUENCE          = 0x30;
     const ASN1_SET               = 0x31;
-    const ASN1_NUMERIC_STRING    = 0x12;
+    const ASN1_NUMERIC_STRING    = 0x12; // unsupported for now
     const ASN1_PRINTABLE_STRING  = 0x13;
-    const ASN1_TELETEXT_STRING   = 0x14;
+    const ASN1_T61_STRING        = 0x14; // unsupported for now
+    const ASN1_VIDEOTEXT_STRING  = 0x15; // unsupported for now
     const ASN1_IA5_STRING        = 0x16;
-    const ASN1_UTCTime           = 0x17;
-    const ASN1_GENERALIZED_TIME  = 0x18;
+    const ASN1_UTC_TIME          = 0x17; // unsupported for now
+    const ASN1_GENERALIZED_TIME  = 0x18; // unsupported for now
+    const ASN1_GRAPHIC_STRING    = 0x19; // unsupported for now
+    const ASN1_VISIBLE_STRING    = 0x1A; // unsupported for now
+    const ASN1_GENERAL_STRING    = 0x1B; // unsupported for now
+    const ASN1_UNIVERSAL_STRING  = 0x1C; // unsupported for now
+    const ASN1_CHARACTER_STRING  = 0x1D; // unsupported for now
+    const ASN1_BMP_STRING        = 0x1E; // unsupported for now
+    
+    const ASN1_LONG_FORM         = 0x1F;
     
 	protected $value;
 	
