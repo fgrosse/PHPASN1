@@ -163,7 +163,7 @@ class ASN_IntegerTest extends PHPASN1TestCase {
     
     /**
      * @expectedException PHPASN1\ASN1ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Integer should have a length of at least one. Extracted length was 0
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A PHPASN1\ASN_Integer should have a content length of at least 1. Extracted length was 0
      * @depends testFromBinary
      */
     public function testFromBinaryWithInvalidLength01() {

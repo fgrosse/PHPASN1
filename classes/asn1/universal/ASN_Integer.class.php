@@ -73,12 +73,8 @@ class ASN_Integer extends ASN_Object implements Parseable{
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         self::parseIdentifier($binaryData[$offsetIndex++], Identifier::INTEGER, $offsetIndex);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
-        
-        if($contentLength < 1) {
-            throw new ASN1ParserException("An ASN.1 Integer should have a length of at least one. Extracted length was {$contentLength}", $offsetIndex);
-        }
-        
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
+                
         //TODO this will get in trouble with big numbers: rewrite with gmp
         
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;        
@@ -92,10 +88,9 @@ class ASN_Integer extends ASN_Object implements Parseable{
             $number -= pow(2, 8*$contentLength-1);            
         }                
         
-        $newObject = new self($number);
-        $newObject->setContentLength($contentLength);
-        
-        return $newObject;
+        $parsedObject = new self($number);
+        $parsedObject->setContentLength($contentLength);
+        return $parsedObject;
     }
 }
 ?>

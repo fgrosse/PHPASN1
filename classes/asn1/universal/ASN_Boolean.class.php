@@ -62,10 +62,12 @@ class ASN_Boolean extends ASN_Object implements Parseable {
         }
         
         $value = ord($binaryData[$offsetIndex++]);
-        $newObject = new self($value==0xFF ? true : false);
-        $newObject->setContentLength($contentLength);
+        $booleanValue = $value==0xFF ? true : false;
         
-        return $newObject;
+        $parsedObject = new self($booleanValue);
+        $parsedObject->setContentLength($contentLength);
+        
+        return $parsedObject;
     }
 }
 ?>

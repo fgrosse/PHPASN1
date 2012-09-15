@@ -20,10 +20,16 @@
 
 namespace PHPASN1;
 
-class ASN_BitString extends ASN_Object {
+class ASN_BitString extends ASN_Object implements Parseable {
         
     private $nrOfUnusedBits;
-        
+    
+    /**
+     * Creates a new ASN.1 BitString object.
+     * 
+     * @param mixed $value Either the hexadecimal value as a string (spaces are allowed) or a numeric value
+     * @param number $nrOfUnusedBits the number of unused bits in the last octet [optional]. 
+     */
     public function __construct($value, $nrOfUnusedBits=0) {      
         if(is_string($value)) {
             // remove gaps between hex digits
@@ -77,6 +83,22 @@ class ASN_BitString extends ASN_Object {
         }        
         return $result;
     }
-           
+    
+    public function getContent() {
+        return strtoupper($this->value);
+    }
+    
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::BITSTRING, $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 2);        
+        
+        $nrOfUnusedBits = ord($binaryData[$offsetIndex]);
+        $value = substr($binaryData, $offsetIndex+1, $contentLength-1);
+        $offsetIndex += $contentLength;
+        
+        $parsedObject = new ASN_BitString(bin2hex($value));
+        $parsedObject->setContentLength($contentLength);        
+        return $parsedObject;
+    }
 }
 ?>

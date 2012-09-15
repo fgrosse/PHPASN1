@@ -142,7 +142,7 @@ abstract class ASN_Object {
         }
     }
         
-    protected static function parseContentLength(&$binaryData, &$offsetIndex) {
+    protected static function parseContentLength(&$binaryData, &$offsetIndex, $minimumLength=0) {
         $contentLength = ord($binaryData[$offsetIndex++]);
 
         if( ($contentLength & 0x80) != 0) {
@@ -152,6 +152,10 @@ abstract class ASN_Object {
             for ($i=0; $i < $nrofOfLengthOctets; $i++) { 
                 $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
             }
+        }
+        
+        if($contentLength < $minimumLength) {
+            throw new ASN1ParserException('A '.get_called_class()." should have a content length of at least {$minimumLength}. Extracted length was {$contentLength}", $offsetIndex);
         }
         
         return $contentLength;
