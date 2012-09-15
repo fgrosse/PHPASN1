@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_PrintableString extends ASN_Object {
+class ASN_PrintableString extends ASN_Object implements Parseable {
         
     public function __construct($value) {        
         $this->value = $value;
@@ -36,6 +36,17 @@ class ASN_PrintableString extends ASN_Object {
     
     protected function getEncodedValue() {
         return $this->value;
+    }
+    
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::PRINTABLE_STRING, $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        $string = substr($binaryData, $offsetIndex, $contentLength);
+        $offsetIndex += $contentLength;
+        
+        $parsedObject = new self($string);
+        $parsedObject->setContentLength($contentLength);        
+        return $parsedObject;
     }
            
 }
