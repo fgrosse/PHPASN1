@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_Boolean extends ASN_Object {
+class ASN_Boolean extends ASN_Object implements Parseable {
     
     public function __construct($value) {
         $this->value = $value;

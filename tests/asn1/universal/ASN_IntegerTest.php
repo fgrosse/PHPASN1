@@ -96,8 +96,7 @@ class ASN_IntegerTest extends PHPASN1TestCase {
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
     }
-    
-    
+        
     public function testGetBinary() {
         $expectedType = chr(Identifier::INTEGER);
         $expectedLength = chr(0x01);
@@ -126,7 +125,52 @@ class ASN_IntegerTest extends PHPASN1TestCase {
         $expectedContent .= chr(0x25);
         $expectedContent .= chr(0x44);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
-    }    
+    }
+
+    /**
+     * @depends testGetBinary
+     */
+    public function testFromBinary() {        
+        $originalobject = new ASN_Integer(12345);
+        $binaryData = $originalobject->getBinary();
+        $parsedObject = ASN_Integer::fromBinary($binaryData);
+        $this->assertEquals($originalobject, $parsedObject);
+        
+        $originalobject = new ASN_Integer(-1891004);
+        $binaryData = $originalobject->getBinary();
+        $parsedObject = ASN_Integer::fromBinary($binaryData);
+        $this->assertEquals($originalobject, $parsedObject);         
+    }
+
+    /**
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithOffset() {
+        $originalobject1 = new ASN_Integer(12345);
+        $originalobject2 = new ASN_Integer(67890);
+        
+        $binaryData  = $originalobject1->getBinary();
+        $binaryData .= $originalobject2->getBinary();
+        
+        $offset = 0;
+        $parsedObject = ASN_Integer::fromBinary($binaryData, $offset);
+        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals(4, $offset);
+        $parsedObject = ASN_Integer::fromBinary($binaryData, $offset);
+        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals(9, $offset);
+    } 
     
+    /**
+     * @expectedException PHPASN1\ASN1ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Integer should have a length of at least one. Extracted length was 0
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithInvalidLength01() {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x00);
+        $binaryData .= chr(0xA0);        
+        ASN_Integer::fromBinary($binaryData);        
+    }
 }
     

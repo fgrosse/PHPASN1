@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_Integer extends ASN_Object {
+class ASN_Integer extends ASN_Object implements Parseable{
     
     private $contentLength;
     
@@ -71,5 +71,39 @@ class ASN_Integer extends ASN_Object {
         return $result;
     }
     
+    public static function fromBinary(&$binaryData, &$offsetIndex=null) {
+        if(!isset($offsetIndex)) {
+            // parse without offset
+            $offsetIndex = 0;
+        }
+        
+        $identifierOctet = ord($binaryData[$offsetIndex++]);
+        if($identifierOctet != Identifier::INTEGER) {
+            throw new ASN1ParserException("Can not create an ASN.1 Integer from a ".Identifier::getName($identifierOctet));
+        }
+        
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        if($contentLength < 1) {
+            throw new ASN1ParserException("An ASN.1 Integer should have a length of at least one. Extracted length was {$contentLength}", $offsetIndex);
+        }
+        
+        //TODO this will get in trouble with big numbers: rewrite with gmp
+        
+        $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;        
+        $number = ord($binaryData[$offsetIndex++]) & 0x7F;
+        
+        for ($i=0; $i<$contentLength-1; $i++) {
+            $number = ($number << 8) + ord($binaryData[$offsetIndex++]);
+        }
+        
+        if($isNegative) {
+            $number -= pow(2, 8*$contentLength-1);            
+        }                
+        
+        $newObject = new self($number);
+        $newObject->setContentLength($contentLength);
+        
+        return $newObject;
+    }
 }
 ?>

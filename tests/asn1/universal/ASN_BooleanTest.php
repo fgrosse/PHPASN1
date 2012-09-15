@@ -74,7 +74,7 @@ class ASN_BooleanTest extends PHPASN1TestCase {
     }
     
     /**
-     * @depends testGetBinary
+     * @depends testFromBinary
      */
     public function testFromBinaryWithOffset() {
         $originalobject1 = new ASN_Boolean(true);
@@ -95,6 +95,7 @@ class ASN_BooleanTest extends PHPASN1TestCase {
     /**
      * @expectedException PHPASN1\ASN1ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 2
+     * @depends testFromBinary
      */
     public function testFromBinaryWithInvalidLength01() {
         $binaryData  = chr(Identifier::BOOLEAN);
@@ -106,6 +107,7 @@ class ASN_BooleanTest extends PHPASN1TestCase {
     /**
      * @expectedException PHPASN1\ASN1ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Boolean should not have a length other than one. Extracted length was 0
+     * @depends testFromBinary
      */
     public function testFromBinaryWithInvalidLength02() {
         $binaryData  = chr(Identifier::BOOLEAN);
