@@ -28,23 +28,20 @@ class ASN1Parser {
         $objectLength = $this->extractObjectLength($binaryData, $dataIndex);
 
         switch($typeIdentifier) {            
-            case ASN_Object::ASN1_BOOLEAN:
+            case Identifier::BOOLEAN:
                 return $this->createASNBoolean($binaryData, $dataIndex, $objectLength);
-            case ASN_Object::ASN1_INTEGER:
+            case Identifier::INTEGER:
                 return $this->createASNInteger($binaryData, $dataIndex, $objectLength);
-            case ASN_Object::ASN1_BITSTRING:
+            case Identifier::BITSTRING:
                 return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
-            case ASN_Object::ASN1_NULL:
+            case Identifier::NULL:
                 return $this->createASNNull($binaryData, $dataIndex, $objectLength);
-            case ASN_Object::ASN1_ENUMERATED:
+            case Identifier::ENUMERATED:
                 return $this->createASNEnumerated($binaryData, $dataIndex, $objectLength);
             
             default:
-                $typeIdentifierHex = strtoupper(dechex($typeIdentifier));
-                if(strlen($typeIdentifierHex) == 1) {
-                    $typeIdentifierHex = '0'.$typeIdentifierHex;
-                }
-                throw new ASN1ParserException("The type identifier 0x{$typeIdentifierHex} is not yet supported.", $binaryData, $dataIndex, $objectLength);
+                $typeName = Identifier::getName($typeIdentifier);
+                throw new ASN1ParserException("The ASN.1 type {$typeName} is not yet supported for parsing.", $binaryData, $dataIndex, $objectLength);
         }
     }
     
