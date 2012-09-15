@@ -171,6 +171,14 @@ class ASN1ParserTest extends PHPASN1TestCase {
         $length = chr(0x01);
         $this->parser->parse($type.$length);        
     }
+    
+    public function testParseASNEnumerated() {
+        $type = chr(ASN_Object::ASN1_ENUMERATED);
+        $length = chr(0x01);        
+        $value = chr(0x01);
+        $object = $this->parser->parse($type.$length.$value);
+        $this->assertEquals(new ASN_Enumerated(1), $object);                                                   
+    }
 }
 ?>
     

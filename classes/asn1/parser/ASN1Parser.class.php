@@ -34,6 +34,14 @@ class ASN1Parser {
                 return $this->createASNBitString($binaryData, $dataIndex, $objectLength);
             case ASN_Object::ASN1_NULL:
                 return $this->createASNNull($binaryData, $dataIndex, $objectLength);
+            case ASN_Object::ASN1_ENUMERATED:
+                return $this->createASNEnumerated($binaryData, $dataIndex, $objectLength);
+            default:
+                $typeIdentifierHex = strtoupper(dechex($typeIdentifier));
+                if(strlen($typeIdentifierHex) == 1) {
+                    $typeIdentifierHex = '0'.$typeIdentifierHex;
+                }
+                throw new ASN1ParserException("The type identifier 0x{$typeIdentifierHex} is not yet supported.", $binaryData, $dataIndex, $objectLength);
         }
     }
     
@@ -61,20 +69,30 @@ class ASN1Parser {
     }
     
     private function createASNInteger(&$binaryData, &$dataIndex, $objectLength) {
+        $number = $this->extractSignedNumber($binaryData, $dataIndex, $objectLength);
+        return new ASN_Integer($number);
+    }
+    
+    private function createASNEnumerated(&$binaryData, &$dataIndex, $objectLength) {
+        $number = $this->extractSignedNumber($binaryData, $dataIndex, $objectLength);
+        return new ASN_Enumerated($number);
+    }
+    
+    private function extractSignedNumber(&$binaryData, &$dataIndex, $objectLength) {
         //TODO this might get in trouble with big numbers: rewrite with gmp
         
         $isNegative = (ord($binaryData[$dataIndex]) & 0x80) != 0x00;        
-        $value = ord($binaryData[$dataIndex++]) & 0x7F;
+        $number = ord($binaryData[$dataIndex++]) & 0x7F;
         
         for ($i=0; $i<$objectLength-1; $i++) {
-            $value = ($value << 8) + ord($binaryData[$dataIndex++]);
+            $number = ($number << 8) + ord($binaryData[$dataIndex++]);
         }
         
         if($isNegative) {
-            $value -= pow(2, 8*$objectLength-1);            
+            $number -= pow(2, 8*$objectLength-1);            
         }
         
-        return new ASN_Integer($value);
+        return $number;
     }
     
     private function createASNBitString(&$binaryData, &$dataIndex, $objectLength) {
@@ -90,7 +108,7 @@ class ASN1Parser {
         }
         
         return new ASN_NULL();
-    }
+    }      
 }
 ?>
     

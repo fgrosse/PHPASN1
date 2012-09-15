@@ -36,7 +36,8 @@ class ASN_Integer extends ASN_Object {
         return ceil((strlen($value)/2));    
     }
     
-    protected function getEncodedValue() {        
+    protected function getEncodedValue() {
+        //TODO make this supported negative numbers (binary complement)     
         $value = dechex($this->value);
         $result = '';
         if(strlen($value) %2 != 0) {
