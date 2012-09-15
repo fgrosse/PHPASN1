@@ -23,14 +23,20 @@ namespace PHPASN1;
 abstract class ASN_Object {
             
 	protected $value;
+    
+    private $contentLength;
 	
     /**
      * Must return the identifier octet of the ASN_Object.
      * All possible values are stored as class constants within
-     * the ASN_Object base class. 
+     * the Identifier class. 
      */
     abstract public function getType();
-	abstract protected function getContentLength();
+    
+    /**
+     * Must return the number of octets of the content part.
+     */
+	abstract protected function calculateContentLength();
 	abstract protected function getEncodedValue();
 	
 	public function getBinary() {
@@ -79,6 +85,17 @@ abstract class ASN_Object {
             
             return $lengthOctets;
         }
+    }
+    
+    protected function getContentLength() {
+        if(!isset($this->contentLength)) {
+            $this->contentLength = $this->calculateContentLength();
+        }
+        return $this->contentLength;
+    }
+    
+    protected function setContentLength($newContentLength) {
+        $this->contentLength = $newContentLength;
     }
     
 	public function getContent() {

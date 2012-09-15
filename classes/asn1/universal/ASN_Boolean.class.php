@@ -31,7 +31,7 @@ class ASN_Boolean extends ASN_Object {
         return Identifier::BOOLEAN;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         return 1;
     }
     
@@ -69,7 +69,10 @@ class ASN_Boolean extends ASN_Object {
             throw new ASN1ParserException("An ASN.1 Boolean should not have a length other than one. Extracted length was {$contentLength}", $offsetIndex);
         }
         $value = ord($binaryData[$offsetIndex++]);
-        return new self($value==0xFF ? true : false);
+        $newObject = new self($value==0xFF ? true : false);
+        $newObject->setContentLength($contentLength);
+        
+        return $newObject;
     }
 }
 ?>

@@ -36,7 +36,7 @@ class ASN_Sequence extends ASN_Object {
         return Identifier::SEQUENCE;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         $length = 0;
         foreach($this->value as $component) {
             $length += $component->getObjectLength();

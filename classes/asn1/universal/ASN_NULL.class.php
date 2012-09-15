@@ -26,7 +26,7 @@ class ASN_NULL extends ASN_Object {
         return Identifier::NULL;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         return 0;   
     }
     

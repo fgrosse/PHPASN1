@@ -37,7 +37,7 @@ class ASN_ObjectIdentifier extends ASN_Object {
         return Identifier::OBJECTIDENTIFIER;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         $this->getEncodedValue();
         return $this->length;
     }

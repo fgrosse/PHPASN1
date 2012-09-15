@@ -21,7 +21,9 @@
 namespace PHPASN1;
 
 class ASN_Integer extends ASN_Object {
-        
+    
+    private $contentLength;
+    
     public function __construct($value) {
         if(is_numeric($value) == false) {
             throw new Exception("Invalid VALUE [{$value}] for ASN1_INTEGER");
@@ -33,14 +35,28 @@ class ASN_Integer extends ASN_Object {
         return Identifier::INTEGER;
     }
     
-    protected function getContentLength() {
-        $value = dechex($this->value);
-        return ceil((strlen($value)/2));    
+    protected function calculateContentLength() {        
+        $nrOfOctets = 1; // we need at least one octet
+        $tmpValue = abs($this->value);
+        while($tmpValue > 127) {
+            $tmpValue = $tmpValue >> 8;
+            $nrOfOctets++;
+        }        
+        return $nrOfOctets;    
     }
     
     protected function getEncodedValue() {
-        //TODO make this supported negative numbers (binary complement)     
-        $value = dechex($this->value);
+        //TODO make this supported huge numbers
+        
+        $value = $this->value;
+        
+        if($value < 0) {            
+            $value = abs($value);            
+            $value = ~$value & (pow(2, 8 * $this->getContentLength()) - 1);
+            $value += 1;
+        }
+        
+        $value = dechex($value);
         $result = '';
         if(strlen($value) %2 != 0) {
             // transform values like 1F2 to 01F2

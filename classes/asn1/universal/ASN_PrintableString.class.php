@@ -30,7 +30,7 @@ class ASN_PrintableString extends ASN_Object {
         return Identifier::PRINTABLE_STRING;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         return strlen($this->value);
     }
     

@@ -48,7 +48,7 @@ class ASN_BitString extends ASN_Object {
         return Identifier::BITSTRING;
     }
     
-    protected function getContentLength() {
+    protected function calculateContentLength() {
         $value = $this->value;
         if(strlen($value) %2 != 0) {
             // transform values like 1F2 to 01F2
