@@ -32,7 +32,7 @@ abstract class Identifier {
     const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
     const OBJECT_EXTERNAL   = 0x08; // unsupported for now 
     const FLOAT             = 0x09; // unsupported for now
-    const ENUMERATED        = 0x0A; // unsupported for now
+    const ENUMERATED        = 0x0A;
     const EMBEDDED_PDV      = 0x0B; // unsupported for now
     const UTF8_STRING       = 0x0C; // unsupported for now
     const RELATIVE_OID      = 0x0D; // unsupported for now
