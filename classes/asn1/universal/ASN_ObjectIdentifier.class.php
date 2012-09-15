@@ -21,15 +21,29 @@
 namespace PHPASN1;
 
 class ASN_ObjectIdentifier extends ASN_Object {		   
-        
+    
+    private $subIdentifiers;
+      
 	public function __construct($value) {		
-		$subIdentifiers = explode('.', $value);
-		foreach($subIdentifiers as $subIdentifier) {
-			if(is_numeric($subIdentifier) == false) {
-				throw new Exception("[{$value}] is no valid object identifier (some sub identifier is not numeric)!");
+		$this->subIdentifiers = explode('.', $value);
+        $nrOfSubIdentifiers = count($this->subIdentifiers);
+        
+        for ($i=0; $i < $nrOfSubIdentifiers; $i++) { 
+            if(is_numeric($this->subIdentifiers[$i])) {
+                // enforce the integer type
+                $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             }
+            else {                
+                throw new GeneralException("[{$value}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+            }
+        }		
+	    
+        // Merge the first to arcs of the OID registration tree (per ASN definition!)
+        if($nrOfSubIdentifiers >= 2) {
+            $this->subIdentifiers[1] = ($this->subIdentifiers[0] * 40) + $this->subIdentifiers[1];
+            unset($this->subIdentifiers[0]);
         }
-				
+        	
 		$this->value = $value;
 	}
 	
@@ -38,157 +52,30 @@ class ASN_ObjectIdentifier extends ASN_Object {
     }
     
     protected function calculateContentLength() {
-        $this->getEncodedValue();
-        return $this->length;
+        $length = 0;
+        foreach ($this->subIdentifiers as $subIdentifier) {
+            do {
+                $subIdentifier = $subIdentifier >> 7;
+                $length++;
+            } while ($subIdentifier > 0);
+        }
+        return $length;
     }
     
 	protected function getEncodedValue() {
-		$result = '';
-		$value = $this->value;
-		$subIdents = explode(".", $value);
-		$subIdentHexArr = array();
-		
-		//Umwandlung in int
-		for($i=0 ; $i < count($subIdents) ; $i++)
-			$subIdents[$i] = intval($subIdents[$i]);
-
-		//Ersten und zweiten Subidentifier zusammenführen (per ASN Definition!)
-		if(count($subIdents) >= 2)
-			$subIdents[1] = ($subIdents[0] * 40) + $subIdents[1];
-		
-		//Alle Subidentifier nun durchlaufen um Hexwerte dafür zu bilden
-		for($i=1 ; $i < count($subIdents) ; $i++) {
-			
-			//Die jeweilige Zahl des Subidentifier als Binärzahl holen
-			$tmpbin = decbin($subIdents[$i]);
-			
-			//Wenn Binärzahl zu lang ist (1. Bit reserviert für diesen Fall)...
-			if(strlen($tmpbin) > 7) {
-				//...muss der Binärwert auf mehrere Bytes verteilt werden
-				$isLastPart = true;
-				$tmpArr = array();	//in diesem Array werden die Bytes in umgedrehter Reihenfolge gespeichert
-				while(strlen($tmpbin) > 7) {	
-					//Nimm immer von hinten 7 Bit 
-					$part = substr($tmpbin,strlen($tmpbin)-7);
-					$tmpbin = substr($tmpbin,0,strlen($tmpbin)-7);
-					
-					if($isLastPart) {
-						$part = "0".$part;
-						$isLastPart = false;
-					}
-					else $part = "1".$part;
-					
-					$tmpArr[] = dechex(bindec($part));
-				}
-				
-				//ggf mit 0len auffüllen
-				$len = strlen($tmpbin);
-				for($j=0 ; $j < (7-$len) ; $j++) 
-					$tmpbin = "0".$tmpbin;
-					
-				$tmpbin="1".$tmpbin;
-				$subIdentHexArr[] = dechex(bindec($tmpbin));
-				
-				//Werte in Richtiger Reihenfolge aus dem tmpArr lesen
-				for($j=count($tmpArr) ; $j > 0 ; $j--)
-					$subIdentHexArr[] = $tmpArr[$j-1];
-			}
-			else {
-				//ggf mit 0len auffüllen
-				$len = strlen($tmpbin);
-				for($j=0 ; $j < (8-$len) ; $j++) 
-					$tmpbin = "0".$tmpbin;
-				
-				//Ergebnis wird in array geschrieben
-				$subIdentHexArr[] = dechex(bindec($tmpbin));
-			}
-		}
-		
-		//erstelltes $subIdentHexArr[]-Einträge in Integer umwandeln
-		for($i=0 ; $i < count($subIdentHexArr) ; $i++)
-			$subIdentHexArr[$i] = intval(hexdec($subIdentHexArr[$i]));
-	
-		//erstelltes $subIdentHexArr[] auswerten
-		$this->length=0;
-		for($i=0 ; $i < count($subIdentHexArr) ; $i++)
-		{
-			$result .= chr($subIdentHexArr[$i]);
-			$this->length++;
-		}
-		
-		return $result;
+        $encodedValue = '';
+        foreach ($this->subIdentifiers as $subIdentifier) {
+            $octets = chr($subIdentifier & 0x7F);
+            $subIdentifier = $subIdentifier >> 7;
+            while ($subIdentifier > 0) {
+                $octets .= chr(0x80 | ($subIdentifier & 0x7F));
+                $subIdentifier = $subIdentifier >> 7;
+            }
+            $encodedValue .= strrev($octets);
+        }
+        
+        return $encodedValue;        
 	}	
 	
-	function getHexValue() {
-		$result="";
-		$value = $this->value;
-		$subIdents = explode(".", $value);
-		$subIdentHexArr = array();
-		
-		//Umwandlung in int
-		for($i=0 ; $i < count($subIdents) ; $i++)
-			$subIdents[$i] = intval($subIdents[$i]);
-
-		//Ersten und zweiten Subidentifier zusammenführen (per ASN Definition!)
-		if(count($subIdents) >= 2)
-			$subIdents[1] = ($subIdents[0] * 40) + $subIdents[1];
-		
-		//Alle Subidentifier nun durchlaufen um Hexwerte dafür zu bilden
-		for($i=1 ; $i < count($subIdents) ; $i++) {
-			
-			//Die jeweilige Zahl des Subidentifier als Binärzahl holen
-			$tmpbin = decbin($subIdents[$i]);
-			
-			//Wenn Binärzahl zu lang ist (1. Bit reserviert für diesen Fall)...
-			if(strlen($tmpbin) > 7) {
-				//...muss der Binärwert auf mehrere Bytes verteilt werden
-				$isLastPart = true;
-				$tmpArr = array();	//in diesem Array werden die Bytes in umgedrehter Reihenfolge gespeichert
-				while(strlen($tmpbin) > 7) {	
-					//Nimm immer von hinten 7 Bit 
-					$part = substr($tmpbin,strlen($tmpbin)-7);
-					$tmpbin = substr($tmpbin,0,strlen($tmpbin)-7);
-					
-					if($isLastPart) {
-						$part = "0".$part;
-						$isLastPart = false;
-					}
-					else $part = "1".$part;
-					
-					$tmpArr[] = dechex(bindec($part));
-				}
-				
-				//ggf mit 0len auffüllen
-				$len = strlen($tmpbin);
-				for($j=0 ; $j < (7-$len) ; $j++) 
-					$tmpbin = "0".$tmpbin;
-					
-				$tmpbin="1".$tmpbin;
-				$subIdentHexArr[] = dechex(bindec($tmpbin));
-				
-				//Werte in Richtiger Reihenfolge aus dem tmpArr lesen
-				for($j=count($tmpArr)-1 ; $j >= 0 ; $j--)
-					$subIdentHexArr[] = $tmpArr[$j];
-			}
-			else {
-				//ggf mit 0len auffüllen
-				$len = strlen($tmpbin);
-				for($j=0 ; $j < (8-$len) ; $j++) 
-					$tmpbin = "0".$tmpbin;
-				
-				//Ergebnis wird in array geschrieben
-				$subIdentHexArr[] = dechex(bindec($tmpbin));
-			}
-		}
-		
-		//erstelltes $subIdentHexArr[] auswerten
-		for($i=0 ; $i < count($subIdentHexArr) ; $i++) {
-			if(strlen($subIdentHexArr[$i]) % 2 != 0)
-				$subIdentHexArr[$i] = "0".$subIdentHexArr[$i];
-			$result .= $subIdentHexArr[$i];
-		}
-		
-		return $result;
-	}
 }
 ?>
