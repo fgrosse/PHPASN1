@@ -72,42 +72,31 @@ class ASN_ObjectIdentifierTest extends PHPASN1TestCase {
     /**
      * @depends testGetBinary
      */
-    /*public function testFromBinary() {        
-        $originalobject = new ASN_Null();
+    public function testFromBinary() {        
+        $originalobject = new ASN_ObjectIdentifier('1.2.250.1.16.9');
         $binaryData = $originalobject->getBinary();
-        $parsedObject = ASN_Null::fromBinary($binaryData);
+        $parsedObject = ASN_ObjectIdentifier::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
     }
     
     /**
      * @depends testFromBinary
      */
-    /*public function testFromBinaryWithOffset() {
-        $originalobject1 = new ASN_Null();
-        $originalobject2 = new ASN_Null();
+    public function testFromBinaryWithOffset() {
+        $originalobject1 = new ASN_ObjectIdentifier('1.2.3');
+        $originalobject2 = new ASN_ObjectIdentifier('1.2.250.1.16.9');
         
         $binaryData  = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
         
         $offset = 0;        
-        $parsedObject = ASN_Null::fromBinary($binaryData, $offset);
+        $parsedObject = ASN_ObjectIdentifier::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject1, $parsedObject);
-        $this->assertEquals(2, $offset);
-        $parsedObject = ASN_NULL::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
         $this->assertEquals(4, $offset);
-    }    
-    
-    /**
-     * @expectedException PHPASN1\ASN1ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: An ASN.1 Null should not have a length other than zero. Extracted length was 1
-     * @depends testFromBinary
-     */
-    /*public function testFromBinaryWithInvalidLength01() {
-        $binaryData  = chr(Identifier::NULL);
-        $binaryData .= chr(0x01);
-        ASN_Null::fromBinary($binaryData);        
-    }*/
+        $parsedObject = ASN_ObjectIdentifier::fromBinary($binaryData, $offset);
+        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals(12, $offset);
+    }        
     
 }
     

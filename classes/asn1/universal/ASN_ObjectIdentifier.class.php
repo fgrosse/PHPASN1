@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_ObjectIdentifier extends ASN_Object {		   
+class ASN_ObjectIdentifier extends ASN_Object implements Parseable {		   
     
     private $subIdentifiers;
       
@@ -77,5 +77,28 @@ class ASN_ObjectIdentifier extends ASN_Object {
         return $encodedValue;        
 	}	
 	
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::OBJECT_IDENTIFIER, $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
+                  
+        $firstOctet = ord($binaryData[$offsetIndex++]);
+        $oidString = floor($firstOctet/40) . '.' . ($firstOctet % 40);       
+        
+        for ($i=0; $i < $contentLength-1; $i++) {
+            $octet = ord($binaryData[$offsetIndex++]);
+            $number = ($octet & 0x7F);
+            while($octet & 0x80) {
+                $octet = ord($binaryData[$offsetIndex++]); //TODO check that we do not read more octets than content length permits
+                $i++;
+                $number = $number << 7;
+                $number += ($octet & 0x7F);
+            }
+            $oidString .= ".{$number}";            
+        }         
+        
+        $parsedObject = new self($oidString);
+        $parsedObject->setContentLength($contentLength);
+        return $parsedObject;
+    }
 }
 ?>
