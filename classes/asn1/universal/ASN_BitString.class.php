@@ -21,7 +21,7 @@
 namespace PHPASN1;
 
 class ASN_BitString extends ASN_Object implements Parseable {
-        
+
     private $nrOfUnusedBits;
     
     /**
@@ -30,13 +30,13 @@ class ASN_BitString extends ASN_Object implements Parseable {
      * @param mixed $value Either the hexadecimal value as a string (spaces are allowed) or a numeric value
      * @param number $nrOfUnusedBits the number of unused bits in the last octet [optional]. 
      */
-    public function __construct($value, $nrOfUnusedBits=0) {      
+    public function __construct($value, $nrOfUnusedBits=0) {
         if(is_string($value)) {
             // remove gaps between hex digits
             $value = preg_replace('/\s/','',$value);
         }
         else if(is_numeric($value)) {
-            $value = dechex($value);                
+            $value = dechex($value);
         }
         else {
             throw new Exception("ASN_BitString: unrecognized input type!");
@@ -44,7 +44,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
         
         if(!is_numeric($nrOfUnusedBits) || $nrOfUnusedBits < 0) {
             throw new Exception("ASN_BitString: second parameter needs to be a positive number (or zero)!");
-        }                
+        }
         
         $this->value = $value;
         $this->nrOfUnusedBits = $nrOfUnusedBits;
@@ -80,7 +80,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
             // get the hex value byte by byte from the string and and add it to binary result
             $result .= chr(hexdec(substr($value,0,2)));
             $value = substr($value,2);
-        }        
+        }
         return $result;
     }
     
@@ -97,7 +97,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
         $offsetIndex += $contentLength;
         
         $parsedObject = new ASN_BitString(bin2hex($value));
-        $parsedObject->setContentLength($contentLength);        
+        $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
 }
