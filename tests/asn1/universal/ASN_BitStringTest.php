@@ -23,7 +23,7 @@ namespace PHPASN1;
 require_once(dirname(__FILE__) . '/../../PHPASN1TestCase.class.php');
  
 class ASN_BitStringTest extends PHPASN1TestCase {
-    
+
     public function testGetType() {
         $object = new ASN_BitString('A0 12 00 43');
         $this->assertEquals(Identifier::BITSTRING, $object->getType());
@@ -59,6 +59,12 @@ class ASN_BitStringTest extends PHPASN1TestCase {
         $object = new ASN_BitString(0x3F2001);
         $this->assertEquals(6, $object->getObjectLength());
     }
+
+    public function testGetObjectLengthWithVeryLongBitString() {
+        $hexString = '0x' . str_repeat('FF', 1024);
+        $object = new ASN_BitString($hexString);
+        $this->assertEquals(1+3+1+1024, $object->getObjectLength());        
+    }
     
     public function testGetBinary() {
         $expectedType = chr(Identifier::BITSTRING);
@@ -82,6 +88,23 @@ class ASN_BitStringTest extends PHPASN1TestCase {
         $expectedContent  = chr(0x03);
         $expectedContent .= chr(0xA8);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
+    }
+    
+    public function testGetBinaryForLargeBitStrings() {
+        $nrOfBytes = 1024;
+        $hexString = '0x' . str_repeat('FF', $nrOfBytes);
+        $object = new ASN_BitString($hexString);
+                
+        $expectedType = chr(Identifier::BITSTRING);
+        $expectedLength = chr(0x80 | 0x02);  // long length form: 2 length octets
+        $expectedLength .= chr(1025 >> 8);   // first 8 bit of 1025
+        $expectedLength .= chr(1025 & 0xFF); // last 8 bit of 1025
+        $expectedContent = chr(0x00);        // number of unused bits
+        for ($i=0; $i < $nrOfBytes; $i++) { 
+            $expectedContent .= chr(0xFF);   // content
+        }
+        
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());        
     }
     
     /**
@@ -128,7 +151,6 @@ class ASN_BitStringTest extends PHPASN1TestCase {
         $binaryData .= chr(0x01);
         $binaryData .= chr(0x00);        
         ASN_BitString::fromBinary($binaryData);        
-    }    
+    }  
     
 }
-    

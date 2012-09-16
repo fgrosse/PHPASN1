@@ -27,13 +27,13 @@ class ASN_BitString extends ASN_Object implements Parseable {
     /**
      * Creates a new ASN.1 BitString object.
      * 
-     * @param mixed $value Either the hexadecimal value as a string (spaces are allowed) or a numeric value
+     * @param mixed $value Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
      * @param number $nrOfUnusedBits the number of unused bits in the last octet [optional]. 
      */
     public function __construct($value, $nrOfUnusedBits=0) {
         if(is_string($value)) {
             // remove gaps between hex digits
-            $value = preg_replace('/\s/','',$value);
+            $value = preg_replace('/\s|0x/','',$value);
         }
         else if(is_numeric($value)) {
             $value = dechex($value);
@@ -59,7 +59,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
         if(strlen($value) %2 != 0) {
             // transform values like 1F2 to 01F2
             $value = "0".$value;
-        } 
+        }
         // add one to the length for the first octet which encodes the number of unused bits in the last octet
         return strlen($value)/2 + 1;
     }
