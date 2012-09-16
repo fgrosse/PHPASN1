@@ -74,7 +74,7 @@ class ASN_Sequence extends ASN_Object implements Parseable {
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::verifyIdentifier($binaryData[$offsetIndex++], $offsetIndex);
+        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::SEQUENCE, $offsetIndex);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         
         $children = array();
@@ -90,9 +90,6 @@ class ASN_Sequence extends ASN_Object implements Parseable {
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
-    
-    protected static function verifyIdentifier($identifierOctet, $offsetForExceptionHandling) {
-        self::parseIdentifier($identifierOctet, Identifier::SEQUENCE, $offsetForExceptionHandling);
-    }    
+        
 }
 ?>
