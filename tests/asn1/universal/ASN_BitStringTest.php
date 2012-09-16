@@ -116,9 +116,9 @@ class ASN_BitStringTest extends PHPASN1TestCase {
         $parsedObject = ASN_BitString::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
         
-        $originalobject = new ASN_Boolean(false);
+        $originalobject = new ASN_BitString(0x010203A0, 3);
         $binaryData = $originalobject->getBinary();
-        $parsedObject = ASN_Boolean::fromBinary($binaryData);
+        $parsedObject = ASN_BitString::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);         
     }
     

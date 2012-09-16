@@ -46,6 +46,11 @@ class ASN_BitString extends ASN_Object implements Parseable {
             throw new Exception("ASN_BitString: second parameter needs to be a positive number (or zero)!");
         }
         
+        if(strlen($value) %2 != 0) {
+            // transform values like 1F2 to 01F2
+            $value = "0".$value;
+        }
+        
         $this->value = $value;
         $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
@@ -56,22 +61,14 @@ class ASN_BitString extends ASN_Object implements Parseable {
     
     protected function calculateContentLength() {
         $value = $this->value;
-        if(strlen($value) %2 != 0) {
-            // transform values like 1F2 to 01F2
-            $value = "0".$value;
-        }
+        
         // add one to the length for the first octet which encodes the number of unused bits in the last octet
         return strlen($value)/2 + 1;
     }
     
     protected function getEncodedValue() {
         $value = $this->value;
-        
-        if(strlen($value) %2 != 0) {
-            // transform values like 1F2 to 01F2
-            $value = "0".$value;
-        } 
-        
+                       
         // the first octet determines the number of unused bits
         $result = chr($this->nrOfUnusedBits);
         
@@ -96,7 +93,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
         $value = substr($binaryData, $offsetIndex+1, $contentLength-1);
         $offsetIndex += $contentLength;
         
-        $parsedObject = new ASN_BitString(bin2hex($value));
+        $parsedObject = new ASN_BitString(bin2hex($value), $nrOfUnusedBits);
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
