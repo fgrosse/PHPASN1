@@ -119,6 +119,12 @@ class ASN_IntegerTest extends PHPASN1TestCase {
         $expectedContent .= chr(0xC8);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
         
+        $object = new ASN_Integer(-546);
+        $expectedLength = chr(0x02);
+        $expectedContent = chr(0xFD);
+        $expectedContent .= chr(0xDE);
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
+        
         $object = new ASN_Integer(7420);
         $expectedLength   = chr(0x02);
         $expectedContent  = chr(0x1C);
