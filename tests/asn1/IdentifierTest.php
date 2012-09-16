@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-require_once('PHPASN1TestCase.class.php');
+require_once(dirname(__FILE__) . '/../PHPASN1TestCase.class.php');
  
 class IdentifierTest extends PHPASN1TestCase {
     
