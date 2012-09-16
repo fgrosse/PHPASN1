@@ -166,6 +166,6 @@ class ASN_ObjectTest extends PHPASN1TestCase {
        $this->assertEquals($expectedChild1->getContent(), $child1->getContent());
        $this->assertEquals($expectedChild2->getContent(), $child2->getContent());
     }
-    
+
 }
     
