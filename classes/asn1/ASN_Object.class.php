@@ -139,8 +139,10 @@ abstract class ASN_Object {
                 return ASN_Set::fromBinary($binaryData, $offsetIndex);
             
             default:
-                $objectName = Identifier::getName($identifierOctet);
-                throw new ASN1ParserException("Sorry but parsing of {$objectName} is not yet supported by PHPASN1.", $offsetIndex);
+                $offsetIndex++;
+                $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
+                $offsetIndex += $lengthOfUnknownObject;
+                return new ASN_UnknownObject($identifierOctet, $lengthOfUnknownObject);                
         }
     }
 

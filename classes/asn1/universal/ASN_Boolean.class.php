@@ -24,7 +24,6 @@ class ASN_Boolean extends ASN_Object implements Parseable {
     
     public function __construct($value) {
         $this->value = $value;
-        $this->lenght  = 1;
     }
     
     public function getType() {
