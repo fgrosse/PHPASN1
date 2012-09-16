@@ -49,18 +49,123 @@ class ASN_ObjectTest extends PHPASN1TestCase {
        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 1025);
        $this->assertEquals(3, $calculatedNrOfLengthOctets);
     }
-    /*
-    public function testCreateLengthPart() {
-       $contentLength = 123;
-       $nrofLengthOctets = 1;
-       $object = $this->getMockForAbstractClass('\PHPASN1\ASN_Object');
-       $object->expects($this->any())->method('getContentLength')->will($this->returnValue($contentLength));
-       $object->expects($this->any())->method('getNumberOfLengthOctets')->will($this->returnValue($nrofLengthOctets));
-       $lengthPart = $this->callMethod($object, 'createLengthPart');
+    
+    /**
+     * For the real parsing tests look in the test cases of each single ASn object.
+     */
+    public function testFromBinary() {
+       // Bit String
+       $binaryData  = chr(Identifier::BITSTRING);
+       $binaryData .= chr(0x03);
+       $binaryData .= chr(0x05);
+       $binaryData .= chr(0xFF);
+       $binaryData .= chr(0xA0);
+
+       $expectedObject = new ASN_BitString(0xFFA0, 5);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_BitString);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       $this->assertEquals($expectedObject->getNumberOfUnusedBits(), $parsedObject->getNumberOfUnusedBits());
        
-       $expectedLengthPart = chr($contentLength);
-       $this->assertEquals($expectedLengthPart, $lengthPart);
+       // Boolean
+       $binaryData  = chr(Identifier::BOOLEAN);
+       $binaryData .= chr(0x01);
+       $binaryData .= chr(0xFF);
+       
+       $expectedObject = new ASN_Boolean(true);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_Boolean);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Enumerated
+       $binaryData  = chr(Identifier::ENUMERATED);
+       $binaryData .= chr(0x01);
+       $binaryData .= chr(0x03);
+       
+       $expectedObject = new ASN_Enumerated(3);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_Enumerated);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // IA5 String
+       $string = 'Hello Foo World!!!11EinsEins!1';
+       $binaryData  = chr(Identifier::IA5_STRING);
+       $binaryData .= chr(strlen($string));
+       $binaryData .= $string;
+       
+       $expectedObject = new ASN_IA5String($string);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_IA5String);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Integer       
+       $binaryData  = chr(Identifier::INTEGER);
+       $binaryData .= chr(0x01);
+       $binaryData .= chr(123);
+       
+       $expectedObject = new ASN_Integer(123);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_Integer);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Null       
+       $binaryData  = chr(Identifier::NULL);
+       $binaryData .= chr(0x00);
+       
+       $expectedObject = new ASN_Null();
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_Null);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Object Identifier       
+       $binaryData  = chr(Identifier::OBJECT_IDENTIFIER);
+       $binaryData .= chr(0x02);
+       $binaryData .= chr(1 * 40 + 2);
+       $binaryData .= chr(3);
+       
+       $expectedObject = new ASN_ObjectIdentifier('1.2.3');
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_ObjectIdentifier);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Printable String
+       $string = 'This is a test string. #?!%&""';
+       $binaryData  = chr(Identifier::PRINTABLE_STRING);
+       $binaryData .= chr(strlen($string));
+       $binaryData .= $string;
+       
+       $expectedObject = new ASN_PrintableString($string);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_PrintableString);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
+       // Sequence       
+       $binaryData  = chr(Identifier::SEQUENCE);
+       $binaryData .= chr(0x06);
+       $binaryData .= chr(Identifier::BOOLEAN);
+       $binaryData .= chr(0x01);
+       $binaryData .= chr(0x00);
+       $binaryData .= chr(Identifier::INTEGER);
+       $binaryData .= chr(0x01);
+       $binaryData .= chr(0x03);
+       
+       $expectedChild1 = new ASN_Boolean(false);
+       $expectedChild2 = new ASN_Integer(0x03); 
+       
+       $expectedObject = new ASN_Sequence(
+           $expectedChild1,
+           $expectedChild2
+       );
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_Sequence);
+       $this->assertEquals(2, $parsedObject->getNumberofChildren());
+       
+       $children = $parsedObject->getChildren();
+       $child1 = $children[0];
+       $child2 = $children[1];
+       $this->assertEquals($expectedChild1->getContent(), $child1->getContent());
+       $this->assertEquals($expectedChild2->getContent(), $child2->getContent());
     }
-    */
+    
 }
     

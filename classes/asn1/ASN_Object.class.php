@@ -111,7 +111,36 @@ abstract class ASN_Object {
 
     public function __toString() {
         return $this->getContent();
-    }        
+    }
+
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        $identifierOctet = ord($binaryData[$offsetIndex]);
+        
+        switch ($identifierOctet) {
+            case Identifier::BITSTRING:
+                return ASN_BitString::fromBinary($binaryData, $offsetIndex);
+            case Identifier::BOOLEAN:
+                return ASN_Boolean::fromBinary($binaryData, $offsetIndex);
+            case Identifier::ENUMERATED:
+                return ASN_Enumerated::fromBinary($binaryData, $offsetIndex);
+            case Identifier::IA5_STRING:
+                return ASN_IA5String::fromBinary($binaryData, $offsetIndex);
+            case Identifier::INTEGER:
+                return ASN_Integer::fromBinary($binaryData, $offsetIndex);
+            case Identifier::NULL:
+                return ASN_Null::fromBinary($binaryData, $offsetIndex);
+            case Identifier::OBJECT_IDENTIFIER:
+                return ASN_ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
+            case Identifier::PRINTABLE_STRING:
+                return ASN_PrintableString::fromBinary($binaryData, $offsetIndex);
+            case Identifier::SEQUENCE:
+                return ASN_Sequence::fromBinary($binaryData, $offsetIndex);
+            
+            default:
+                $objectName = Identifier::getName($identifierOctet);
+                throw new ASN1ParserException("Sorry but parsing of {$objectName} is not yet supported by PHPASN1.", $offsetIndex);
+        }
+    }
 
     protected static function parseIdentifier($identifierOctet, $expectedIdentifier, $offsetForExceptionHandling) {
         if(!is_numeric($identifierOctet)) {

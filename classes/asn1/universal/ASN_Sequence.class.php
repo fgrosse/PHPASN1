@@ -20,16 +20,13 @@
 
 namespace PHPASN1;
 
-class ASN_Sequence extends ASN_Object {
+class ASN_Sequence extends ASN_Object implements Parseable {
 	
 	public function __construct(ASN_Object $child1 = null, ASN_Object $child2 = null, ASN_Object $childN = null) {
 		$this->value = array();
 		
-        $children = func_get_args();
-        
-        foreach ($children as $child) {
-            $this->addChild($child);
-        }		
+        $children = func_get_args();        
+        $this->addChildren($children);		
 	}	
     
     public function getType() {
@@ -55,10 +52,47 @@ class ASN_Sequence extends ASN_Object {
 	public function addChild(ASN_Object $child) {
 		$this->value[] = $child;
 	}
+    
+    public function addChildren(array $children) {
+        foreach ($children as $child) {
+            $this->addChild($child);
+        }
+    }
 	
 	public function __toString() {
-		return '['.get_called_class().']';       
+	    $className = get_called_class();
+	    $simpleClassName = substr($className, strpos($className, '\\') + 1);
+		return "[{$simpleClassName}]";       
 	}
     
+    public function getNumberofChildren() {
+        return count($this->value);
+    }
+    
+    public function getChildren() {
+        return $this->value;
+    }
+    
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+        self::verifyIdentifier($binaryData[$offsetIndex++], $offsetIndex);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        
+        $children = array();
+        $octetsToRead = $contentLength;
+        while($octetsToRead > 0) {
+            $newChild = ASN_Object::fromBinary($binaryData, $offsetIndex);
+            $octetsToRead -= $newChild->getObjectLength();     
+            $children[] = $newChild;      
+        }
+                
+        $parsedObject = new self();
+        $parsedObject->addChildren($children);
+        $parsedObject->setContentLength($contentLength);
+        return $parsedObject;
+    }
+    
+    protected static function verifyIdentifier($identifierOctet, $offsetForExceptionHandling) {
+        self::parseIdentifier($identifierOctet, Identifier::SEQUENCE, $offsetForExceptionHandling);
+    }    
 }
 ?>
