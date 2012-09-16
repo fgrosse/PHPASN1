@@ -84,16 +84,16 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
         $firstOctet = ord($binaryData[$offsetIndex++]);
         $oidString = floor($firstOctet/40) . '.' . ($firstOctet % 40);
 
-        $bytesToRead = $contentLength - 1;
-        while($bytesToRead > 0) {
+        $octetsToRead = $contentLength - 1;
+        while($octetsToRead > 0) {
             $number = 0;
             do {
-                if($bytesToRead == 0) {
+                if($octetsToRead == 0) {
                     throw new ASN1ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
                 }
                 $octet = ord($binaryData[$offsetIndex++]);
                 $number = ($number << 7) + ($octet & 0x7F);
-                $bytesToRead--;
+                $octetsToRead--;
             } while ($octet & 0x80);
             $oidString .= ".{$number}";
         }
