@@ -20,12 +20,12 @@
 
 namespace PHPASN1;
 
-class ASN_ObjectIdentifier extends ASN_Object implements Parseable {		   
-    
+class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
+
     private $subIdentifiers;
-      
-	public function __construct($value) {		
-		$this->subIdentifiers = explode('.', $value);
+
+    public function __construct($value) {
+        $this->subIdentifiers = explode('.', $value);
         $nrOfSubIdentifiers = count($this->subIdentifiers);
         
         for ($i=0; $i < $nrOfSubIdentifiers; $i++) { 
@@ -33,24 +33,24 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             }
-            else {                
+            else {
                 throw new GeneralException("[{$value}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
             }
-        }		
-	    
+        }
+
         // Merge the first to arcs of the OID registration tree (per ASN definition!)
         if($nrOfSubIdentifiers >= 2) {
             $this->subIdentifiers[1] = ($this->subIdentifiers[0] * 40) + $this->subIdentifiers[1];
             unset($this->subIdentifiers[0]);
         }
-        	
-		$this->value = $value;
-	}
-	
+
+        $this->value = $value;
+    }
+
     public function getType() {
         return Identifier::OBJECT_IDENTIFIER;
     }
-    
+
     protected function calculateContentLength() {
         $length = 0;
         foreach ($this->subIdentifiers as $subIdentifier) {
@@ -61,8 +61,8 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
         }
         return $length;
     }
-    
-	protected function getEncodedValue() {
+
+    protected function getEncodedValue() {
         $encodedValue = '';
         foreach ($this->subIdentifiers as $subIdentifier) {
             $octets = chr($subIdentifier & 0x7F);
@@ -74,16 +74,16 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
             $encodedValue .= strrev($octets);
         }
         
-        return $encodedValue;        
-	}	
-	
+        return $encodedValue;
+    }
+
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {
         self::parseIdentifier($binaryData[$offsetIndex++], Identifier::OBJECT_IDENTIFIER, $offsetIndex);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
-                  
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
+
         $firstOctet = ord($binaryData[$offsetIndex++]);
-        $oidString = floor($firstOctet/40) . '.' . ($firstOctet % 40);       
-        
+        $oidString = floor($firstOctet/40) . '.' . ($firstOctet % 40);
+
         $bytesToRead = $contentLength - 1;
         while($bytesToRead > 0) {
             $number = 0;
@@ -93,11 +93,11 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
                 }
                 $octet = ord($binaryData[$offsetIndex++]);
                 $number = ($number << 7) + ($octet & 0x7F);
-                $bytesToRead--;                
+                $bytesToRead--;
             } while ($octet & 0x80);
-            $oidString .= ".{$number}";            
-        }         
-        
+            $oidString .= ".{$number}";
+        }
+
         $parsedObject = new self($oidString);
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
