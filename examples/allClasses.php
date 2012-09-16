@@ -87,6 +87,8 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo(new ASN_Boolean(true));
             printVariableInfo(new ASN_Boolean(false));
             printVariableInfo(new ASN_Integer(123456));
+            printVariableInfo(new ASN_Integer(-546));
+            printVariableInfo(new ASN_Enumerated(1));
             printVariableInfo(new ASN_PrintableString("Hello World"));
             printVariableInfo(new ASN_BitString("3082010a02820101009e2a7"));
             printVariableInfo(new ASN_ObjectIdentifier(OID::EMAIL));
