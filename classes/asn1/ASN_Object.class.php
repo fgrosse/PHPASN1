@@ -25,6 +25,7 @@ abstract class ASN_Object {
     protected $value;
 
     private $contentLength;
+    private $nrOfLengthOctets;
 
     /**
      * Must return the identifier octet of the ASN_Object.
@@ -49,43 +50,39 @@ abstract class ASN_Object {
     }
 
     private function createLengthPart() {
-        $length = $this->getContentLength();
+        $contentLength = $this->getContentLength();
+        $nrOfLengthOctets = $this->getNumberOfLengthOctets($contentLength);
 
-        if($length <= 127) {
-            return chr($length);
+        if($nrOfLengthOctets == 1) {
+            return chr($contentLength);
         }
-        else {
-            // the contents size is too big for 7 bit so we need more octets for the length part
-            $sizeAsBinaryString = decbin($length);
-            $tmpArr = array(); // this array holds the size octets in reversed order
-            $nrOfLengthOctets = 1;            
-            while(strlen($sizeAsBinaryString) > 8) {
-                // take the last 8 bit 
-                $last8Bit = substr($sizeAsBinaryString, strlen($sizeAsBinaryString)-8);
-                $sizeAsBinaryString = substr($sizeAsBinaryString, 0, strlen($sizeAsBinaryString)-8);
-                $tmpArr[] = bindec($last8Bit);
-                $nrOfLengthOctets++;
-            }
-            $tmpArr[] = bindec($sizeAsBinaryString);
-
+        else {            
             // the first length octet determines the number subsequent length octets
-            $firstOctet = decbin($nrOfLengthOctets);
-
-            // add some zeros to fill up all 8 bits
-            //TODO What if there are more than 7 subsequent length octets?
-            $firstOctet = str_repeat('0', 7-strlen($firstOctet)) . $firstOctet;
-
-            // the first octet must start with a 1 to indicate that the long form is used
-            $firstOctet = '1'.$firstOctet;
-            $lengthOctets = chr(bindec($firstOctet));
-
-            // append the values from the tmp array in the right order
-            for($i=$nrOfLengthOctets-1 ; $i >= 0 ; $i--) {
-                $lengthOctets .= chr($tmpArr[$i]);
+            $lengthOctets = chr(0x80 | ($nrOfLengthOctets-1));
+            for ($shiftLength= 8*($nrOfLengthOctets-2); $shiftLength >= 0 ; $shiftLength-=8) { 
+                $lengthOctets .= chr($contentLength >> $shiftLength);                
             }
-
+            
             return $lengthOctets;
         }
+    }
+
+    private function getNumberOfLengthOctets($contentLength=null) {        
+        if(!isset($this->nrOfLengthOctets)) {
+            if($contentLength == null) {
+                $contentLength = $this->getContentLength();
+            }
+            
+            $this->nrOfLengthOctets = 1;
+            if($contentLength > 127) {            
+                do { // long form
+                    $this->nrOfLengthOctets++;
+                    $contentLength = $contentLength >> 8;
+                } while($contentLength > 0);
+            }
+        }
+        
+        return $this->nrOfLengthOctets;
     }
 
     protected function getContentLength() {
@@ -97,6 +94,15 @@ abstract class ASN_Object {
 
     protected function setContentLength($newContentLength) {
         $this->contentLength = $newContentLength;
+        $this->getNumberOfLengthOctets($newContentLength);
+    }
+
+    public function getObjectLength() {        
+        $nrOfIdentifierOctets = 1; // does not support identifier long form yet        
+        $contentLength = $this->getContentLength();        
+        $nrOfLengthOctets = $this->getNumberOfLengthOctets($contentLength);
+        
+        return $nrOfIdentifierOctets + $nrOfLengthOctets + $contentLength;
     }
 
     public function getContent() {
@@ -105,32 +111,7 @@ abstract class ASN_Object {
 
     public function __toString() {
         return $this->getContent();
-    }
-    
-    public function getObjectLength() {
-        //IDByte ist immer ein Byte lang
-        $count = 1;
-
-        //LengthBytes...
-        $contentLength = $this->getContentLength();
-        if($contentLength <= 127) return $contentLength+2;
-        else {//Wenn Size zu groß für 7Bit dann auf mehrere Bytes aufteilen
-            $tmpbin = decbin($contentLength);
-            $count++;
-            while(strlen($tmpbin) > 8) {    
-                //Nimm immer von hinten 8 Bit weg
-                $tmpbin = substr($tmpbin,0,strlen($tmpbin)-8);
-                //Mitzählen wieviel Bytes wir nun hane
-                $count++;
-            }
-            $count++;
-        }
-
-        //ContentLength...
-        $count += $contentLength;
-
-        return $count;
-    }
+    }        
 
     protected static function parseIdentifier($identifierOctet, $expectedIdentifier, $offsetForExceptionHandling) {
         if(!is_numeric($identifierOctet)) {
