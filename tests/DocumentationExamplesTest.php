@@ -25,7 +25,7 @@ require_once(dirname(__FILE__) . '/PHPASN1TestCase.class.php');
 class DocumentationExamplesTest extends PHPASN1TestCase {
 
     public function testREADME_encoding() {
-        $this->expectOutputString('EBgCAwHiQAEB/woBARYLSGVsbG8gd29ybGQROBAYAgMB4kABAf8KAQEWC0hlbGxvIHdvcmxkBQAGBiqBegEQCQYJKoZIhvcNAQEBEwdGb28gYmFy');
+        $this->expectOutputString('MBgCAwHiQAEB/woBARYLSGVsbG8gd29ybGQxODAYAgMB4kABAf8KAQEWC0hlbGxvIHdvcmxkBQAGBiqBegEQCQYJKoZIhvcNAQEBEwdGb28gYmFy');
         
         $integer = new ASN_Integer(123456);        
         $boolean = new ASN_Boolean(true);
@@ -47,7 +47,7 @@ class DocumentationExamplesTest extends PHPASN1TestCase {
     }
     
     public function testREADME_decoding() {
-        $base64String = 'EBgCAwHiQAEB/woBARYLSGVsbG8gd29ybGQROBAYAgMB4kABAf8KAQEWC0hlbGxvIHdvcmxkBQAGBiqBegEQCQYJKoZIhvcNAQEBEwdGb28gYmFy';
+        $base64String = 'MBgCAwHiQAEB/woBARYLSGVsbG8gd29ybGQxODAYAgMB4kABAf8KAQEWC0hlbGxvIHdvcmxkBQAGBiqBegEQCQYJKoZIhvcNAQEBEwdGb28gYmFy';
         $binaryData = base64_decode($base64String);
         
         $asnObject = ASN_Object::fromBinary($binaryData);

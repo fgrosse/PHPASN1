@@ -54,7 +54,7 @@ class ASN_Boolean extends ASN_Object implements Parseable {
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::BOOLEAN, $offsetIndex);                
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::BOOLEAN, $offsetIndex++);                
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         
         if($contentLength != 1) {

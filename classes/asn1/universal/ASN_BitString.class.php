@@ -90,7 +90,7 @@ class ASN_BitString extends ASN_Object implements Parseable {
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::BITSTRING, $offsetIndex);
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::BITSTRING, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 2);        
         
         $nrOfUnusedBits = ord($binaryData[$offsetIndex]);

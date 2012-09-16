@@ -78,7 +78,7 @@ class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::OBJECT_IDENTIFIER, $offsetIndex);
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::OBJECT_IDENTIFIER, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $firstOctet = ord($binaryData[$offsetIndex++]);

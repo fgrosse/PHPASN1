@@ -115,7 +115,7 @@ abstract class ASN_Object {
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         $identifierOctet = ord($binaryData[$offsetIndex]);
-        
+
         switch ($identifierOctet) {
             case Identifier::BITSTRING:
                 return ASN_BitString::fromBinary($binaryData, $offsetIndex);
@@ -144,8 +144,8 @@ abstract class ASN_Object {
         }
     }
 
-    protected static function parseIdentifier($identifierOctet, $expectedIdentifier, $offsetForExceptionHandling) {
-        if(!is_numeric($identifierOctet)) {
+    protected static function parseIdentifier($identifierOctet, $expectedIdentifier, $offsetForExceptionHandling) {                
+        if(is_string($identifierOctet) || is_numeric($identifierOctet) == false) {
             $identifierOctet = ord($identifierOctet);
         }
         

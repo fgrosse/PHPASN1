@@ -38,8 +38,8 @@ abstract class Identifier {
     const RELATIVE_OID      = 0x0D; // unsupported for now
     // value 0x0E and 0x0F are reserved for future use
     
-    const SEQUENCE          = 0x10;
-    const SET               = 0x11;
+    const SEQUENCE          = 0x30;
+    const SET               = 0x31;
     const NUMERIC_STRING    = 0x12; // unsupported for now
     const PRINTABLE_STRING  = 0x13;
     const T61_STRING        = 0x14; // unsupported for now
@@ -61,9 +61,8 @@ abstract class Identifier {
         if(!is_numeric($identifierOctet)) {
             $identifierOctet = ord($identifierOctet);
         }
-        
-        $tag = $identifierOctet & 0x1F;
-        switch ($tag) {
+                
+        switch ($identifierOctet) {
             case self::EOC:
                 return 'ASN.1 End-of-contents octet';
             case self::BOOLEAN:
@@ -129,7 +128,10 @@ abstract class Identifier {
                 return 'ASN.1 RESERVED (0x0F)';
             
             case self::LONG_FORM:
-                throw new NotImplementedException('Long form of identifier octets is not yet implemented');            
+                throw new NotImplementedException('Long form of identifier octets is not yet implemented');
+            
+            default:
+                return 'UNKNOWN Type (0x'.dechex($identifierOctet).')';            
         }
     } 
     

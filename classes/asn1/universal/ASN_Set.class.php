@@ -26,8 +26,8 @@ class ASN_Set extends ASN_Sequence {
         return Identifier::SET;
     }
     
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::SET, $offsetIndex);
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {        
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::SET, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         
         $children = array();

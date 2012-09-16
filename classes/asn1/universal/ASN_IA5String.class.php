@@ -27,7 +27,7 @@ class ASN_IA5String extends ASN_PrintableString {
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::IA5_STRING, $offsetIndex);
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::IA5_STRING, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         $string = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;

@@ -39,7 +39,7 @@ class ASN_Null extends ASN_Object implements Parseable {
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex++], Identifier::NULL, $offsetIndex);
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::NULL, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         
         if($contentLength != 0) {

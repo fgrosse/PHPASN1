@@ -68,7 +68,7 @@ class IdentifierTest extends PHPASN1TestCase {
      * @expectedExceptionMessage Long form of identifier octets is not yet implemented
      */
     public function testGetIdentifierNameForLongForm() {
-        Identifier::getName(0xFF);
+        Identifier::getName(0x1F);
     }
 }
     
