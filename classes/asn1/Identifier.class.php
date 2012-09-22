@@ -57,82 +57,110 @@ abstract class Identifier {
     const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;
     
+    /**
+     * Return the long version of the type name. 
+     * 
+     * If the given identifier octet can be mapped to a known universal type this will
+     * return its name with a preceding "ASN.1".
+     * Else "UNKNOWN Type" and the identifier octet as hexadecimal value is returned     
+     */
     public static function getName($identifierOctet) {
         if(!is_numeric($identifierOctet)) {
             $identifierOctet = ord($identifierOctet);
         }
-                
+        
+        $typeName = static::getShortName($identifierOctet);
+        
+        if(($identifierOctet & 0x1F) <= 0x1E) {
+            $typeName = "ASN.1 {$typeName}";
+        }
+        
+        return $typeName;             
+    }
+
+    /**
+     * Return the short version of the type name. 
+     * 
+     * If the given identifier octet can be mapped to a known universal type this will
+     * return its name.
+     * Else "UNKNOWN Type" and the identifier octet as hexadecimal value is returned
+     */
+    public static function getShortName($identifierOctet) {
+        if(!is_numeric($identifierOctet)) {
+            $identifierOctet = ord($identifierOctet);
+        }
+        
         switch ($identifierOctet) {
             case self::EOC:
-                return 'ASN.1 End-of-contents octet';
+                return 'End-of-contents octet';
             case self::BOOLEAN:
-                return 'ASN.1 Boolean';
+                return 'Boolean';
             case self::INTEGER:
-                return 'ASN.1 Integer';
+                return 'Integer';
             case self::BITSTRING:
-                return 'ASN.1 Bit String';
+                return 'Bit String';
             case self::OCTETSTRING:
-                return 'ASN.1 Octet String';
+                return 'Octet String';
             case self::NULL:
-                return 'ASN.1 NULL';
+                return 'NULL';
             case self::OBJECT_IDENTIFIER:
-                return 'ASN.1 Object Identifier';
+                return 'Object Identifier';
             case self::OBJECT_DESCRIPTOR:
-                return 'ASN.1 Object Descriptor';
+                return 'Object Descriptor';
             case self::OBJECT_EXTERNAL:
-                return 'ASN.1 Object External';
+                return 'Object External';
             case self::FLOAT:
-                return 'ASN.1 Float';
+                return 'Float';
             case self::ENUMERATED:
-                return 'ASN.1 Enumerated';
+                return 'Enumerated';
             case self::EMBEDDED_PDV:
-                return 'ASN.1 Embedded PDV';
+                return 'Embedded PDV';
             case self::UTF8_STRING:
-                return 'ASN.1 UTF8 String';
+                return 'UTF8 String';
             case self::RELATIVE_OID:
-                return 'ASN.1 Relative OID';
+                return 'Relative OID';
             case self::SEQUENCE:
-                return 'ASN.1 Sequence';
+                return 'Sequence';
             case self::SET:
-                return 'ASN.1 Set';
+                return 'Set';
             case self::NUMERIC_STRING:
-                return 'ASN.1 Numeric String';
+                return 'Numeric String';
             case self::PRINTABLE_STRING:
-                return 'ASN.1 Printable String';
+                return 'Printable String';
             case self::T61_STRING:
-                return 'ASN.1 T61 String';
+                return 'T61 String';
             case self::VIDEOTEXT_STRING:
-                return 'ASN.1 Videotext String';
+                return 'Videotext String';
             case self::IA5_STRING:
-                return 'ASN.1 IA5 String';
+                return 'IA5 String';
             case self::UTC_TIME:
-                return 'ASN.1 UTC Time';
+                return 'UTC Time';
             case self::GENERALIZED_TIME:
-                return 'ASN.1 Generalized Time';
+                return 'Generalized Time';
             case self::GRAPHIC_STRING:
-                return 'ASN.1 Graphic String';
+                return 'Graphic String';
             case self::VISIBLE_STRING:
-                return 'ASN.1 Visible String';
+                return 'Visible String';
             case self::GENERAL_STRING:
-                return 'ASN.1 General String';
+                return 'General String';
             case self::UNIVERSAL_STRING:
-                return 'ASN.1 Universal String';
+                return 'Universal String';
             case self::CHARACTER_STRING:
-                return 'ASN.1 Character String';
+                return 'Character String';
             case self::BMP_STRING:
-                return 'ASN.1 BMP String';
+                return 'BMP String';
             
             case 0x0E:
-                return 'ASN.1 RESERVED (0x0E)';
+                return 'RESERVED (0x0E)';
             case 0x0F:
-                return 'ASN.1 RESERVED (0x0F)';
+                return 'RESERVED (0x0F)';
             
             case self::LONG_FORM:
                 throw new NotImplementedException('Long form of identifier octets is not yet implemented');
             
             default:
-                return 'UNKNOWN Type (0x'.dechex($identifierOctet).')';            
+                return 'UNKNOWN Type (0x'.dechex($identifierOctet).')';
         }
     } 
-    
+
 }

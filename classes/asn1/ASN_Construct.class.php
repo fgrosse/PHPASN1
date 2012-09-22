@@ -20,14 +20,52 @@
 
 namespace PHPASN1;
 
-abstract class ASN_Construct extends ASN_Object {
-	
-	public function __construct(ASN_Object $child1 = null, ASN_Object $child2 = null, ASN_Object $childN = null) {
-		$this->value = array();
-		
-        $children = func_get_args();        
-        $this->addChildren($children);		
-	}	        
+abstract class ASN_Construct extends ASN_Object implements \Iterator {
+
+    private $iteratorPosition = 0;
+    
+    public function __construct(ASN_Object $child1 = null, ASN_Object $child2 = null, ASN_Object $childN = null) {
+        $this->value = array();
+        $this->rewind();
+        
+        $children = func_get_args();
+        $this->addChildren($children);
+    }
+    
+    /**
+     * Rewind the Iterator to the first element (Iterator::rewind)
+     */
+    public function rewind() {        
+        $this->iteratorPosition = 0;
+    }
+
+    /**
+     * Return the current element (Iterator::current)
+     */
+    public function current() {
+        return $this->value[$this->iteratorPosition];
+    }
+
+    /**
+     * Return the key of the current element (Iterator::key)
+     */
+    public function key() {
+        return $this->iteratorPosition;
+    }
+
+    /**
+     * Move forward to next element (Iterator::next)
+     */
+    public function next() {
+        $this->iteratorPosition++;
+    }
+
+    /**
+     * Checks if current position is valid (Iterator::valid)
+     */
+    public function valid() {
+        return isset($this->value[$this->iteratorPosition]);
+    }
     
     protected function calculateContentLength() {
         $length = 0;
@@ -37,55 +75,55 @@ abstract class ASN_Construct extends ASN_Object {
         return $length;
     }
     
-	protected function getEncodedValue() {		
-		$result = '';
-		foreach($this->value as $component) {
-			$result .= $component->getBinary();
-		}
-		return $result;
-	}	
-	
-	public function addChild(ASN_Object $child) {
-		$this->value[] = $child;
-	}
-    
+    protected function getEncodedValue() {		
+        $result = '';
+        foreach($this->value as $component) {
+            $result .= $component->getBinary();
+        }
+        return $result;
+    }
+
+    public function addChild(ASN_Object $child) {
+        $this->value[] = $child;
+    }
+
     public function addChildren(array $children) {
         foreach ($children as $child) {
             $this->addChild($child);
         }
     }
-	
-	public function __toString() {
-	    $className = get_called_class();
-	    $simpleClassName = substr($className, strpos($className, '\\') + 1);
-		return "[{$simpleClassName}]";       
-	}
-    
+
+    public function __toString() {
+        $nrOfChildren = $this->getNumberofChildren();
+        $childString = $nrOfChildren == 1 ? 'child' : 'children';
+        return "[{$nrOfChildren} {$childString}]";
+    }
+
     public function getNumberofChildren() {
         return count($this->value);
     }
-    
+
     public function getChildren() {
         return $this->value;
     }
-        
+
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {
         $parsedObject = new static();                
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         
         $children = array();
         $octetsToRead = $contentLength;
         while($octetsToRead > 0) {
             $newChild = ASN_Object::fromBinary($binaryData, $offsetIndex);
-            $octetsToRead -= $newChild->getObjectLength();     
-            $children[] = $newChild;      
+            $octetsToRead -= $newChild->getObjectLength();
+            $children[] = $newChild;
         }
-                        
+
         $parsedObject->addChildren($children);
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
-        
+
 }
 ?>
