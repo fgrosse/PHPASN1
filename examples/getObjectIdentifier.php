@@ -43,6 +43,7 @@ function echoOIDRow($oidString) {
         <?php
             echoOIDRow('1.2.840.113549.1.1.1');
             echoOIDRow('1.2.840.113549.1.1.5');
+            echoOIDRow('2.5.29.37');            
         ?>
     </table>
 </body>

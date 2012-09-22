@@ -147,10 +147,15 @@ abstract class ASN_Object {
                 return ASN_Set::fromBinary($binaryData, $offsetIndex);
             
             default:
-                $offsetIndex++;
-                $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
-                $offsetIndex += $lengthOfUnknownObject;
-                return new ASN_UnknownObject($identifierOctet, $lengthOfUnknownObject);                
+                if(Identifier::isConstructed($identifierOctet)) {
+                    return new ASN_UnknownConstructedObject($binaryData, $offsetIndex);
+                }
+                else {
+                    $offsetIndex++;
+                    $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
+                    $offsetIndex += $lengthOfUnknownObject;
+                    return new ASN_UnknownObject($identifierOctet, $lengthOfUnknownObject);                
+                }
         }
     }
 

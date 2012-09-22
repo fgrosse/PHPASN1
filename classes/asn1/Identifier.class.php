@@ -57,6 +57,10 @@ abstract class Identifier {
     const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;
     
+    public static function isConstructed($identifierOctet) {
+        return ($identifierOctet & self::IS_CONSTRUCTED) != 0;
+    }
+    
     /**
      * Return the long version of the type name. 
      * 
@@ -158,9 +162,39 @@ abstract class Identifier {
             case self::LONG_FORM:
                 throw new NotImplementedException('Long form of identifier octets is not yet implemented');
             
-            default:
-                return 'UNKNOWN Type (0x'.dechex($identifierOctet).')';
+            default:                
+                $classDescription = self::getClassDescription($identifierOctet);
+                return "$classDescription (0x".dechex($identifierOctet).')';
         }
     } 
+
+    public static function getClassDescription($identifierOctet) {
+         if(self::isConstructed($identifierOctet)) {
+            $classDescription = 'Constructed ';
+        }
+        else {
+            $classDescription = 'Primitive ';
+        }
+        $classBits = $identifierOctet >> 6;
+        switch ($classBits) {
+            case 0x00:
+                $classDescription .= 'universal';
+                break;
+            case 0x01:
+                $classDescription .= 'application';
+                break;
+            case 0x02:
+                $classDescription .= 'context-specific';
+                break;
+            case 0x03:
+                $classDescription .= 'private';
+                break;
+            
+            default:
+                return "INVALID IDENTIFER OCTET: {$identifierOctet}";
+        }
+        
+        return $classDescription;
+    }
 
 }
