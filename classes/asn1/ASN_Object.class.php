@@ -112,6 +112,15 @@ abstract class ASN_Object {
     public function __toString() {
         return $this->getContent();
     }
+    
+    /**
+     * Returns the name of the ASN.1 Type of this object.
+     * 
+     * @see Identifier::getName()
+     */
+    public function getTypeName() {
+        return Identifier::getName($this->getType());
+    }
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         $identifierOctet = ord($binaryData[$offsetIndex]);
