@@ -16,34 +16,34 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 namespace PHPASN1;
 
-class ASN_UnknownObject extends ASN_Object {
-    
-    private $identifierOctet;
-    private $contentLength;
-    
-    public function __construct($identifierOctet, $contentLength) {
-        $this->identifierOctet = $identifierOctet;
-        $this->value = "Unparseable Object ({$contentLength} bytes)";
-        $this->contentLength = $contentLength;        
-    }
-    
-    public function getType() {
-        return $this->identifierOctet;
-    }
-    
-    protected function calculateContentLength() {
-        return $this->contentLength;
-    }
-    
-    protected function getEncodedValue() {
-        return '';        
-    }
-    
-               
-    
+require_once '../classes/PHPASN_Autoloader.php';
+PHPASN_Autoloader::register();
+
+function echoOIDRow($oidString) {
+    $oidName = OID::getName($oidString);
+    echo "<tr><td>{$oidString}</td><td>{$oidName}</td></tr>";
 }
+
 ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PHPASN1 Examples</title>
+  <meta name="description" content="Howto get the name of object identifiers with PHPASN1">
+  <meta name="author" content="Friedrich Große">
+  <style type="text/css">td {padding: 0px 10px;}</style>
+</head>
+<body>    
+    <table border=1>
+        <?php
+            echoOIDRow('1.2.840.113549.1.1.1');
+            echoOIDRow('1.2.840.113549.1.1.5');
+        ?>
+    </table>
+</body>
+</html>
