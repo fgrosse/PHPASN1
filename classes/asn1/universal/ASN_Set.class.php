@@ -25,23 +25,6 @@ class ASN_Set extends ASN_Sequence {
     public function getType() {
         return Identifier::SET;
     }
-    
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {        
-        self::parseIdentifier($binaryData[$offsetIndex], Identifier::SET, $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         
-        $children = array();
-        $octetsToRead = $contentLength;
-        while($octetsToRead > 0) {
-            $newChild = ASN_Object::fromBinary($binaryData, $offsetIndex);
-            $octetsToRead -= $newChild->getObjectLength();     
-            $children[] = $newChild;      
-        }
-                
-        $parsedObject = new self();
-        $parsedObject->addChildren($children);
-        $parsedObject->setContentLength($contentLength);
-        return $parsedObject;
-    }
 }
 ?>
