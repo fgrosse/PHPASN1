@@ -22,25 +22,26 @@ namespace PHPASN1;
 
 class ASN_UnknownObject extends ASN_Object {
     
-    public function __construct($value) {
-        $this->value = $value;        
+    private $identifierOctet;
+    private $contentLength;
+    
+    public function __construct($identifierOctet, $contentLength) {
+        $this->identifierOctet = $identifierOctet;
+        $this->value = 'Unparseable Object';
+        $this->contentLength = $contentLength;        
     }
     
     public function getType() {
-        return null;
+        return $this->identifierOctet;
     }
     
     protected function calculateContentLength() {
-        return 0;
+        return $this->contentLength;
     }
     
     protected function getEncodedValue() {
         return '';        
-    }       
-    
-    public function getContent() {
-        return 'Unknown Object';
-    }
+    }           
     
 }
 ?>

@@ -124,7 +124,6 @@ abstract class ASN_Object {
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         $identifierOctet = ord($binaryData[$offsetIndex]);
-
         switch ($identifierOctet) {
             case Identifier::BITSTRING:
                 return ASN_BitString::fromBinary($binaryData, $offsetIndex);
