@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class ASN_BitString extends ASN_Object implements Parseable {
+class ASN_BitString extends ASN_OctetString implements Parseable {
 
     private $nrOfUnusedBits;
     
@@ -31,27 +31,12 @@ class ASN_BitString extends ASN_Object implements Parseable {
      * @param number $nrOfUnusedBits the number of unused bits in the last octet [optional]. 
      */
     public function __construct($value, $nrOfUnusedBits=0) {
-        if(is_string($value)) {
-            // remove gaps between hex digits
-            $value = preg_replace('/\s|0x/','',$value);
-        }
-        else if(is_numeric($value)) {
-            $value = dechex($value);
-        }
-        else {
-            throw new Exception("ASN_BitString: unrecognized input type!");
-        }
+        parent::__construct($value);
         
         if(!is_numeric($nrOfUnusedBits) || $nrOfUnusedBits < 0) {
             throw new Exception("ASN_BitString: second parameter needs to be a positive number (or zero)!");
         }
-        
-        if(strlen($value) %2 != 0) {
-            // transform values like 1F2 to 01F2
-            $value = "0".$value;
-        }
-        
-        $this->value = $value;
+                
         $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
     
@@ -59,30 +44,16 @@ class ASN_BitString extends ASN_Object implements Parseable {
         return Identifier::BITSTRING;
     }
     
-    protected function calculateContentLength() {
-        $value = $this->value;
-        
+    protected function calculateContentLength() {                
         // add one to the length for the first octet which encodes the number of unused bits in the last octet
-        return strlen($value)/2 + 1;
+        return parent::calculateContentLength() + 1;
     }
     
     protected function getEncodedValue() {
-        $value = $this->value;
-                       
         // the first octet determines the number of unused bits
-        $result = chr($this->nrOfUnusedBits);
-        
-        //Actual content
-        while(strlen($value) >= 2) {
-            // get the hex value byte by byte from the string and and add it to binary result
-            $result .= chr(hexdec(substr($value,0,2)));
-            $value = substr($value,2);
-        }
-        return $result;
-    }
-    
-    public function getContent() {
-        return strtoupper($this->value);
+        $nrOfUnusedBitsOctet = chr($this->nrOfUnusedBits);
+        $actualContent = parent::getEncodedValue();
+        return $nrOfUnusedBitsOctet . $actualContent;
     }
     
     public function getNumberOfUnusedBits() {

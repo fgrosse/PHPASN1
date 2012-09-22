@@ -26,7 +26,7 @@ abstract class Identifier {
     const BOOLEAN           = 0x01;
     const INTEGER           = 0x02;
     const BITSTRING         = 0x03;
-    const OCTETSTRING       = 0x04; // unsupported for now
+    const OCTETSTRING       = 0x04;
     const NULL              = 0x05;
     const OBJECT_IDENTIFIER = 0x06;
     const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
