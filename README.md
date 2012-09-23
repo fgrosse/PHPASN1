@@ -92,5 +92,5 @@ PHPASN1 uses [PHP Unit](https://github.com/sebastianbergmann/phpunit). For some 
 
 ## Thanks
 
-Thanks Robert for the help with the Autoloader :)
+Thanks [Robert](https://github.com/gimi139) for the help with the Autoloader :)
 I also use [this nice php script](http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/) from [Aidan Lister](http://aidanlister.com)
