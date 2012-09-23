@@ -67,6 +67,17 @@ class ASN_ObjectTest extends PHPASN1TestCase {
        $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
        $this->assertEquals($expectedObject->getNumberOfUnusedBits(), $parsedObject->getNumberOfUnusedBits());
        
+       // Octet String
+       $binaryData  = chr(Identifier::OCTETSTRING);
+       $binaryData .= chr(0x02);
+       $binaryData .= chr(0xFF);
+       $binaryData .= chr(0xA0);
+
+       $expectedObject = new ASN_OctetString(0xFFA0);
+       $parsedObject = ASN_Object::fromBinary($binaryData);
+       $this->assertTrue($parsedObject instanceof ASN_OctetString);
+       $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+       
        // Boolean
        $binaryData  = chr(Identifier::BOOLEAN);
        $binaryData .= chr(0x01);

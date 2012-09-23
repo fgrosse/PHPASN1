@@ -147,6 +147,8 @@ abstract class ASN_Object {
                 return ASN_Sequence::fromBinary($binaryData, $offsetIndex);
             case Identifier::SET:
                 return ASN_Set::fromBinary($binaryData, $offsetIndex);
+            case Identifier::UTC_TIME:
+                return ASN_UTCTime::fromBinary($binaryData, $offsetIndex);
             
             default:
                 if(Identifier::isConstructed($identifierOctet)) {

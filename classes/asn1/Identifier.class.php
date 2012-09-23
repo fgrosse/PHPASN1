@@ -45,7 +45,7 @@ abstract class Identifier {
     const T61_STRING        = 0x14; // unsupported for now
     const VIDEOTEXT_STRING  = 0x15; // unsupported for now
     const IA5_STRING        = 0x16;
-    const UTC_TIME          = 0x17; // unsupported for now
+    const UTC_TIME          = 0x17;
     const GENERALIZED_TIME  = 0x18; // unsupported for now
     const GRAPHIC_STRING    = 0x19; // unsupported for now
     const VISIBLE_STRING    = 0x1A; // unsupported for now
