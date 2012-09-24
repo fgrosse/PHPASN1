@@ -22,7 +22,7 @@ namespace PHPASN1;
 
 class ASN_Sequence extends ASN_Construct implements Parseable {
 	
-	public function getType() {
+	public static function getType() {
         return Identifier::SEQUENCE;
     }
         

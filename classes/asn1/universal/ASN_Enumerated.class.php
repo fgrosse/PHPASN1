@@ -22,7 +22,7 @@ namespace PHPASN1;
 
 class ASN_Enumerated extends ASN_Integer {
             
-    public function getType() {
+    public static function getType() {
         return Identifier::ENUMERATED;
     }    
     

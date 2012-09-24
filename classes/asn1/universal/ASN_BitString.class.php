@@ -40,7 +40,7 @@ class ASN_BitString extends ASN_OctetString implements Parseable {
         $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
     
-    public function getType() {
+    public static function getType() {
         return Identifier::BITSTRING;
     }
     

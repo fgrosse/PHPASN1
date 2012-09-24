@@ -26,14 +26,7 @@ abstract class ASN_Object {
 
     private $contentLength;
     private $nrOfLengthOctets;
-
-    /**
-     * Must return the identifier octet of the ASN_Object.
-     * All possible values are stored as class constants within
-     * the Identifier class. 
-     */
-    abstract public function getType();
-
+   
     /**
      * Must return the number of octets of the content part.
      */
@@ -42,7 +35,7 @@ abstract class ASN_Object {
     abstract protected function getEncodedValue();
 
     public function getBinary() {
-        $result  = chr($this->getType());
+        $result  = chr(static::getType());
         $result .= $this->createLengthPart();
         $result .= $this->getEncodedValue();
 
@@ -119,7 +112,7 @@ abstract class ASN_Object {
      * @see Identifier::getName()
      */
     public function getTypeName() {
-        return Identifier::getName($this->getType());
+        return Identifier::getName(static::getType());
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                

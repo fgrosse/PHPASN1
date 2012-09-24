@@ -22,7 +22,7 @@ namespace PHPASN1;
 
 class ASN_Set extends ASN_Sequence {
 	
-    public function getType() {
+    public static function getType() {
         return Identifier::SET;
     }
         

@@ -57,7 +57,7 @@ class ASN_UTCTime extends ASN_Object implements Parseable {
         return substr($messages, 0, -2);
     }
     
-    public function getType() {
+    public static function getType() {
         return Identifier::UTC_TIME;
     }
     

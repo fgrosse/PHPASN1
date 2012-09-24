@@ -34,7 +34,7 @@ class ASN_IA5String extends ASN_AbstractString {
         }
     }
  
-    public function getType() {
+    public static function getType() {
         return Identifier::IA5_STRING;
     }
     

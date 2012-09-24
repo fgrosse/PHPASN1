@@ -100,14 +100,14 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
         $stringLength = $this->getContentLength();
         for ($i=0; $i < $stringLength; $i++) {            
             if(in_array($this->value[$i], $this->allowedCharacters) == false) {
-                $typeName = Identifier::getName($this->getType());
+                $typeName = Identifier::getName(static::getType());
                 throw new \Exception("Could not create a {$typeName} from the character sequence '{$this->value}'.");
             }
         }        
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex], Identifier::PRINTABLE_STRING, $offsetIndex++);
+        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
         $string = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;

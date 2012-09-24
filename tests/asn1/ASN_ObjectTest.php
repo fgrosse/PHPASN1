@@ -178,14 +178,5 @@ class ASN_ObjectTest extends PHPASN1TestCase {
        $this->assertEquals($expectedChild2->getContent(), $child2->getContent());
     }
 
-    public function testGetTypeName() {
-        for ($i=0x0; $i < 0x1E; $i++) { 
-            $object = $this->getMockForAbstractClass('\PHPASN1\ASN_Object');
-            $object->expects($this->any())
-                   ->method('getType')
-                   ->will($this->returnValue($i));
-            $this->assertEquals(Identifier::getName($i), $object->getTypeName());
-        }
-    }
 }
     

@@ -31,7 +31,7 @@ class ASN_Integer extends ASN_Object implements Parseable{
         $this->value = $value;
     }
     
-    public function getType() {
+    public static function getType() {
         return Identifier::INTEGER;
     }
     
