@@ -20,7 +20,9 @@
 
 namespace PHPASN1;
 
-class ASN_PrintableString extends ASN_AbstractString {
+abstract class ASN_AbstractString extends ASN_Object implements Parseable {
+    
+    private $allowedCharacters = array();
     
     /**
      * Creates a new ASN.1 PrintableString.
@@ -44,15 +46,64 @@ class ASN_PrintableString extends ASN_AbstractString {
      * 
      */
     public function __construct($string) {          
-        $this->value = $string;        
-        $this->allowNumbers();
-        $this->allowAllLetters();
-        $this->allowSpaces();
-        $this->allowCharacters("'", '(', ')', '+', '-', '.', ',', '/', ':', '=', '?');
+        $this->value = $string;
     }
     
-    public function getType() {
-        return Identifier::PRINTABLE_STRING;
+    protected function allowCharacter($character) {
+        $this->allowedCharacters[] = $character;
+    }
+    
+    protected function allowCharacters($character1, $character2=null, $characterN=null) {
+        $characters = func_get_args();
+        foreach ($characters as $character) {
+            $this->allowedCharacters[] = $character;
+        }
+    }
+    
+    protected function allowNumbers() {
+        for ($char='0'; $char <= '9' ; $char++) { 
+            $this->allowedCharacters[] = $char;
+        }
+    }
+    
+    protected function allowAllLetters() {
+        $this->allowSmallLetters();
+        $this->allowCapitalLetters();
+    }
+    
+    protected function allowSmallLetters() {
+        for ($char='a'; $char <= 'z' ; $char++) { 
+            $this->allowedCharacters[] = $char;
+        }
+    }
+    
+    protected function allowCapitalLetters() {
+        for ($char='A'; $char <= 'Z' ; $char++) { 
+            $this->allowedCharacters[] = $char;
+        }
+    }
+    
+    protected function allowSpaces() {
+        $this->allowedCharacters[] = ' ';        
+    }
+        
+    protected function calculateContentLength() {
+        return strlen($this->value);
+    }
+    
+    protected function getEncodedValue() {
+        $this->checkString();
+        return $this->value;
+    }
+        
+    protected function checkString() {
+        $stringLength = $this->getContentLength();
+        for ($i=0; $i < $stringLength; $i++) {            
+            if(in_array($this->value[$i], $this->allowedCharacters) == false) {
+                $typeName = Identifier::getName($this->getType());
+                throw new \Exception("Could not create a {$typeName} from the character sequence '{$this->value}'.");
+            }
+        }        
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                

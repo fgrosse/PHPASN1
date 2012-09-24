@@ -85,5 +85,27 @@ class ASN_PrintableStringTest extends PHPASN1TestCase {
         $this->assertEquals($originalobject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
+    
+    public function testCreateStringWithValidCharacters() {
+        $object = new ASN_PrintableString('Hello World');
+        $object->getBinary();
+        $object = new ASN_PrintableString('Hello, World?');
+        $object->getBinary();
+        $object = new ASN_PrintableString("(Hello) 0001100 'World'?");
+        $object->getBinary();
+        $object = new ASN_PrintableString('Hello := World');
+        $object->getBinary();
+    }
+    
+    public function testCreateStringWithInvalidCharacters() {
+        $invalidString = "Hello ♥♥♥ World"; 
+        try {
+            $object = new ASN_PrintableString($invalidString);
+            $object->getBinary();
+            $this->fail('Should have thrown an exception');
+        } catch (\Exception $exception) {
+            $this->assertEquals("Could not create a ASN.1 Printable String from the character sequence '{$invalidString}'.", $exception->getMessage());
+        }
+    }
 }
     
