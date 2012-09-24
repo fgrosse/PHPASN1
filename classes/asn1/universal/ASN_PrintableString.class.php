@@ -53,18 +53,7 @@ class ASN_PrintableString extends ASN_AbstractString {
     
     public static function getType() {
         return Identifier::PRINTABLE_STRING;
-    }
-    
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex], Identifier::PRINTABLE_STRING, $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
-        $string = substr($binaryData, $offsetIndex, $contentLength);
-        $offsetIndex += $contentLength;
-        
-        $parsedObject = new self($string);
-        $parsedObject->setContentLength($contentLength);        
-        return $parsedObject;
-    }
+    }    
            
 }
 ?>

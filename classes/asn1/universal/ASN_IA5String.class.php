@@ -37,16 +37,5 @@ class ASN_IA5String extends ASN_AbstractString {
     public static function getType() {
         return Identifier::IA5_STRING;
     }
-    
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex], Identifier::IA5_STRING, $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);        
-        $string = substr($binaryData, $offsetIndex, $contentLength);
-        $offsetIndex += $contentLength;
-        
-        $parsedObject = new self($string);
-        $parsedObject->setContentLength($contentLength);        
-        return $parsedObject;
-    }
 }
 ?>

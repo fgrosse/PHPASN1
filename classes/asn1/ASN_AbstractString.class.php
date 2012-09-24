@@ -112,7 +112,7 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
         $string = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
         
-        $parsedObject = new self($string);
+        $parsedObject = new static($string);
         $parsedObject->setContentLength($contentLength);        
         return $parsedObject;
     }

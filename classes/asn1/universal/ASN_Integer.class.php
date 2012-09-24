@@ -67,7 +67,7 @@ class ASN_Integer extends ASN_Object implements Parseable{
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
-        self::parseIdentifier($binaryData[$offsetIndex], Identifier::INTEGER, $offsetIndex++);
+        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
            
         //TODO this will get in trouble with big numbers: rewrite with gmp
@@ -83,7 +83,7 @@ class ASN_Integer extends ASN_Object implements Parseable{
             $number -= pow(2, 8*$contentLength-1);            
         }                
         
-        $parsedObject = new self($number);
+        $parsedObject = new static($number);
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
