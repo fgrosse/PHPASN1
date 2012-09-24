@@ -40,7 +40,7 @@ abstract class Identifier {
     
     const SEQUENCE          = 0x30;
     const SET               = 0x31;
-    const NUMERIC_STRING    = 0x12; // unsupported for now
+    const NUMERIC_STRING    = 0x12;
     const PRINTABLE_STRING  = 0x13;
     const T61_STRING        = 0x14; // unsupported for now
     const VIDEOTEXT_STRING  = 0x15; // unsupported for now
