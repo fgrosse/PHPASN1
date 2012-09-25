@@ -42,7 +42,7 @@ abstract class Identifier {
     const SET               = 0x31;
     const NUMERIC_STRING    = 0x12;
     const PRINTABLE_STRING  = 0x13;
-    const T61_STRING        = 0x14;
+    const T61_STRING        = 0x14; // sometimes referred to as TeletexString     
     const VIDEOTEXT_STRING  = 0x15; // unsupported for now
     const IA5_STRING        = 0x16;
     const UTC_TIME          = 0x17;
@@ -50,7 +50,7 @@ abstract class Identifier {
     const GRAPHIC_STRING    = 0x19; // unsupported for now
     const VISIBLE_STRING    = 0x1A; // unsupported for now
     const GENERAL_STRING    = 0x1B; // unsupported for now
-    const UNIVERSAL_STRING  = 0x1C; // unsupported for now
+    const UNIVERSAL_STRING  = 0x1C;
     const CHARACTER_STRING  = 0x1D; // unsupported for now
     const BMP_STRING        = 0x1E; // unsupported for now
     
