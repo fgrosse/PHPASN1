@@ -42,7 +42,7 @@ abstract class Identifier {
     const SET               = 0x31;
     const NUMERIC_STRING    = 0x12;
     const PRINTABLE_STRING  = 0x13;
-    const T61_STRING        = 0x14; // unsupported for now
+    const T61_STRING        = 0x14;
     const VIDEOTEXT_STRING  = 0x15; // unsupported for now
     const IA5_STRING        = 0x16;
     const UTC_TIME          = 0x17;

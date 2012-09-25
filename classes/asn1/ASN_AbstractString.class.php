@@ -22,6 +22,7 @@ namespace PHPASN1;
 
 abstract class ASN_AbstractString extends ASN_Object implements Parseable {
     
+    private $checkStringForIllegalChars = true;
     private $allowedCharacters = array();
     
     /**
@@ -86,13 +87,19 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
     protected function allowSpaces() {
         $this->allowedCharacters[] = ' ';        
     }
-        
+    
+    protected function allowAll() {
+        $this->checkStringForIllegalChars = false;
+    }
+    
     protected function calculateContentLength() {
         return strlen($this->value);
     }
     
     protected function getEncodedValue() {
-        $this->checkString();
+        if($this->checkStringForIllegalChars) {
+            $this->checkString();
+        }
         return $this->value;
     }
         
