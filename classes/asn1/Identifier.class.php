@@ -34,7 +34,7 @@ abstract class Identifier {
     const FLOAT             = 0x09; // unsupported for now
     const ENUMERATED        = 0x0A;
     const EMBEDDED_PDV      = 0x0B; // unsupported for now
-    const UTF8_STRING       = 0x0C; // unsupported for now
+    const UTF8_STRING       = 0x0C;
     const RELATIVE_OID      = 0x0D; // unsupported for now
     // value 0x0E and 0x0F are reserved for future use
     
