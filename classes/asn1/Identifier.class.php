@@ -51,7 +51,7 @@ abstract class Identifier {
     const VISIBLE_STRING    = 0x1A; // unsupported for now
     const GENERAL_STRING    = 0x1B; // unsupported for now
     const UNIVERSAL_STRING  = 0x1C;
-    const CHARACTER_STRING  = 0x1D; // unsupported for now
+    const CHARACTER_STRING  = 0x1D; // Unrestricted character type
     const BMP_STRING        = 0x1E; // unsupported for now
     
     const LONG_FORM         = 0x1F; // unsupported for now

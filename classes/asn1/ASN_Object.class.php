@@ -142,6 +142,8 @@ abstract class ASN_Object {
                 return ASN_UTF8String::fromBinary($binaryData, $offsetIndex);
             case Identifier::UNIVERSAL_STRING:
                 return ASN_UniversalString::fromBinary($binaryData, $offsetIndex);
+            case Identifier::CHARACTER_STRING:
+                return ASN_CharacterString::fromBinary($binaryData, $offsetIndex);
             case Identifier::NUMERIC_STRING:
                 return ASN_NumericString::fromBinary($binaryData, $offsetIndex);
             case Identifier::SEQUENCE:
