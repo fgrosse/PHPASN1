@@ -43,16 +43,16 @@ abstract class Identifier {
     const NUMERIC_STRING    = 0x12;
     const PRINTABLE_STRING  = 0x13;
     const T61_STRING        = 0x14; // sometimes referred to as TeletexString     
-    const VIDEOTEXT_STRING  = 0x15; // unsupported for now
+    const VIDEOTEXT_STRING  = 0x15;
     const IA5_STRING        = 0x16;
     const UTC_TIME          = 0x17;
     const GENERALIZED_TIME  = 0x18; // unsupported for now
-    const GRAPHIC_STRING    = 0x19; // unsupported for now
-    const VISIBLE_STRING    = 0x1A; // unsupported for now
-    const GENERAL_STRING    = 0x1B; // unsupported for now
+    const GRAPHIC_STRING    = 0x19;
+    const VISIBLE_STRING    = 0x1A;
+    const GENERAL_STRING    = 0x1B;
     const UNIVERSAL_STRING  = 0x1C;
     const CHARACTER_STRING  = 0x1D; // Unrestricted character type
-    const BMP_STRING        = 0x1E; // unsupported for now
+    const BMP_STRING        = 0x1E;
     
     const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;

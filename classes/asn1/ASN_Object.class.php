@@ -124,8 +124,6 @@ abstract class ASN_Object {
                 return ASN_Boolean::fromBinary($binaryData, $offsetIndex);
             case Identifier::ENUMERATED:
                 return ASN_Enumerated::fromBinary($binaryData, $offsetIndex);
-            case Identifier::IA5_STRING:
-                return ASN_IA5String::fromBinary($binaryData, $offsetIndex);
             case Identifier::INTEGER:
                 return ASN_Integer::fromBinary($binaryData, $offsetIndex);
             case Identifier::NULL:
@@ -134,24 +132,35 @@ abstract class ASN_Object {
                 return ASN_ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
             case Identifier::OCTETSTRING:
                 return ASN_OctetString::fromBinary($binaryData, $offsetIndex);
-            case Identifier::PRINTABLE_STRING:
-                return ASN_PrintableString::fromBinary($binaryData, $offsetIndex);
-            case Identifier::T61_STRING:
-                return ASN_T61String::fromBinary($binaryData, $offsetIndex);
-            case Identifier::UTF8_STRING:
-                return ASN_UTF8String::fromBinary($binaryData, $offsetIndex);
-            case Identifier::UNIVERSAL_STRING:
-                return ASN_UniversalString::fromBinary($binaryData, $offsetIndex);
-            case Identifier::CHARACTER_STRING:
-                return ASN_CharacterString::fromBinary($binaryData, $offsetIndex);
-            case Identifier::NUMERIC_STRING:
-                return ASN_NumericString::fromBinary($binaryData, $offsetIndex);
             case Identifier::SEQUENCE:
                 return ASN_Sequence::fromBinary($binaryData, $offsetIndex);
             case Identifier::SET:
                 return ASN_Set::fromBinary($binaryData, $offsetIndex);
             case Identifier::UTC_TIME:
                 return ASN_UTCTime::fromBinary($binaryData, $offsetIndex);
+
+            case Identifier::IA5_STRING:
+                return ASN_IA5String::fromBinary($binaryData, $offsetIndex);
+            case Identifier::PRINTABLE_STRING:
+                return ASN_PrintableString::fromBinary($binaryData, $offsetIndex);
+            case Identifier::NUMERIC_STRING:
+                return ASN_NumericString::fromBinary($binaryData, $offsetIndex);
+
+            case Identifier::GRAPHIC_STRING:
+            case Identifier::VISIBLE_STRING:
+            case Identifier::GENERAL_STRING:
+            case Identifier::BMP_STRING:
+                return ASN_BMPString::fromBinary($binaryData, $offsetIndex);
+                    
+            case Identifier::T61_STRING:
+                return ASN_T61String::fromBinary($binaryData, $offsetIndex);
+            case Identifier::UTF8_STRING:
+                return ASN_UTF8String::fromBinary($binaryData, $offsetIndex);
+            case Identifier::UNIVERSAL_STRING:
+                return ASN_UniversalString::fromBinary($binaryData, $offsetIndex);
+            
+            case Identifier::CHARACTER_STRING:
+                return ASN_CharacterString::fromBinary($binaryData, $offsetIndex);
             
             default:
                 if(Identifier::isConstructed($identifierOctet)) {
