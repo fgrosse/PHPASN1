@@ -90,9 +90,16 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo(new ASN_Integer(-546));
             printVariableInfo(new ASN_Enumerated(1));
             printVariableInfo(new ASN_PrintableString("Hello World"));
+            printVariableInfo(new ASN_NumericString("123456"));
+            printVariableInfo(new ASN_CharacterString("Foo"));
+            printVariableInfo(new ASN_UTF8String("Hello ♥♥♥ World"));
+            // there are more restricted character string classes available
+            
             printVariableInfo(new ASN_BitString("3082010a02820101009e2a7"));
+            printVariableInfo(new ASN_OctetString('x01020304AE123200A0'));
             printVariableInfo(new ASN_ObjectIdentifier(OID::PKCS9_EMAIL));
             printVariableInfo(new ASN_Null());
+            printVariableInfo(new ASN_UTCTime('2012-09-30 14:33'));
             
             // Constructed            
             printVariableInfo(new ASN_Sequence(
