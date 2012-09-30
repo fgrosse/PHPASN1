@@ -26,7 +26,7 @@ class CSR_PublicKey extends ASN_Sequence {
         parent::__construct(
             new ASN_Sequence(
                 new ASN_ObjectIdentifier($algorithmIdentifierString),
-                new ASN_NULL()
+                new ASN_Null()
             ),
             new ASN_BitString($hexKey)
         );

@@ -91,7 +91,7 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo(new ASN_Enumerated(1));
             printVariableInfo(new ASN_PrintableString("Hello World"));
             printVariableInfo(new ASN_BitString("3082010a02820101009e2a7"));
-            printVariableInfo(new ASN_ObjectIdentifier(OID::EMAIL));
+            printVariableInfo(new ASN_ObjectIdentifier(OID::PKCS9_EMAIL));
             printVariableInfo(new ASN_Null());
             
             // Constructed            
@@ -147,7 +147,7 @@ function printVariableInfo(ASN_Object $variable) {
                  BB 65 93 39 42 F9 FD 69 20 E3 CF EF 49 E9'
             ));
             
-            printVariableInfo(new CSR_SignatureKeyAlgorithm(OID::SHA1_WITH_RSA_ENCRYPTION));
+            printVariableInfo(new CSR_SignatureKeyAlgorithm(OID::SHA1_WITH_RSA_SIGNATURE));
             
             printVariableInfo($csr = new CSR(
                 "Friedrich Grosse",

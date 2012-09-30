@@ -38,7 +38,7 @@ class CertificateSubject extends ASN_Sequence {
             new ASN_RelativeDistinguishedName(OID::ORGANIZATION_NAME, new ASN_PrintableString($orga)),
             new ASN_RelativeDistinguishedName(OID::OU_NAME, new ASN_PrintableString($ou)),
             new ASN_RelativeDistinguishedName(OID::COMMON_NAME, new ASN_PrintableString($commonName)),
-            new ASN_RelativeDistinguishedName(OID::EMAIL, new ASN_IA5String($email))
+            new ASN_RelativeDistinguishedName(OID::PKCS9_EMAIL, new ASN_IA5String($email))
         );
         
         $this->commonName = $commonName;

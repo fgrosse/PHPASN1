@@ -70,7 +70,7 @@ class ASN_NullTest extends PHPASN1TestCase {
         $parsedObject = ASN_Null::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject1, $parsedObject);
         $this->assertEquals(2, $offset);
-        $parsedObject = ASN_NULL::fromBinary($binaryData, $offset);
+        $parsedObject = ASN_Null::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject2, $parsedObject);
         $this->assertEquals(4, $offset);
     }    

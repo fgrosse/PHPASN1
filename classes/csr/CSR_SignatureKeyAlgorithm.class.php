@@ -23,7 +23,7 @@ namespace PHPASN1;
 class CSR_SignatureKeyAlgorithm extends ASN_AttributeTypeAndValue {
         
     public function __construct($objectIdentifierString) {      
-        parent::__construct($objectIdentifierString, new ASN_NULL());
+        parent::__construct($objectIdentifierString, new ASN_Null());
     }
     
     

@@ -31,7 +31,7 @@ class CSR extends ASN_Sequence {
 	
 	protected $startSequence;
 	
-	public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_ENCRYPTION) {						
+	public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_SIGNATURE) {						
 		$this->subject = new CertificateSubject(
             $commonName,
             $email,
