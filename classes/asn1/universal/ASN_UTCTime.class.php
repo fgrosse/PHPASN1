@@ -29,34 +29,8 @@ namespace PHPASN1;
  * Decoding of this type will accept the Basic Encoding Rules (BER)
  * The encoding will comply with the Distinguished Encoding Rules (DER).
  */
-class ASN_UTCTime extends ASN_Object implements Parseable {
-    
-    public function __construct($dateTime = null) {
-        $UTC = new \DateTimeZone('UTC');
+class ASN_UTCTime extends ASN_AbstractTime implements Parseable {
         
-        if($dateTime == null || is_string($dateTime)) {
-            $dateTime = new \DateTime($dateTime, $UTC);
-            if($dateTime == false) {
-                $errorMessage = $this->getLastDateTimeErrors();
-                throw new \Exception("Could not create ASN.1 UTCTime from date time string '{$dateTimeString}': {$errorMessage}");
-            }
-        }
-        else if (!$dateTime instanceof \DateTime){
-            throw new \Exception('Invalid argument or ASN_UTCTIME constructor');
-        }
-        
-        $this->value = $dateTime;
-    }
-    
-    private function getLastDateTimeErrors() {
-        $messages = '';
-        $lastErrors = \DateTime::getLastErrors();
-        foreach ($lastErrors['errors'] as $errorMessage) {
-            $messages .= "{$errorMessage}, ";
-        }
-        return substr($messages, 0, -2);
-    }
-    
     public static function getType() {
         return Identifier::UTC_TIME;
     }
@@ -68,10 +42,6 @@ class ASN_UTCTime extends ASN_Object implements Parseable {
     
     protected function getEncodedValue() {
         return $this->value->format('ymdHis').'Z';
-    }
-    
-    public function __toString() {
-        return $this->value->format("Y-m-d\tH:i:s");
     }
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
@@ -96,23 +66,10 @@ class ASN_UTCTime extends ASN_Object implements Parseable {
         // extract time zone settings
         if($binaryData[$offsetIndex] == '+'
         || $binaryData[$offsetIndex] == '-') {
-            $sign = $binaryData[$offsetIndex++];
-            $timeOffsetHours   = intval(substr($binaryData, $offsetIndex, 2));
-            $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex+2, 2));
-            $offsetIndex += 4;            
-
-            $intervall = new \DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");
-            if($sign == '+') {
-                $dateTime->sub($intervall);
-            }
-            else {             
-                $dateTime->add($intervall);           
-            }
+            $dateTime = static::extractTimeZoneData($binaryData, $offsetIndex, $dateTime);            
         }
-        else {
-            if($binaryData[$offsetIndex++] != 'Z') {
-                throw new ASN1ParserException('Invalid UTC String', $offsetIndex);
-            }
+        else if($binaryData[$offsetIndex++] != 'Z') {
+            throw new ASN1ParserException('Invalid UTC String', $offsetIndex);            
         }
         
         $parsedObject = new ASN_UTCTime($dateTime);
