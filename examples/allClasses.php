@@ -100,6 +100,7 @@ function printVariableInfo(ASN_Object $variable) {
             printVariableInfo(new ASN_ObjectIdentifier(OID::PKCS9_EMAIL));
             printVariableInfo(new ASN_Null());
             printVariableInfo(new ASN_UTCTime('2012-09-30 14:33'));
+            printVariableInfo(new ASN_GeneralizedTime('2008-07-01 22:35:17.024540+06:30'));        
             
             // Constructed            
             printVariableInfo(new ASN_Sequence(
