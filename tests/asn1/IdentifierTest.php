@@ -34,7 +34,7 @@ class IdentifierTest extends PHPASN1TestCase {
         $this->assertEquals('ASN.1 Object Identifier', Identifier::getName(Identifier::OBJECT_IDENTIFIER));
         $this->assertEquals('ASN.1 Object Descriptor', Identifier::getName(Identifier::OBJECT_DESCRIPTOR));
         $this->assertEquals('ASN.1 Object External', Identifier::getName(Identifier::OBJECT_EXTERNAL));
-        $this->assertEquals('ASN.1 Float', Identifier::getName(Identifier::FLOAT));
+        $this->assertEquals('ASN.1 Real', Identifier::getName(Identifier::REAL));
         $this->assertEquals('ASN.1 Enumerated', Identifier::getName(Identifier::ENUMERATED));
         $this->assertEquals('ASN.1 Embedded PDV', Identifier::getName(Identifier::EMBEDDED_PDV));
         $this->assertEquals('ASN.1 UTF8 String', Identifier::getName(Identifier::UTF8_STRING));

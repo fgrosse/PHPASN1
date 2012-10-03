@@ -31,7 +31,7 @@ abstract class Identifier {
     const OBJECT_IDENTIFIER = 0x06;
     const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
     const OBJECT_EXTERNAL   = 0x08; // unsupported for now 
-    const FLOAT             = 0x09; // unsupported for now
+    const REAL              = 0x09; // unsupported for now
     const ENUMERATED        = 0x0A;
     const EMBEDDED_PDV      = 0x0B; // unsupported for now
     const UTF8_STRING       = 0x0C;
@@ -46,7 +46,7 @@ abstract class Identifier {
     const VIDEOTEXT_STRING  = 0x15;
     const IA5_STRING        = 0x16;
     const UTC_TIME          = 0x17;
-    const GENERALIZED_TIME  = 0x18; // unsupported for now
+    const GENERALIZED_TIME  = 0x18;
     const GRAPHIC_STRING    = 0x19;
     const VISIBLE_STRING    = 0x1A;
     const GENERAL_STRING    = 0x1B;
@@ -113,8 +113,8 @@ abstract class Identifier {
                 return 'Object Descriptor';
             case self::OBJECT_EXTERNAL:
                 return 'Object External';
-            case self::FLOAT:
-                return 'Float';
+            case self::REAL:
+                return 'Real';
             case self::ENUMERATED:
                 return 'Enumerated';
             case self::EMBEDDED_PDV:
