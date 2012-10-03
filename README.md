@@ -3,14 +3,14 @@ PHPASN1
 
 [![Build Status](https://secure.travis-ci.org/FGrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
 
-A PHP Framework that allows you to encode and decode arbitrary [ASN1](http://www.itu.int/ITU-T/asn1/) structures
-using the [ITU-T X690 Encoding Rules](http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690).
-This encoding is very frequently used in X.509 PKI environments or the communication between heterogeneous computer systems.
+A PHP Framework that allows you to encode and decode arbitrary [ASN.1](http://www.itu.int/ITU-T/asn1/) structures
+using the [ITU-T X.690 Encoding Rules](http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690).
+This encoding is very frequently used in [X.509 PKI environments](http://en.wikipedia.org/wiki/X.509) or the communication between heterogeneous computer systems.
 
-The API allows you to encode ASN1 structures to create binary data such as certificate
+The API allows you to encode ASN.1 structures to create binary data such as certificate
 signing requests (CSR), X.509 certificates or certificate revocation lists (CRL).
 
-PHPASN1 can also read BER encoded binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
+PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encoding) binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
 
 ## Dependencies
@@ -28,7 +28,6 @@ The classes do not include each other so they can be moved anywhere in your proj
 
 ### The Autoloader
 You will need some kind of Autoloader to run this API.
-Don't worry if you don't have a autoloader facility yet.
 You can easily use PHPASN1s autoloader by including `PHPASN_Autoloader.php` (found directly in the classes folder)
 and then registering it.
 
@@ -53,8 +52,9 @@ More information about PHP Autoloading  can be found [here](http://php.net/manua
 
 ### Encoding ASN.1 Structures
 
-PHPASN1 offers you a class for each of the implemented ASN.1 universal types. The constructors should be pretty self explanatory so
-you should have no big trouble getting started.
+PHPASN1 offers you a class for each of the implemented ASN.1 universal types.
+The constructors should be pretty self explanatory so you should have no big trouble getting started.
+All data will be encoded using [DER encoding](http://en.wikipedia.org/wiki/X.690#DER_encoding)
 
 ```php
 $integer = new ASN_Integer(123456);        
@@ -81,7 +81,7 @@ echo base64_encode($myBinary);
 
 Decoding BER encoded binary data is just as easy as encoding it.
 I am currently working on this part of the API so there might be some useful methods in the future that allow you to easily navigate the
-decoded data.  
+decoded data.
 
 ```php
 $base64String = ...
@@ -93,12 +93,12 @@ $asnObject = ASN_Object::fromBinary($binaryData);
 
 ### Examples
 
-To see some example usage of the API classes or some generated output check out the examples folder.
+To see some example usage of the API classes or some generated output check out the [examples folder](https://github.com/FGrosse/PHPASN1/tree/master/examples).
 
 
 ### Unit Tests
 
-PHPASN1 uses [PHP Unit](https://github.com/sebastianbergmann/phpunit). For some more detailed example usages you could look at the tests folder.  
+PHPASN1 uses [PHP Unit](https://github.com/sebastianbergmann/phpunit). For some more detailed example usages you could look at the [tests folder](https://github.com/FGrosse/PHPASN1/tree/master/tests).  
 
 ## Thanks
 
