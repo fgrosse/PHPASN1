@@ -13,6 +13,14 @@ signing requests (CSR), X.509 certificates or certificate revocation lists (CRL)
 PHPASN1 can also read BER encoded binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
 
+## Dependencies
+
+PHPASN1 requires at least **PHP 5.3.0**.
+
+For the loading of object identifier names directly from the web the following **PHP modules** are used:
+* [Client URL Library](http://php.net/manual/en/book.curl.php)
+
+
 ## Usage
 
 Just copy (maybe rename) the classes folder into your php application.
