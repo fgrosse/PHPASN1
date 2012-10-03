@@ -1,6 +1,8 @@
 PHPASN1
 =======
 
+[![Build Status](https://secure.travis-ci.org/FGrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
+
 A PHP Framework that allows you to encode and decode arbitrary [ASN1](http://www.itu.int/ITU-T/asn1/) structures
 using the [ITU-T X690 Encoding Rules](http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690).
 This encoding is very frequently used in X.509 PKI environments or the communication between heterogeneous computer systems.
