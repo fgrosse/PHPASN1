@@ -9,16 +9,13 @@ This encoding is very frequently used in [X.509 PKI environments](http://en.wiki
 
 The API allows you to encode ASN.1 structures to create binary data such as certificate
 signing requests (CSR), X.509 certificates or certificate revocation lists (CRL).
-
 PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encoding) binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
 
 ## Dependencies
 
 PHPASN1 requires at least **PHP 5.3.0**.
-
-For the loading of object identifier names directly from the web the following **PHP modules** are used:
-* [Client URL Library](http://php.net/manual/en/book.curl.php)
+For the loading of object identifier names directly from the web the [Client URL Library (CURL)](http://php.net/manual/en/book.curl.php) is used.
 
 
 ## Usage
