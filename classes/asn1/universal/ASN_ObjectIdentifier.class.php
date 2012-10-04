@@ -22,7 +22,7 @@ namespace PHPASN1;
 
 class ASN_ObjectIdentifier extends ASN_Object implements Parseable {
 
-    private $subIdentifiers;
+    protected $subIdentifiers;
 
     public function __construct($value) {
         $this->subIdentifiers = explode('.', $value);

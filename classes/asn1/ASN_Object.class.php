@@ -130,6 +130,8 @@ abstract class ASN_Object {
                 return ASN_Null::fromBinary($binaryData, $offsetIndex);
             case Identifier::OBJECT_IDENTIFIER:
                 return ASN_ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
+            case Identifier::RELATIVE_OID:
+                return ASN_RelativeObjectIdentifier::fromBinary($binaryData, $offsetIndex);
             case Identifier::OCTETSTRING:
                 return ASN_OctetString::fromBinary($binaryData, $offsetIndex);
             case Identifier::SEQUENCE:
