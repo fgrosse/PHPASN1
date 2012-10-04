@@ -62,11 +62,14 @@ abstract class Identifier {
     }
     
     /**
-     * Return the long version of the type name. 
+     * Return the name of the mapped ASN.1 type with a preceding "ASN.1 ". 
      * 
-     * If the given identifier octet can be mapped to a known universal type this will
-     * return its name with a preceding "ASN.1".
-     * Else "UNKNOWN Type" and the identifier octet as hexadecimal value is returned     
+     * Example:
+     * <pre>
+     * ASN.1 Octet String
+     * </pre>
+     * 
+     * @see Identifier::getShortName()
      */
     public static function getName($identifierOctet) {
         if(!is_numeric($identifierOctet)) {
@@ -86,8 +89,14 @@ abstract class Identifier {
      * Return the short version of the type name. 
      * 
      * If the given identifier octet can be mapped to a known universal type this will
-     * return its name.
-     * Else "UNKNOWN Type" and the identifier octet as hexadecimal value is returned
+     * return its name. Else Identifier::getClassDescription() is used to retrieve
+     * information about the identifier.
+     * 
+     * Note that the long form identifier is not yet supported by PHPASN1 and will
+     * trigger a NotImplementedException if used.
+     * 
+     * @see Identifier::getName()
+     * @see Identifier::getClassDescription()
      */
     public static function getShortName($identifierOctet) {
         if(!is_numeric($identifierOctet)) {
@@ -168,6 +177,19 @@ abstract class Identifier {
         }
     } 
 
+    /**
+     * Returns a textual description of the information encoded in a given identifier octet.
+     * 
+     * The first three (most significant) bytes are evaluated to determine if this is a 
+     * constructed or primitive type and if it is either universal, application, context-specific or 
+     * private.
+     * 
+     * Example:
+     * <pre>
+     * Constructed context-specific
+     * Primitive universal
+     * </pre>
+     */
     public static function getClassDescription($identifierOctet) {
          if(self::isConstructed($identifierOctet)) {
             $classDescription = 'Constructed ';
