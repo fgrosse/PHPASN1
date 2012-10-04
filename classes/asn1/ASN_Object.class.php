@@ -162,6 +162,8 @@ abstract class ASN_Object {
                 return ASN_BMPString::fromBinary($binaryData, $offsetIndex);                    
             case Identifier::T61_STRING:
                 return ASN_T61String::fromBinary($binaryData, $offsetIndex);                        
+            case Identifier::OBJECT_DESCRIPTOR:
+                return ASN_ObjectDescriptor::fromBinary($binaryData, $offsetIndex);
             default:
                 if(Identifier::isConstructed($identifierOctet)) {
                     return new ASN_UnknownConstructedObject($binaryData, $offsetIndex);

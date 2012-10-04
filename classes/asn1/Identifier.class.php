@@ -29,7 +29,7 @@ abstract class Identifier {
     const OCTETSTRING       = 0x04;
     const NULL              = 0x05;
     const OBJECT_IDENTIFIER = 0x06;
-    const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
+    const OBJECT_DESCRIPTOR = 0x07;
     const EXTERNAL          = 0x08; // unsupported for now 
     const REAL              = 0x09; // unsupported for now
     const ENUMERATED        = 0x0A;
