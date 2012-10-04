@@ -30,7 +30,7 @@ abstract class Identifier {
     const NULL              = 0x05;
     const OBJECT_IDENTIFIER = 0x06;
     const OBJECT_DESCRIPTOR = 0x07; // unsupported for now
-    const OBJECT_EXTERNAL   = 0x08; // unsupported for now 
+    const EXTERNAL          = 0x08; // unsupported for now 
     const REAL              = 0x09; // unsupported for now
     const ENUMERATED        = 0x0A;
     const EMBEDDED_PDV      = 0x0B; // unsupported for now
@@ -120,8 +120,8 @@ abstract class Identifier {
                 return 'Object Identifier';
             case self::OBJECT_DESCRIPTOR:
                 return 'Object Descriptor';
-            case self::OBJECT_EXTERNAL:
-                return 'Object External';
+            case self::EXTERNAL:
+                return 'External Type';
             case self::REAL:
                 return 'Real';
             case self::ENUMERATED:
