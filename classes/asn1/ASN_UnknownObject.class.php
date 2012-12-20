@@ -23,12 +23,11 @@ namespace PHPASN1;
 class ASN_UnknownObject extends ASN_Object {
     
     private $identifierOctet;
-    private $contentLength;
     
     public function __construct($identifierOctet, $contentLength) {
         $this->identifierOctet = $identifierOctet;
         $this->value = "Unparseable Object ({$contentLength} bytes)";
-        $this->contentLength = $contentLength;        
+        $this->setContentLength($contentLength);        
     }
     
     public function getType() {
@@ -36,7 +35,7 @@ class ASN_UnknownObject extends ASN_Object {
     }
     
     protected function calculateContentLength() {
-        return $this->contentLength;
+        return $this->getContentLength();
     }
     
     protected function getEncodedValue() {

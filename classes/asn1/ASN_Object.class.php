@@ -60,7 +60,7 @@ abstract class ASN_Object {
         }
     }
 
-    private function getNumberOfLengthOctets($contentLength=null) {        
+    protected function getNumberOfLengthOctets($contentLength=null) {        
         if(!isset($this->nrOfLengthOctets)) {
             if($contentLength == null) {
                 $contentLength = $this->getContentLength();
