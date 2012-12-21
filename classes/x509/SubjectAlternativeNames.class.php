@@ -82,8 +82,8 @@ class SubjectAlternativeNames extends ASN_Object implements Parseable {
                 throw new ASN1ParserException("Could not parse Subject Alternative Name: Only DNSName and IP SANs are currently supported");
             }            
         }
-        $parsedObject->getBinary(); // Determine the number of content octets and object sizes once
-        
+
+        $parsedObject->getBinary(); // Determine the number of content octets and object sizes once (just to let the equality unit tests pass :/ )        
         return $parsedObject;
     }
 }
