@@ -90,6 +90,9 @@ abstract class ASN_Object {
         $this->getNumberOfLengthOctets($newContentLength);
     }
 
+    /**
+     * Returns the length of the whole object (including the identifier and length octets).
+     */
     public function getObjectLength() {        
         $nrOfIdentifierOctets = 1; // does not support identifier long form yet        
         $contentLength = $this->getContentLength();        

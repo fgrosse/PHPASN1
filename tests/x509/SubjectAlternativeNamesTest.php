@@ -26,7 +26,7 @@ class SubjectAlternativeNamesTest extends PHPASN1TestCase {
     
     public function testGetType() {
         $object = new SubjectAlternativeNames();
-        $this->assertEquals(Identifier::SEQUENCE, $object->getType());
+        $this->assertEquals(Identifier::OCTETSTRING, $object->getType());
     }
     
     public function testGetContent() {
@@ -45,28 +45,23 @@ class SubjectAlternativeNamesTest extends PHPASN1TestCase {
         $this->assertTrue(sizeof($object->getContent()) == 2);
         $this->assertContains($ipAddress, $object->getContent());
     }
-        
+
     public function testGetObjectLength() {
-        $dnsName = new SAN_DNSName('corvespace.de');
+        $dnsName = new SAN_DNSName('example.dhl.com');
         $object = new SubjectAlternativeNames();
-        $object->addDomainName($dnsName);
-        $objectIdentifier = new ASN_ObjectIdentifier(OID::CERT_EXT_SUBJECT_ALT_NAME);
-        $expectedSize = 2 + $objectIdentifier->getObjectLength() + 2 + 2 + $dnsName->getObjectLength(); // All SANs are encapsulated in a sequence which is encapsulated in a octet string
+        $object->addDomainName($dnsName);        
+        $expectedSize = 2 + 2 + $dnsName->getObjectLength(); // all registered SANs are encapsulated in a sequence which is encapsulated in a octet string
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
-    
-    public function testGetBinary() {
-        $objectIdentifier = new ASN_ObjectIdentifier(OID::CERT_EXT_SUBJECT_ALT_NAME);
+
+    public function testGetBinary() {        
         $dnsName = new SAN_DNSName('example.dhl.com');
         $object = new SubjectAlternativeNames();
         $object->addDomainName($dnsName);
         
-        $expectedType = chr(Identifier::SEQUENCE);
-        $expectedLength = chr(26);
-        $expectedContent  = $objectIdentifier->getBinary();
-        $expectedContent .= chr(Identifier::OCTETSTRING);
-        $expectedContent .= chr(0x13);
-        $expectedContent .= chr(Identifier::SEQUENCE);
+        $expectedType = chr(Identifier::OCTETSTRING);
+        $expectedLength = chr(0x13);
+        $expectedContent  = chr(Identifier::SEQUENCE);
         $expectedContent .= chr(0x11);
         $expectedContent .= $dnsName->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());        
@@ -102,10 +97,9 @@ class SubjectAlternativeNamesTest extends PHPASN1TestCase {
         $offset = 0;
         $parsedObject = SubjectAlternativeNames::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject1, $parsedObject);
-        $this->assertEquals(38, $offset);
+        $this->assertEquals(31, $offset);
         $parsedObject = SubjectAlternativeNames::fromBinary($binaryData, $offset);
         $this->assertEquals($originalobject2, $parsedObject);
-        $this->assertEquals(61, $offset);
-    }    
+        $this->assertEquals(47, $offset);
+    }
 }
-    
