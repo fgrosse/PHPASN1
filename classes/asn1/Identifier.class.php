@@ -220,7 +220,7 @@ abstract class Identifier {
                 break;
             case 0x02:
                 $tagNumber = $identifierOctet & 0x1F;
-                $classDescription .= "[$tagNumber]";
+                $classDescription = "[$tagNumber] Context-specific";
                 break;
             case 0x03:
                 $classDescription .= 'private';
