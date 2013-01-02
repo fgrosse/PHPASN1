@@ -20,6 +20,19 @@
 
 namespace PHPASN1;
 
+/**
+ * The Identifier encodes the ASN.1 tag (class and number) of the type of a data value.
+ * 
+ * Every identifier whose number is in the range 0 to 30 has the following structure:
+ * 
+ * Bits:    8  7    6    5  4  3  2  1
+ *       | Class | P/C |   Tag number  |
+ *       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 
+ * Bits 8 and 7 define the class of this type ( Universal, Application, Context-specific or Private).
+ * Bit 6 encoded whether this type is primitive or constructed
+ * The remaining bits 5 - 1 encode the tag number
+ */
 abstract class Identifier {
        
     const EOC               = 0x00; // unsupported for now
@@ -206,7 +219,8 @@ abstract class Identifier {
                 $classDescription .= 'application';
                 break;
             case 0x02:
-                $classDescription .= 'context-specific';
+                $tagNumber = $identifierOctet & 0x1F;
+                $classDescription .= "[$tagNumber]";
                 break;
             case 0x03:
                 $classDescription .= 'private';
