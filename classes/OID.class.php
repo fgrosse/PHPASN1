@@ -30,6 +30,7 @@ abstract class OID {
     const PKCS9_CONTENT_TYPE                = '1.2.840.113549.1.9.3';
     const PKCS9_MESSAGE_DIGEST              = '1.2.840.113549.1.9.4';
     const PKCS9_SIGNING_TIME                = '1.2.840.113549.1.9.5';
+    const PKCS9_EXTENSION_REQUEST           = '1.2.840.113549.1.9.14';
     
     // certificate extension identifier    
     const CERT_EXT_SUBJECT_DIRECTORY_ATTR   = '2.5.29.9';

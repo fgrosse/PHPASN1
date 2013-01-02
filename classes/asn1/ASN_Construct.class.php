@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-abstract class ASN_Construct extends ASN_Object implements \Iterator {
+abstract class ASN_Construct extends ASN_Object implements \Iterator, Parseable {
 
     private $iteratorPosition = 0;
     
