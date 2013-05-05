@@ -50,9 +50,9 @@ class CSR extends ASN_Sequence {
 	
 	protected function createCSRSequence() {
 		$versionNr			= new ASN_Integer(self::CSR_VERSION_NR);
-		$publicKey 			= new CSR_PublicKey($this->publicKey);
+		$publicKey 			= new PublicKeyInfo($this->publicKey);
 		$signature			= new ASN_BitString($this->signature);
-		$signatureAlgorithm	= new CSR_SignatureKeyAlgorithm($this->signatureAlgorithm);		
+		$signatureAlgorithm	= new AlgorithmIdentifier($this->signatureAlgorithm);		
 
 		$certRequestInfo  = new ASN_Sequence($versionNr, $this->subject, $publicKey);
 		

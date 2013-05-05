@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class CSR_PublicKey extends ASN_Sequence {
+class PublicKeyInfo extends ASN_Sequence {
         
     function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION) {        
         parent::__construct(
