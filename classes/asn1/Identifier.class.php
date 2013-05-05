@@ -117,9 +117,7 @@ abstract class Identifier {
      * @see Identifier::getClassDescription()
      */
     public static function getShortName($identifierOctet) {
-        if(!is_numeric($identifierOctet)) {
-            $identifierOctet = ord($identifierOctet);
-        }
+        $identifierOctet = self::makeNumeric($identifierOctet);
         
         switch ($identifierOctet) {
             case self::EOC:
@@ -239,22 +237,36 @@ abstract class Identifier {
     }
 
     public static function getTagNumber($identifierOctet) {
+        $identifierOctet = self::makeNumeric($identifierOctet);
         return $identifierOctet & 0x1F; 
     }
     
     public static function isUniversalClass($identifier) {
+        $identifier = self::makeNumeric($identifier);
         return $identifier >> 6 == self::CLASS_UNIVERSAL;
     }
     
     public static function isApplicationClass($identifier) {
+        $identifier = self::makeNumeric($identifier);
         return $identifier >> 6 == self::CLASS_APPLICATION;
     }
     
     public static function isContextSpecificClass($identifier) {
+        $identifier = self::makeNumeric($identifier);
         return $identifier >> 6 == self::CLASS_CONTEXT_SPECIFIC;
     }
     
     public static function isPrivateClass($identifier) {
+        $identifier = self::makeNumeric($identifier);
         return $identifier >> 6 == self::CLASS_PRIVATE;
+    }
+    
+    private static function makeNumeric($identifierOctet) {
+        if(!is_numeric($identifierOctet)) {
+            return ord($identifierOctet);
+        }
+        else {
+            return $identifierOctet;
+        }
     }
 }
