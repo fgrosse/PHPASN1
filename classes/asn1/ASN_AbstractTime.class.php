@@ -33,7 +33,7 @@ abstract class ASN_AbstractTime extends ASN_Object {
             }
         }
         else if (!$dateTime instanceof \DateTime){
-            throw new \Exception('Invalid first argument for ASN_UTCTIME constructor');
+            throw new \Exception('Invalid first argument for some instance of ASN_AbstractTime constructor');
         }
         
         $this->value = $dateTime;

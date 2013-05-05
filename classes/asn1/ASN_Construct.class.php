@@ -106,6 +106,10 @@ abstract class ASN_Construct extends ASN_Object implements \Iterator, Parseable 
     public function getChildren() {
         return $this->value;
     }
+    
+    public function getFirstChild() {
+        return $this->value[0];
+    }
 
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {
         self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);

@@ -65,7 +65,11 @@ class ASN_OctetString extends ASN_Object implements Parseable {
     
     public function getContent() {
         return strtoupper($this->value);
-    }    
+    }
+    
+    public function getBinaryContent() {
+        return $this->getEncodedValue();
+    }   
     
     public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::OCTETSTRING, $offsetIndex++);

@@ -20,6 +20,9 @@
 
 namespace PHPASN1;
 
+/**
+ * See section 8.3.2.1 of ITU-T X.509
+ */
 class SubjectAlternativeNames extends ASN_Object implements Parseable {
     
     private $alternativeNamesSequence;
@@ -79,7 +82,7 @@ class SubjectAlternativeNames extends ASN_Object implements Parseable {
                 $parsedObject->addIP($ip);
             }
             else {
-                throw new ASN1ParserException("Could not parse Subject Alternative Name: Only DNSName and IP SANs are currently supported");
+                throw new ASN1ParserException("Could not parse Subject Alternative Name: Only DNSName and IP SANs are currently supported", $offsetIndex);
             }            
         }
 

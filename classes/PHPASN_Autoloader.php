@@ -2,7 +2,7 @@
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
  * 
- * Copyright © Friedrich Große, Berlin 2012
+ * Copyright © Friedrich Große, Berlin 2012-2013
  * 
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ class PHPASN_Autoloader {
     }
 
     public static function autoload($className) {
-        $simpleClassName = substr($className, strpos($className, '\\') + 1);
+        $simpleClassName = substr($className, strrpos($className, '\\') + 1);
         $instance = self::getInstance();
         require_once $instance->getPathOfClass($simpleClassName);
     }

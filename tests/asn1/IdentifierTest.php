@@ -100,6 +100,12 @@ class IdentifierTest extends PHPASN1TestCase {
         $this->assertFalse(Identifier::isApplicationClass($identifier4));
         $this->assertFalse(Identifier::isContextSpecificClass($identifier4));
         $this->assertTrue(Identifier::isPrivateClass($identifier4));
+        
+        $identifier5 = 0xA3;
+        $this->assertFalse(Identifier::isUniversalClass($identifier5));
+        $this->assertFalse(Identifier::isApplicationClass($identifier5));
+        $this->assertTrue(Identifier::isContextSpecificClass($identifier5));
+        $this->assertFalse(Identifier::isPrivateClass($identifier5));
     }
 }
     
