@@ -76,5 +76,30 @@ class IdentifierTest extends PHPASN1TestCase {
         $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
     }
     
+    public function testIsSpecificClass() {
+        $identifier1 = Identifier::INTEGER;
+        $this->assertTrue(Identifier::isUniversalClass($identifier1));
+        $this->assertFalse(Identifier::isApplicationClass($identifier1));
+        $this->assertFalse(Identifier::isContextSpecificClass($identifier1));
+        $this->assertFalse(Identifier::isPrivateClass($identifier1));
+        
+        $identifier2 = 0x41;
+        $this->assertFalse(Identifier::isUniversalClass($identifier2));
+        $this->assertTrue(Identifier::isApplicationClass($identifier2));
+        $this->assertFalse(Identifier::isContextSpecificClass($identifier2));
+        $this->assertFalse(Identifier::isPrivateClass($identifier2));
+        
+        $identifier3 = 0x83;
+        $this->assertFalse(Identifier::isUniversalClass($identifier3));
+        $this->assertFalse(Identifier::isApplicationClass($identifier3));
+        $this->assertTrue(Identifier::isContextSpecificClass($identifier3));
+        $this->assertFalse(Identifier::isPrivateClass($identifier3));
+        
+        $identifier4 = 0xC3;
+        $this->assertFalse(Identifier::isUniversalClass($identifier4));
+        $this->assertFalse(Identifier::isApplicationClass($identifier4));
+        $this->assertFalse(Identifier::isContextSpecificClass($identifier4));
+        $this->assertTrue(Identifier::isPrivateClass($identifier4));
+    }
 }
     

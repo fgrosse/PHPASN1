@@ -241,4 +241,20 @@ abstract class Identifier {
     public static function getTagNumber($identifierOctet) {
         return $identifierOctet & 0x1F; 
     }
+    
+    public static function isUniversalClass($identifier) {
+        return $identifier >> 6 == self::CLASS_UNIVERSAL;
+    }
+    
+    public static function isApplicationClass($identifier) {
+        return $identifier >> 6 == self::CLASS_APPLICATION;
+    }
+    
+    public static function isContextSpecificClass($identifier) {
+        return $identifier >> 6 == self::CLASS_CONTEXT_SPECIFIC;
+    }
+    
+    public static function isPrivateClass($identifier) {
+        return $identifier >> 6 == self::CLASS_PRIVATE;
+    }
 }
