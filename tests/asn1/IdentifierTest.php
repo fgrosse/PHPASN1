@@ -70,5 +70,11 @@ class IdentifierTest extends PHPASN1TestCase {
     public function testGetIdentifierNameForLongForm() {
         Identifier::getName(0x1F);
     }
+    
+    public function testGetTagNumber() {
+        $this->assertEquals(1, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x01));
+        $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
+    }
+    
 }
     

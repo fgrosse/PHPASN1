@@ -2,7 +2,7 @@
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
  * 
- * Copyright © Friedrich Große, Berlin 2012
+ * Copyright © Friedrich Große, Berlin 2012-2013
  * 
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,12 @@ namespace PHPASN1;
  * The remaining bits 5 - 1 encode the tag number
  */
 abstract class Identifier {
-       
+
+    const CLASS_UNIVERSAL        = 0x00;
+    const CLASS_APPLICATION      = 0x01;
+    const CLASS_CONTEXT_SPECIFIC = 0x02;
+    const CLASS_PRIVATE          = 0x03;
+    
     const EOC               = 0x00; // unsupported for now
     const BOOLEAN           = 0x01;
     const INTEGER           = 0x02;
@@ -212,17 +217,17 @@ abstract class Identifier {
         }
         $classBits = $identifierOctet >> 6;
         switch ($classBits) {
-            case 0x00:
+            case self::CLASS_UNIVERSAL:
                 $classDescription .= 'universal';
                 break;
-            case 0x01:
+            case self::CLASS_APPLICATION:
                 $classDescription .= 'application';
                 break;
-            case 0x02:
-                $tagNumber = $identifierOctet & 0x1F;
+            case self::CLASS_CONTEXT_SPECIFIC:
+                $tagNumber = self::getTagNumber($identifierOctet);
                 $classDescription = "[$tagNumber] Context-specific";
                 break;
-            case 0x03:
+            case self::CLASS_PRIVATE:
                 $classDescription .= 'private';
                 break;
             
@@ -233,4 +238,7 @@ abstract class Identifier {
         return $classDescription;
     }
 
+    public static function getTagNumber($identifierOctet) {
+        return $identifierOctet & 0x1F; 
+    }
 }
