@@ -22,9 +22,15 @@ namespace PHPASN1;
 
 class ASN_AttributeTypeAndValue extends ASN_Sequence {
     
-    public function __construct($objIdentifierString, ASN_Object $value) {
-        parent::__construct(new ASN_ObjectIdentifier($objIdentifierString), $value);
+    public function __construct($objIdentifier, ASN_Object $value) {
+        if($objIdentifier instanceof ASN_ObjectIdentifier == false) {
+            $objIdentifier = new ASN_ObjectIdentifier($objIdentifier); 
+        }
+        parent::__construct($objIdentifier, $value);        
     }
     
+    public function __toString() {
+        return $this->value[0] . ': ' . $this->value[1];
+    }
 }
 ?>

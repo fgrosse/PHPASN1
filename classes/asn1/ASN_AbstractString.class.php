@@ -123,6 +123,15 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
         $parsedObject->setContentLength($contentLength);        
         return $parsedObject;
     }
-           
+    
+    public static function isValid($string) {
+        $testObject = new static($string);
+        try {
+            $testObject->checkString();
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }   
 }
 ?>

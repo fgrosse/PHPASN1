@@ -20,11 +20,16 @@
 
 namespace PHPASN1;
 
-class ASN_StringObject extends ASN_RelativeDistinguishedName {
-            
-    public function __construct($objectIdentifierString, $value) {                       
-        parent::__construct($objectIdentifierString, new ASN_PrintableString($value));
+class RelativeDistinguishedName extends ASN_Set {
+    
+    public function __construct($objIdentifierString, ASN_Object $value) {
+        // TODO: This does only support one element in the RelativeDistinguishedName Set but it it is defined as follows:
+        // RelativeDistinguishedName ::= SET SIZE (1..MAX) OF AttributeTypeAndValue
+        parent::__construct(new ASN_AttributeTypeAndValue($objIdentifierString, $value));        
     }
     
+    public function getContent() {
+        return $this->value[0]->__toString();
+    }
 }
 ?>

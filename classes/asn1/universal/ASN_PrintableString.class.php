@@ -54,6 +54,6 @@ class ASN_PrintableString extends ASN_AbstractString {
     public static function getType() {
         return Identifier::PRINTABLE_STRING;
     }    
-           
+    
 }
 ?>

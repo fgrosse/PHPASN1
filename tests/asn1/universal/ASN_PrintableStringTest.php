@@ -107,5 +107,13 @@ class ASN_PrintableStringTest extends PHPASN1TestCase {
             $this->assertEquals("Could not create a ASN.1 Printable String from the character sequence '{$invalidString}'.", $exception->getMessage());
         }
     }
+    
+    public function testIsPrintableString() {
+        $validString = "Hello World"; 
+        $this->assertTrue(ASN_PrintableString::isValid($validString));
+        
+        $invalidString = "Hello ♥♥♥ World";
+        $this->assertFalse(ASN_PrintableString::isValid($invalidString)); 
+    }
 }
     

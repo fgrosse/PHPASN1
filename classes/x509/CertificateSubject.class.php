@@ -20,7 +20,7 @@
 
 namespace PHPASN1;
 
-class CertificateSubject extends ASN_Sequence {
+class CertificateSubject extends ASN_Sequence implements Parseable {
     
     private $commonName;
     private $email;
@@ -32,13 +32,13 @@ class CertificateSubject extends ASN_Sequence {
     
     public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou) {
         parent::__construct(
-            new ASN_RelativeDistinguishedName(OID::COUNTRY_NAME, new ASN_PrintableString($country)),
-            new ASN_RelativeDistinguishedName(OID::STATE_OR_PROVINCE_NAME, new ASN_PrintableString($state)),
-            new ASN_RelativeDistinguishedName(OID::LOCALITY_NAME, new ASN_PrintableString($locality)),
-            new ASN_RelativeDistinguishedName(OID::ORGANIZATION_NAME, new ASN_PrintableString($orga)),
-            new ASN_RelativeDistinguishedName(OID::OU_NAME, new ASN_PrintableString($ou)),
-            new ASN_RelativeDistinguishedName(OID::COMMON_NAME, new ASN_PrintableString($commonName)),
-            new ASN_RelativeDistinguishedName(OID::PKCS9_EMAIL, new ASN_IA5String($email))
+            new RDNString(OID::COUNTRY_NAME, $country),
+            new RDNString(OID::STATE_OR_PROVINCE_NAME, $state),
+            new RDNString(OID::LOCALITY_NAME, $locality),
+            new RDNString(OID::ORGANIZATION_NAME, $orga),
+            new RDNString(OID::OU_NAME, $ou),
+            new RDNString(OID::COMMON_NAME, $commonName),
+            new RDNString(OID::PKCS9_EMAIL, $email)
         );
         
         $this->commonName = $commonName;
@@ -78,5 +78,22 @@ class CertificateSubject extends ASN_Sequence {
         return $this->organizationalUnit;
     }
     
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {
+        self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);
+        
+        $rdns = array();
+        $octetsToRead = $contentLength;
+        while($octetsToRead > 0) {
+            $relativeDistinguishedName = RelativeDistinguishedName::fromBinary($binaryData, $offsetIndex);
+            $octetsToRead -= $relativeDistinguishedName->getObjectLength();
+            $rdns[] = $relativeDistinguishedName;
+        }
+/*
+        $parsedObject = new static();                
+        $parsedObject->addChildren($children);
+        $parsedObject->setContentLength($contentLength);
+        return $parsedObject;*/
+    }
 }
 ?>

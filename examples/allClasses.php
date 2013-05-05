@@ -118,12 +118,12 @@ function printVariableInfo(ASN_Object $variable) {
                 new ASN_PrintableString('My Organization')
             ));
              
-            printVariableInfo(new ASN_RelativeDistinguishedName(
+            printVariableInfo(new RelativeDistinguishedName(
                 OID::RSA_ENCRYPTION,
                 new ASN_Integer(62342)
             ));
             
-            printVariableInfo(new ASN_StringObject(
+            printVariableInfo(new RDNString(
                 OID::COMMON_NAME,
                 'Hello World'
             ));
