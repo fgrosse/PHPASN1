@@ -118,7 +118,11 @@ abstract class ASN_Object {
         return Identifier::getName(static::getType());
     }
 
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {
+        if(strlen($binaryData) < $offsetIndex) {
+            throw new ASN1ParserException("Can not parse binary from data: Offsetindex larger than input size", $offsetIndex);
+        }
+                        
         $identifierOctet = ord($binaryData[$offsetIndex]);
         switch ($identifierOctet) {
             case Identifier::BITSTRING:

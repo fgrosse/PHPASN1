@@ -178,5 +178,15 @@ class ASN_ObjectTest extends PHPASN1TestCase {
        $this->assertEquals($expectedChild2->getContent(), $child2->getContent());
     }
 
+    /**
+     * @expectedException PHPASN1\ASN1ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 10: Can not parse binary from data: Offsetindex larger than input size
+     * @depends testFromBinary
+     */
+    public function testFromBinaryThrowsException() {
+        $binaryData = 0x0;
+        $offset = 10;
+        $parsedObject = ASN_Object::fromBinary($binaryData, $offset);
+    }
 }
     
