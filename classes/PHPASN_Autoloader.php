@@ -72,9 +72,15 @@ class PHPASN_Autoloader {
     }
 
     public static function autoload($className) {
-        $simpleClassName = substr($className, strrpos($className, '\\') + 1);
-        $instance = self::getInstance();
-        require_once $instance->getPathOfClass($simpleClassName);
+        if(self::isPHPASN1Class($className)) {
+            $simpleClassName = substr($className, strrpos($className, '\\') + 1);
+            $instance = self::getInstance();
+            require_once $instance->getPathOfClass($simpleClassName);
+        }
+    }
+
+    private static function isPHPASN1Class($className) {
+        return strpos($className, __NAMESPACE__) === 0;
     }
 
     private function getPathOfClass($className) {
