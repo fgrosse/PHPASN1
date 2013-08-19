@@ -26,25 +26,7 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
     private $allowedCharacters = array();
     
     /**
-     * Creates a new ASN.1 PrintableString.
-     * 
-     * The ITU-T X.680 Table 8 permits the following characters:    
-     * Latin capital letters A,B, ... Z
-     * Latin small letters   a,b, ... z 
-     * Digits                0,1, ... 9
-     * SPACE                 (space)
-     * APOSTROPHE            '
-     * LEFT PARENTHESIS      (
-     * RIGHT PARENTHESIS     )
-     * PLUS SIGN             +
-     * COMMA                 ,
-     * HYPHEN-MINUS          -
-     * FULL STOP             .
-     * SOLIDUS               /
-     * COLON                 :
-     * EQUALS SIGN           =
-     * QUESTION MARK         ? 
-     * 
+     * The abstract base class for ASN.1 classes which represent some string of character.
      */
     public function __construct($string) {          
         $this->value = $string;
@@ -62,8 +44,8 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
     }
     
     protected function allowNumbers() {
-        for ($char='0'; $char <= '9' ; $char++) { 
-            $this->allowedCharacters[] = $char;
+        foreach (range('0', '9') as $char) { 
+            $this->allowedCharacters[] = (string) $char;
         }
     }
     
@@ -73,13 +55,13 @@ abstract class ASN_AbstractString extends ASN_Object implements Parseable {
     }
     
     protected function allowSmallLetters() {
-        for ($char='a'; $char <= 'z' ; $char++) { 
+        foreach (range('a', 'z') as $char) { 
             $this->allowedCharacters[] = $char;
         }
     }
     
     protected function allowCapitalLetters() {
-        for ($char='A'; $char <= 'Z' ; $char++) { 
+        foreach (range('A', 'Z') as $char) { 
             $this->allowedCharacters[] = $char;
         }
     }

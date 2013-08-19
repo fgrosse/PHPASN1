@@ -23,25 +23,11 @@ namespace PHPASN1;
 class ASN_NumericString extends ASN_AbstractString {
     
     /**
-     * Creates a new ASN.1 PrintableString.
+     * Creates a new ASN.1 NumericString.
      * 
-     * The ITU-T X.680 Table 8 permits the following characters:    
-     * Latin capital letters A,B, ... Z
-     * Latin small letters   a,b, ... z 
+     * The following characters are permitted:    
      * Digits                0,1, ... 9
      * SPACE                 (space)
-     * APOSTROPHE            '
-     * LEFT PARENTHESIS      (
-     * RIGHT PARENTHESIS     )
-     * PLUS SIGN             +
-     * COMMA                 ,
-     * HYPHEN-MINUS          -
-     * FULL STOP             .
-     * SOLIDUS               /
-     * COLON                 :
-     * EQUALS SIGN           =
-     * QUESTION MARK         ? 
-     * 
      */
     public function __construct($string) {          
         $this->value = $string;        
