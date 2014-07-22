@@ -66,26 +66,24 @@ class ASN_Integer extends ASN_Object implements Parseable{
         return $result;
     }
     
-    public static function fromBinary(&$binaryData, &$offsetIndex=0) {                
+    public static function fromBinary(&$binaryData, &$offsetIndex=0) {
         self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);        
-           
-        //TODO this will get in trouble with big numbers: rewrite with gmp
-        
-        $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;        
-        $number = ord($binaryData[$offsetIndex++]) & 0x7F;
-        
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
+
+        $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
+
+        $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F);
+
         for ($i=0; $i<$contentLength-1; $i++) {
-            $number = ($number << 8) + ord($binaryData[$offsetIndex++]);
+            $number = gmp_or(gmp_mul($number, 0x100), ord($binaryData[$offsetIndex++]));
         }
-        
+
         if($isNegative) {
-            $number -= pow(2, 8*$contentLength-1);            
-        }                
-        
-        $parsedObject = new static($number);
+            $number = gmp_sub($number, pow(2, 8*$contentLength-1));
+        }
+
+        $parsedObject = new static(gmp_strval($number));
         $parsedObject->setContentLength($contentLength);
         return $parsedObject;
     }
-}
 ?>
