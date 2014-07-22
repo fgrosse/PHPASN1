@@ -79,7 +79,7 @@ class ASN_Integer extends ASN_Object implements Parseable{
         }
 
         if($isNegative) {
-            $number = gmp_sub($number, pow(2, 8*$contentLength-1)
+            $number = gmp_sub($number, pow(2, 8*$contentLength-1));
         }
 
         $parsedObject = new static(gmp_strval($number));
