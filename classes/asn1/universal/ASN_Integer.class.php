@@ -46,8 +46,6 @@ class ASN_Integer extends ASN_Object implements Parseable{
     }
     
     protected function getEncodedValue() {
-        //TODO make this supported huge numbers
-        
         $numericValue = $this->value;
         $contentLength = $this->getContentLength();
         
