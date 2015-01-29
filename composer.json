@@ -18,7 +18,7 @@
    },
     "suggests" : {
         "php-curl" : "*"
-    }
+    },
    "autoload":{
        "classmap": ["classes/"]
    }
