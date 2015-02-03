@@ -10,6 +10,10 @@
             "email": "friedrich.grosse@gmail.com",
             "homepage": "https://github.com/FGrosse",
             "role": "Author"
+        },
+        {
+            "name": "All contributors",
+            "homepage": "https://github.com/FGrosse/PHPASN1/contributors"
         }
     ],
     "require": {
@@ -22,6 +26,18 @@
         "php-curl": "*"
     },
     "autoload": {
-        "classmap": ["classes/"]
+        "psr-4": {
+            "FG\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FG\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }

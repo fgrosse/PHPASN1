@@ -3,6 +3,11 @@ PHPASN1
 
 [![Build Status](https://secure.travis-ci.org/FGrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
 
+[![Latest Stable Version](https://poser.pugx.org/fgrosse/phpasn1/v/stable.png)](https://packagist.org/packages/fgrosse/phpasn1)
+[![Total Downloads](https://poser.pugx.org/fgrosse/phpasn1/downloads.png)](https://packagist.org/packages/fgrosse/phpasn1)
+[![Latest Unstable Version](https://poser.pugx.org/fgrosse/phpasn1/v/unstable.png)](https://packagist.org/packages/fgrosse/phpasn1)
+[![License](https://poser.pugx.org/fgrosse/phpasn1/license.png)](https://packagist.org/packages/fgrosse/phpasn1)
+
 A PHP Framework that allows you to encode and decode arbitrary [ASN.1](http://www.itu.int/ITU-T/asn1/) structures
 using the [ITU-T X.690 Encoding Rules](http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690).
 This encoding is very frequently used in [X.509 PKI environments](http://en.wikipedia.org/wiki/X.509) or the communication between heterogeneous computer systems.
@@ -14,38 +19,24 @@ PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encod
 
 ## Dependencies
 
-PHPASN1 requires at least **PHP 5.3.0**.
+PHPASN1 requires at least `PHP 5.3`.
+
+It has been successfully tested using `PHP 5.3` to `PHP 5.6` and `HHVM`
+
 For the loading of object identifier names directly from the web the [Client URL Library (CURL)](http://php.net/manual/en/book.curl.php) is used.
 
+## Installation ##
+
+The preferred way to install this library is to rely on Composer:
+
+    {
+        "require": {
+            // ...
+            "fgrosse/phpasn1": "dev-master"
+        }
+    }
 
 ## Usage
-
-Just copy (maybe rename) the classes folder into your php application.
-The classes do not include each other so they can be moved anywhere in your project.
-
-### The Autoloader
-You will need some kind of Autoloader to run this API.
-You can easily use PHPASN1s autoloader by including `PHPASN_Autoloader.php` (found directly in the classes folder)
-and then registering it.
-
-```php
-require_once '../classes/PHPASN_Autoloader.php';
-PHPASN_Autoloader::register();
-```
-
-Everytime a called class is not yet known to PHP it asks the autoloader.
-The PHPASN1 autoloader will resursively search for any class files in all directories at its own directory level.
-The class file name needs to match the pattern `<CLASSNAME>.class.php`
-
-Because searching for all the right class files everytime is wasteful, the PHPASN1 autoloader has its own caching mechanism.
-It will write the mapping of all classes to the absolut locations of their class files into a cache file.
-You can tell the autoloader where to put that file in the `PHPASN_Autoloader::register(...)` function.
-
-**Note**: Currently, the caching is non-optional and requires php to have **write access** to the cache directory
-or the right to create the folder if it does not exist.
-
-More information about PHP Autoloading  can be found [here](http://php.net/manual/en/language.oop5.autoload.php).
-
 
 ### Encoding ASN.1 Structures
 
@@ -54,18 +45,29 @@ The constructors should be pretty self explanatory so you should have no big tro
 All data will be encoded using [DER encoding](http://en.wikipedia.org/wiki/X.690#DER_encoding)
 
 ```php
-$integer = new ASN_Integer(123456);        
-$boolean = new ASN_Boolean(true);
-$enum = new ASN_Enumerated(1);
-$ia5String = new ASN_IA5String('Hello world');
 
-$asnNull = new ASN_Null();
-$objectIdentifier1 = new ASN_ObjectIdentifier('1.2.250.1.16.9');
-$objectIdentifier2 = new ASN_ObjectIdentifier(OID::RSA_ENCRYPTION);
-$printableString = new ASN_PrintableString('Foo bar');
+use FG\ASN1\Universal\Integer;
+use FG\ASN1\Universal\Boolean;
+use FG\ASN1\Universal\Enumerated;
+use FG\ASN1\Universal\IA5String;
+use FG\ASN1\Universal\ObjectIdentifier;
+use FG\ASN1\Universal\PrintableString;
+use FG\ASN1\Universal\Sequence;
+use FG\ASN1\Universal\Set;
+use FG\ASN1\Universal\Null;
 
-$sequence = new ASN_Sequence($integer, $boolean, $enum, $ia5String);
-$set = new ASN_Set($sequence, $asnNull, $objectIdentifier1, $objectIdentifier2, $printableString);
+$integer = new Integer(123456);        
+$boolean = new Boolean(true);
+$enum = new Enumerated(1);
+$ia5String = new IA5String('Hello world');
+
+$asnNull = new Null();
+$objectIdentifier1 = new ObjectIdentifier('1.2.250.1.16.9');
+$objectIdentifier2 = new ObjectIdentifier(OID::RSA_ENCRYPTION);
+$printableString = new PrintableString('Foo bar');
+
+$sequence = new Sequence($integer, $boolean, $enum, $ia5String);
+$set = new Set($sequence, $asnNull, $objectIdentifier1, $objectIdentifier2, $printableString);
 
 $myBinary  = $sequence->getBinary();
 $myBinary .= $set->getBinary();
@@ -81,9 +83,11 @@ I am currently working on this part of the API so there might be some useful met
 decoded data.
 
 ```php
+use FG\ASN1\Object;
+
 $base64String = ...
 $binaryData = base64_decode($base64String);        
-$asnObject = ASN_Object::fromBinary($binaryData);
+$asnObject = Object::fromBinary($binaryData);
 // do stuff
 ```
 
@@ -99,5 +103,9 @@ PHPASN1 uses [PHP Unit](https://github.com/sebastianbergmann/phpunit). For some 
 
 ## Thanks
 
-Thanks [Robert](https://github.com/robertkoehler) for the help with the Autoloader :)
-I also use [this nice php script](http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/) from [Aidan Lister](http://aidanlister.com)
+The old autoloader is no more used, but thanks [Robert](https://github.com/robertkoehler) for the help with the Autoloader :)
+I also use [this nice php script](http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/) from [Aidan Lister](http://aidanlister.com).
+
+## License
+
+This library is release under [GNU General Public License Version 3](LICENSE).

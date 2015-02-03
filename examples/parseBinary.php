@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2012
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,12 +18,12 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PHPASN1;
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once '../classes/PHPASN_Autoloader.php';
-PHPASN_Autoloader::register();
+use FG\ASN1\Object;
+use FG\ASN1\Identifier;
 
-$base64String = 
+$base64String =
 'MIIDfjCCAuegAwIBAgIKZGgbPQAAAABnVTANBgkqhkiG9w0BAQUFADBGMQswCQYD
 VQQGEwJVUzETMBEGA1UEChMKR29vZ2xlIEluYzEiMCAGA1UEAxMZR29vZ2xlIElu
 dGVybmV0IEF1dGhvcml0eTAeFw0xMjA4MTYxMjI2MTlaFw0xMzA2MDcxOTQzMjda
@@ -45,27 +45,27 @@ CznPwmTKJmjLRIq6v6RPvYC9O45EM7kjB1YXcCCKiPK7IGmJf8dwZAO4MKLtJnv4
 D0k6lc6/SWpmbg33TqEDjl8OsvMUzV6S8XRz2L/rqZ1z1g==';
 
 $binaryData = base64_decode($base64String);
-$asnObject = ASN_Object::fromBinary($binaryData);
+$asnObject = Object::fromBinary($binaryData);
 
-function printObject(ASN_Object $object, $depth=0) {
+function printObject(Object $object, $depth = 0)
+{
     $treeSymbol = '';
     $depthString = str_repeat('━', $depth);
-    if($depth > 0) {
+    if ($depth > 0) {
         $treeSymbol = '┣';
     }
-    
+
     $name = strtoupper(Identifier::getShortName($object->getType()));
     echo "{$treeSymbol}{$depthString}<b>{$name}</b> : ";
-    
-    echo $object->__toString() . '<br/>';
-    
+
+    echo $object->__toString().'<br/>';
+
     $content = $object->getContent();
-    if(is_array($content)) {        
+    if (is_array($content)) {
         foreach ($object as $child) {
             printObject($child, $depth+1);
         }
     }
-    
 }
 
 ?>
@@ -78,7 +78,7 @@ function printObject(ASN_Object $object, $depth=0) {
   <meta name="description" content="How to parse binary ASN.1 data with PHPASN1">
   <meta name="author" content="Friedrich Große">
 </head>
-<body>    
+<body>
     <p>Got <?= strlen($binaryData) ?> byte of binary data: </p>
     <pre><?php printObject($asnObject);?></pre>
 </body>

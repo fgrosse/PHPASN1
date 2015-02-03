@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2013
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,30 +18,32 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PHPASN1;
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once '../external/hexdump.php';
-require_once '../classes/PHPASN_Autoloader.php';
-PHPASN_Autoloader::register();
+use FG\ASN1\OID;
+use FG\ASN1\Object;
+use FG\ASN1\Identifier;
+use FG\ASN1\Universal\Sequence;
 
-function printObject(ASN_Object $object, $depth=0) {
+function printObject(Object $object, $depth = 0)
+{
     $treeSymbol = '';
     $depthString = str_repeat('─', $depth);
-    if($depth > 0) {
+    if ($depth > 0) {
         $treeSymbol = '├';
     }
-    
+
     $name = Identifier::getShortName($object->getType());
     echo "{$treeSymbol}{$depthString}{$name} : ";
-    
-    echo $object->__toString() . PHP_EOL;
-    
+
+    echo $object->__toString().PHP_EOL;
+
     $content = $object->getContent();
-    if(is_array($content)) {        
+    if (is_array($content)) {
         foreach ($object as $child) {
             printObject($child, $depth+1);
         }
-    }    
+    }
 }
 
 $base64 = "MIIINTCCBh2gAwIBAgIQbVVJc10C7UUjfYRHQ//7nTANBgkqhkiG9w0BAQsFADB0
@@ -92,59 +94,58 @@ I3DmZaXdR169kRoPIqkV3QIREs/yHBvkxXrwDt416stUnQ8KsxAEatE=";
 try {
     $binaryData = base64_decode($base64);
     //hexdump($binaryData, false);
-    
-    $rootObject = ASN_Object::fromBinary($binaryData);
+
+    $rootObject = Object::fromBinary($binaryData);
     //printObject($rootObject);
-    
+
     // first navigate to the certificate extensions
     // (see ITU-T X.509 section 7 "Public-keys and public-key certificates" for cert structure)
     assert($rootObject->getType() == Identifier::SEQUENCE);
     $topLevelContainer = $rootObject->getChildren();
     $certificateInfo = $topLevelContainer[0];
-    
+
     assert($certificateInfo->getType() == Identifier::SEQUENCE);
-    
+
     // there need to be at least 8 child elements if the certificate extensions field is present
     assert($certificateInfo->getNumberofChildren() >= 8);
     $certInfoFields = $certificateInfo->getChildren();
     $certExtensions = $certInfoFields[7];
-    
+
     // check if this is really the certificate extensions sequence
     $certExtensionsType = $certExtensions->getType();
     assert(Identifier::isContextSpecificClass($certExtensionsType));
     assert(Identifier::getTagNumber($certExtensions->getType()) == 3);
-    
-    // this should contain a sequence of extensions 
+
+    // this should contain a sequence of extensions
     $certExtensions = $certExtensions->getFirstChild();
     assert($certExtensions->getType() == Identifier::SEQUENCE);
-    
+
     // now check all extensions and search for the SAN
     foreach ($certExtensions as $extensionSequence) {
-    	assert($extensionSequence->getType() == Identifier::SEQUENCE);
+        assert($extensionSequence->getType() == Identifier::SEQUENCE);
         assert($extensionSequence->getNumberofChildren() >= 2);
-        
+
         $extensionSequenceChilds = $extensionSequence->getChildren();
         $objectIdentifier = $extensionSequenceChilds[0];
         assert($objectIdentifier->getType() == Identifier::OBJECT_IDENTIFIER);
-        
+
         if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
             // now we have the wanted octet string
             $octetString = $extensionSequenceChilds[1];
             $octetStringBinary = $octetString->getBinaryContent();
-                        
+
             // At this point you may want to create the sequence from the binary value of
             // the octet string and parse its structure like we did so far.
-            // However a more general approach would be to understand the format of the 
+            // However a more general approach would be to understand the format of the
             // contained SAN fields and implement them in SubjectAlternativeNames.
-            $sequence = ASN_Sequence::fromBinary($octetStringBinary);
-            echo "This is the parsed content of the SAN certificate extension field so far:" . PHP_EOL;
+            $sequence = Sequence::fromBinary($octetStringBinary);
+            echo "This is the parsed content of the SAN certificate extension field so far:".PHP_EOL;
             printObject($sequence);
-            
+
             // The following does not work yet because PHPASN1 SAn does only support DNS and IP
             //SubjectAlternativeNames::fromBinary($octetStringBinary);
         }
     }
 } catch (\Exception $exception) {
-    echo '[ERROR] Catched exception:' . PHP_EOL . $exception->getMessage() . PHP_EOL;
+    echo '[ERROR] Catched exception:'.PHP_EOL.$exception->getMessage().PHP_EOL;
 }
-?>

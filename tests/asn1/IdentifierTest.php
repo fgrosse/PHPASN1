@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2012
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,15 +16,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
-namespace PHPASN1;
+namespace FG\Test\ASN1;
 
-require_once(dirname(__FILE__) . '/../PHPASN1TestCase.class.php');
- 
-class IdentifierTest extends PHPASN1TestCase {
-    
-    public function testGetIdentifierName() {
+use FG\Test\ASN1TestCase;
+use FG\ASN1\Identifier;
+
+class IdentifierTest extends ASN1TestCase
+{
+
+    public function testGetIdentifierName()
+    {
         $this->assertEquals('ASN.1 End-of-contents octet', Identifier::getName(Identifier::EOC));
         $this->assertEquals('ASN.1 Boolean', Identifier::getName(Identifier::BOOLEAN));
         $this->assertEquals('ASN.1 Integer', Identifier::getName(Identifier::INTEGER));
@@ -54,53 +57,57 @@ class IdentifierTest extends PHPASN1TestCase {
         $this->assertEquals('ASN.1 Universal String', Identifier::getName(Identifier::UNIVERSAL_STRING));
         $this->assertEquals('ASN.1 Character String', Identifier::getName(Identifier::CHARACTER_STRING));
         $this->assertEquals('ASN.1 BMP String', Identifier::getName(Identifier::BMP_STRING));
-        
+
         $this->assertEquals('ASN.1 RESERVED (0x0E)', Identifier::getName(0x0E));
-        $this->assertEquals('ASN.1 RESERVED (0x0F)', Identifier::getName(0x0F));                
+        $this->assertEquals('ASN.1 RESERVED (0x0F)', Identifier::getName(0x0F));
     }
-    
-    public function testGetIdentifierNameWithBinaryInput() {
+
+    public function testGetIdentifierNameWithBinaryInput()
+    {
         $this->assertEquals('ASN.1 Numeric String', Identifier::getName(chr(Identifier::NUMERIC_STRING)));
     }
-    
+
     /**
-     * @expectedException PHPASN1\NotImplementedException
+     * @expectedException \FG\ASN1\Exception\NotImplementedException
      * @expectedExceptionMessage Long form of identifier octets is not yet implemented
      */
-    public function testGetIdentifierNameForLongForm() {
+    public function testGetIdentifierNameForLongForm()
+    {
         Identifier::getName(0x1F);
     }
-    
-    public function testGetTagNumber() {
+
+    public function testGetTagNumber()
+    {
         $this->assertEquals(1, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x01));
         $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
     }
-    
-    public function testIsSpecificClass() {
+
+    public function testIsSpecificClass()
+    {
         $identifier1 = Identifier::INTEGER;
         $this->assertTrue(Identifier::isUniversalClass($identifier1));
         $this->assertFalse(Identifier::isApplicationClass($identifier1));
         $this->assertFalse(Identifier::isContextSpecificClass($identifier1));
         $this->assertFalse(Identifier::isPrivateClass($identifier1));
-        
+
         $identifier2 = 0x41;
         $this->assertFalse(Identifier::isUniversalClass($identifier2));
         $this->assertTrue(Identifier::isApplicationClass($identifier2));
         $this->assertFalse(Identifier::isContextSpecificClass($identifier2));
         $this->assertFalse(Identifier::isPrivateClass($identifier2));
-        
+
         $identifier3 = 0x83;
         $this->assertFalse(Identifier::isUniversalClass($identifier3));
         $this->assertFalse(Identifier::isApplicationClass($identifier3));
         $this->assertTrue(Identifier::isContextSpecificClass($identifier3));
         $this->assertFalse(Identifier::isPrivateClass($identifier3));
-        
+
         $identifier4 = 0xC3;
         $this->assertFalse(Identifier::isUniversalClass($identifier4));
         $this->assertFalse(Identifier::isApplicationClass($identifier4));
         $this->assertFalse(Identifier::isContextSpecificClass($identifier4));
         $this->assertTrue(Identifier::isPrivateClass($identifier4));
-        
+
         $identifier5 = 0xA3;
         $this->assertFalse(Identifier::isUniversalClass($identifier5));
         $this->assertFalse(Identifier::isApplicationClass($identifier5));
@@ -108,4 +115,3 @@ class IdentifierTest extends PHPASN1TestCase {
         $this->assertFalse(Identifier::isPrivateClass($identifier5));
     }
 }
-    

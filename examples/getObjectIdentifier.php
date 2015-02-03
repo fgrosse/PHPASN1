@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2012
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,12 +18,12 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PHPASN1;
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once '../classes/PHPASN_Autoloader.php';
-PHPASN_Autoloader::register();
+use FG\ASN1\OID;
 
-function echoOIDRow($oidString) {
+function echoOIDRow($oidString)
+{
     $oidName = OID::getName($oidString);
     echo "<tr><td>{$oidString}</td><td>{$oidName}</td></tr>";
 }
@@ -38,12 +38,12 @@ function echoOIDRow($oidString) {
   <meta name="author" content="Friedrich Große">
   <style type="text/css">td {padding: 0px 10px;}</style>
 </head>
-<body>    
+<body>
     <table border=1>
         <?php
             echoOIDRow('1.2.840.113549.1.1.1');
             echoOIDRow('1.2.840.113549.1.1.5');
-            echoOIDRow('2.5.29.37');            
+            echoOIDRow('2.5.29.37');
         ?>
     </table>
 </body>

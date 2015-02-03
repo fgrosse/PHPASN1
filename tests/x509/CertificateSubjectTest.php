@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2013
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,14 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-namespace PHPASN1;
 
-require_once(dirname(__FILE__) . '/../PHPASN1TestCase.class.php');
+namespace FG\Test\X509;
 
-class CertificateSubjectTest extends PHPASN1TestCase {
- 
-    public function testGetType() {
+use FG\Test\ASN1TestCase;
+use FG\ASN1\Identifier;
+use FG\X509\CertificateSubject;
+
+class CertificateSubjectTest extends ASN1TestCase
+{
+
+    public function testGetType()
+    {
         $object = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
         $this->assertEquals(Identifier::SEQUENCE, $object->getType());
     }
@@ -32,28 +36,28 @@ class CertificateSubjectTest extends PHPASN1TestCase {
     public function testFromBinary() {
         $originalobject = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
 
-        $binaryData = $originalobject->getBinary();      
+        $binaryData = $originalobject->getBinary();
         $parsedObject = CertificateSubject::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
     }
-    
+
     /**
      * @depends testFromBinary
      */
     /*public function testFromBinaryWithOffset() {
         $objectIdentifier = new ASN_ObjectIdentifier(OID::CERT_EXT_SUBJECT_ALT_NAME);
-        
+
         $originalobject1 = new CertificateExtensions();
         $sans1 = new SubjectAlternativeNames();
-        $sans1->addDomainName(new SAN_DNSName('corvespace.de'));        
+        $sans1->addDomainName(new SAN_DNSName('corvespace.de'));
         $sans1->addIP(new SAN_IPAddress('192.168.0.1'));
         $originalobject1->addSubjectAlternativeNames($sans1);
-        
+
         $originalobject2 = new CertificateExtensions();
         $sans2 = new SubjectAlternativeNames();
-        $sans2->addDomainName(new SAN_DNSName('google.com'));        
+        $sans2->addDomainName(new SAN_DNSName('google.com'));
         $originalobject2->addSubjectAlternativeNames($sans2);
-        
+
         $binaryData  = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
@@ -67,4 +71,3 @@ class CertificateSubjectTest extends PHPASN1TestCase {
         $this->assertEquals($offsetAfterFirstObject + $sans2->getObjectLength() + $objectIdentifier->getObjectLength() + 2  + 2 + 2, $offset);
     }*/
 }
-    
