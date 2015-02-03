@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
- * 
+ *
  * Copyright © Friedrich Große, Berlin 2012
- * 
+ *
  * PHPASN1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,38 +18,60 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PHPASN1;
+require_once __DIR__.'/hexdump.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once '../external/hexdump.php';
-require_once '../classes/PHPASN_Autoloader.php';
-PHPASN_Autoloader::register();
-    
+use FG\ASN1\OID;
+use FG\ASN1\Object;
+use FG\ASN1\Universal\Boolean;
+use FG\ASN1\Universal\Integer;
+use FG\ASN1\Universal\Enumerated;
+use FG\ASN1\Universal\PrintableString;
+use FG\ASN1\Universal\NumericString;
+use FG\ASN1\Universal\CharacterString;
+use FG\ASN1\Universal\UTF8String;
+use FG\ASN1\Universal\BitString;
+use FG\ASN1\Universal\OctetString;
+use FG\ASN1\Universal\ObjectIdentifier;
+use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\UTCTime;
+use FG\ASN1\Universal\GeneralizedTime;
+use FG\ASN1\Universal\Set;
+use FG\ASN1\Universal\Sequence;
+use FG\ASN1\Composite\AttributeTypeAndValue;
+use FG\ASN1\Composite\RDNString;
+use FG\ASN1\Composite\RelativeDistinguishedName;
+use FG\X509\CertificateSubject;
+use FG\X509\PublicKey;
+use FG\X509\AlgorithmIdentifier;
+use FG\X509\CSR\CSR;
+
 // check if openssl is installed on this system
 $openSSLVersionOutput = shell_exec('openssl version');
-if(substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
-    $openSSLisAvailable = true;    
-}
-else {
+if (substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
+    $openSSLisAvailable = true;
+} else {
     $openSSLisAvailable = false;
 }
-    
-function printVariableInfo(ASN_Object $variable) {
+
+function printVariableInfo(Object $variable)
+{
     $className = get_class($variable);
     $stringValue = nl2br($variable->__toString());
     $binaryData = $variable->getBinary();
     $base64Binary = chunk_split(base64_encode($binaryData), 24);
-    
+
     echo '<tr>';
     echo "<td class='ASNclass'>{$className}</td>";
     echo "<td class='toString'>\"<span class='red'>{$stringValue}</span>\"</td>";
     echo "<td class='monospace base64'>{$base64Binary}</td>";
-    echo '<td>' . hexdump($binaryData, true, true, true) . '</td>';           
-    
+    echo '<td>'.hexdump($binaryData, true, true, true).'</td>';
+
     global $openSSLisAvailable;
-    if($openSSLisAvailable) {
+    if ($openSSLisAvailable) {
         $openSSLOutput = shell_exec("echo '{$base64Binary}' | openssl asn1parse -inform PEM -dump -i 2>&1");
-        echo "<td class='openSSL'><pre>{$openSSLOutput}</pre></td>";   
-    }    
+        echo "<td class='openSSL'><pre>{$openSSLOutput}</pre></td>";
+    }
     echo '</tr>';
 }
 
@@ -65,69 +87,70 @@ function printVariableInfo(ASN_Object $variable) {
 </head>
 <body>
     <h1>Examples for all available PHPASN1 classes</h1>
-    
+
     <?php
-    if($openSSLisAvailable == false)
+    if ($openSSLisAvailable == false) {
         echo "<p class='notice'>Note: OpenSSL could not be found on this system. This is absolutely no problem
         for PHPASN1 but it could have been used to show you that the generated binaries are indeed correct :)</p>";
+    }
     ?>
-    
+
     <table>
         <th>Class</th>
         <th>toString()</th>
         <th>Binary (base64)</th>
         <th>Binary (hex)</th>
-        
-        <?php        
-            if($openSSLisAvailable) {
+
+        <?php
+            if ($openSSLisAvailable) {
                 echo '<th>OpenSSL asn1parse output</th>';
             }
-            
+
             // Primitives
-            printVariableInfo(new ASN_Boolean(true));
-            printVariableInfo(new ASN_Boolean(false));
-            printVariableInfo(new ASN_Integer(123456));
-            printVariableInfo(new ASN_Integer(-546));
-            printVariableInfo(new ASN_Enumerated(1));
-            printVariableInfo(new ASN_PrintableString("Hello World"));
-            printVariableInfo(new ASN_NumericString("123456"));
-            printVariableInfo(new ASN_CharacterString("Foo"));
-            printVariableInfo(new ASN_UTF8String("Hello ♥♥♥ World"));
+            printVariableInfo(new Boolean(true));
+            printVariableInfo(new Boolean(false));
+            printVariableInfo(new Integer(123456));
+            printVariableInfo(new Integer(-546));
+            printVariableInfo(new Enumerated(1));
+            printVariableInfo(new PrintableString("Hello World"));
+            printVariableInfo(new NumericString("123456"));
+            printVariableInfo(new CharacterString("Foo"));
+            printVariableInfo(new UTF8String("Hello ♥♥♥ World"));
             // there are more restricted character string classes available
-            
-            printVariableInfo(new ASN_BitString("3082010a02820101009e2a7"));
-            printVariableInfo(new ASN_OctetString('x01020304AE123200A0'));
-            printVariableInfo(new ASN_ObjectIdentifier(OID::PKCS9_EMAIL));
-            printVariableInfo(new ASN_Null());
-            printVariableInfo(new ASN_UTCTime('2012-09-30 14:33'));
-            printVariableInfo(new ASN_GeneralizedTime('2008-07-01 22:35:17.024540+06:30'));        
-            
-            // Constructed            
-            printVariableInfo(new ASN_Sequence(
-                new ASN_ObjectIdentifier(OID::COMMON_NAME),
-                new ASN_PrintableString('Friedrich')    
+
+            printVariableInfo(new BitString("3082010a02820101009e2a7"));
+            printVariableInfo(new OctetString('x01020304AE123200A0'));
+            printVariableInfo(new ObjectIdentifier(OID::PKCS9_EMAIL));
+            printVariableInfo(new Null());
+            printVariableInfo(new UTCTime('2012-09-30 14:33'));
+            printVariableInfo(new GeneralizedTime('2008-07-01 22:35:17.024540+06:30'));
+
+            // Constructed
+            printVariableInfo(new Sequence(
+                new ObjectIdentifier(OID::COMMON_NAME),
+                new PrintableString('Friedrich')
             ));
-            
-            printVariableInfo(new ASN_Set(
-                new ASN_ObjectIdentifier(OID::COUNTRY_NAME),
-                new ASN_PrintableString('Germany')    
+
+            printVariableInfo(new Set(
+                new ObjectIdentifier(OID::COUNTRY_NAME),
+                new PrintableString('Germany')
             ));
-            
-            printVariableInfo(new ASN_AttributeTypeAndValue(
+
+            printVariableInfo(new AttributeTypeAndValue(
                 OID::ORGANIZATION_NAME,
-                new ASN_PrintableString('My Organization')
+                new PrintableString('My Organization')
             ));
-             
+
             printVariableInfo(new RelativeDistinguishedName(
                 OID::RSA_ENCRYPTION,
-                new ASN_Integer(62342)
+                new Integer(62342)
             ));
-            
+
             printVariableInfo(new RDNString(
                 OID::COMMON_NAME,
                 'Hello World'
             ));
-            
+
             // X509
             printVariableInfo(new CertificateSubject(
                 "Friedrich Grosse",
@@ -138,8 +161,8 @@ function printVariableInfo(ASN_Object $variable) {
                 "DE",
                 "Development Department"
             ));
-            
-            printVariableInfo(new CSR_PublicKey(
+
+            printVariableInfo(new PublicKey(
                 '00 00 00 01 23 00 00 01 01 00 E7 40 F2 69 15 D5 4A DD 24 A1 C3
                  0C 93 38 03 1A 49 70 EB 76 B0 F5 1B BF 42 97 BA E1 F3 61 CC E1
                  63 0A BA 0F 66 6D 30 4E 31 67 65 39 E1 2E 93 A7 E7 3E 1E 76 10
@@ -154,9 +177,9 @@ function printVariableInfo(ASN_Object $variable) {
                  8A EF 6F 95 53 89 99 34 7C 4C B4 AE A0 E8 AD C1 04 B8 B6 E2 02
                  BB 65 93 39 42 F9 FD 69 20 E3 CF EF 49 E9'
             ));
-            
-            printVariableInfo(new CSR_SignatureKeyAlgorithm(OID::SHA1_WITH_RSA_SIGNATURE));
-            
+
+            printVariableInfo(new AlgorithmIdentifier(OID::SHA1_WITH_RSA_SIGNATURE));
+
             printVariableInfo($csr = new CSR(
                 "Friedrich Grosse",
                 "friedrich.grosse@gmail.com",
@@ -169,6 +192,6 @@ function printVariableInfo(ASN_Object $variable) {
                 "4adf270d347047192573cf245a94cd2e69594c1cdac1d7c99d7ed5856c926ee62c65188f21d893e634b213595cc4564d5a8d39bed0ca01e0b45e3182ab89310c129017f2a7a68d8603694ddc8d1c2ebfee39b3b5dfc9dbc2db667a089b1b51386f2cf7ec70140d185bae5c2f3b3148b9ef613ce068f94db13a230b1133e4b4a48ec5c8b4066d64a2199c0cfb6c4d0cfe105f21a89b2900d0a5c87bef5eded941ba93ae1b7e84aaeabcb46fa4a3844ffc683ebb4ee80717ff51cba5d82afe9d2633b760a66449e57e06d73eeeb151bc050a66825996d7f5ec821d31891c620a677c8271db13bbc22fcf91e1b7ac8f6f109eb8e3a2c61a3c8a4336b40a499e1404"
             ));
         ?>
-    </table>       
+    </table>
 </body>
 </html>
