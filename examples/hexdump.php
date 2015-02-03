@@ -2,6 +2,8 @@
 /**
  * View any string as a hexdump.
  *
+ * DISCLOSURE: This script has been taken from http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php
+ *
  * This is most commonly used to view binary data from streams
  * or sockets while debugging, but can be used to view any string
  * with non-viewable characters.
@@ -10,10 +12,11 @@
  * @author      Aidan Lister <aidan@php.net>
  * @author      Peter Waller <iridum@php.net>
  * @link        http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/
- * @param       string  $data        The string to be dumped
- * @param       bool    $htmloutput  Set to false for non-HTML output
- * @param       bool    $uppercase   Set to true for uppercase hex
- * @param       bool    $return      Set to true to return the dump
+ * @param       string $data The string to be dumped
+ * @param       bool $htmloutput Set to false for non-HTML output
+ * @param       bool $uppercase Set to true for uppercase hex
+ * @param       bool $return Set to true to return the dump
+ * @return string
  */
 function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
 {
