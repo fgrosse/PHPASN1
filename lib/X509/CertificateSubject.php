@@ -21,11 +21,11 @@
 namespace FG\X509;
 
 use FG\ASN1\OID;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Composite\RDNString;
 use FG\ASN1\Universal\Sequence;
 
-class CertificateSubject extends Sequence implements Parseable
+class CertificateSubject extends Sequence implements Parsable
 {
 
     private $commonName;

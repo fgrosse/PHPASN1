@@ -20,12 +20,12 @@
 
 namespace FG\ASN1\Universal;
 
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\GeneralException;
 use FG\ASN1\Exception\ParserException;
 
-class RelativeObjectIdentifier extends ObjectIdentifier implements Parseable
+class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
 {
 
     public function __construct($subIdentifiers)

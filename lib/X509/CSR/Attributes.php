@@ -22,14 +22,14 @@ namespace FG\X509\CSR;
 
 use FG\X509\CertificateExtensions;
 use FG\ASN1\OID;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Construct;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Set;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\ObjectIdentifier;
 
-class Attributes extends Construct implements Parseable
+class Attributes extends Construct implements Parsable
 {
 
     public static function getType()

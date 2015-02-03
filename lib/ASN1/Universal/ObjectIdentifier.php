@@ -22,12 +22,12 @@ namespace FG\ASN1\Universal;
 
 use FG\ASN1\OID;
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\GeneralException;
 use FG\ASN1\Exception\ParserException;
 
-class ObjectIdentifier extends Object implements Parseable
+class ObjectIdentifier extends Object implements Parsable
 {
 
     protected $subIdentifiers;

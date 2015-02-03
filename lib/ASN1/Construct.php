@@ -20,7 +20,7 @@
 
 namespace FG\ASN1;
 
-abstract class Construct extends Object implements \Iterator, Parseable
+abstract class Construct extends Object implements \Iterator, Parsable
 {
     private $iteratorPosition = 0;
 

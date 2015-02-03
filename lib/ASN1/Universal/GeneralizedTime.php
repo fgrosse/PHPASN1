@@ -21,7 +21,7 @@
 namespace FG\ASN1\Universal;
 
 use FG\ASN1\AbstractTime;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 /**
@@ -35,7 +35,7 @@ use FG\ASN1\Exception\ParserException;
  * Decoding of this type will accept the Basic Encoding Rules (BER)
  * The encoding will comply with the Distinguished Encoding Rules (DER).
  */
-class GeneralizedTime extends AbstractTime implements Parseable
+class GeneralizedTime extends AbstractTime implements Parsable
 {
 
     private $microseconds;

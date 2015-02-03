@@ -21,10 +21,10 @@
 namespace FG\ASN1\Universal;
 
 use FG\ASN1\Construct;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
-class Sequence extends Construct implements Parseable
+class Sequence extends Construct implements Parsable
 {
 
     public static function getType()

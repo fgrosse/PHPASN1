@@ -21,7 +21,7 @@
 namespace FG\ASN1\Universal;
 
 use FG\ASN1\AbstractTime;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 
@@ -34,7 +34,7 @@ use FG\ASN1\Exception\ParserException;
  * Decoding of this type will accept the Basic Encoding Rules (BER)
  * The encoding will comply with the Distinguished Encoding Rules (DER).
  */
-class UTCTime extends AbstractTime implements Parseable
+class UTCTime extends AbstractTime implements Parsable
 {
 
     public static function getType()

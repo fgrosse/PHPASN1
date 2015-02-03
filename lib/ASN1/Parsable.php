@@ -20,7 +20,7 @@
 
 namespace FG\ASN1;
 
-interface Parseable
+interface Parsable
 {
     public static function fromBinary(&$binaryData, &$offsetIndex = null);
 }

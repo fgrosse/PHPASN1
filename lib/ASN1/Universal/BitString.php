@@ -20,10 +20,10 @@
 
 namespace FG\ASN1\Universal;
 
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
-class BitString extends OctetString implements Parseable
+class BitString extends OctetString implements Parsable
 {
 
     private $nrOfUnusedBits;

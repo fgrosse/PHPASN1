@@ -21,11 +21,11 @@
 namespace FG\ASN1\Universal;
 
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 
-class Null extends Object implements Parseable
+class Null extends Object implements Parsable
 {
 
     public static function getType()

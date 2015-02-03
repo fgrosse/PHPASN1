@@ -22,14 +22,14 @@ namespace FG\X509;
 
 use FG\ASN1\OID;
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Set;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\X509\SAN\SubjectAlternativeNames;
 
-class CertificateExtensions extends Set implements Parseable
+class CertificateExtensions extends Set implements Parsable
 {
 
     private $innerSequence;

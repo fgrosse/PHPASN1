@@ -21,14 +21,14 @@
 namespace FG\X509\SAN;
 
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Sequence;
 
 /**
  * See section 8.3.2.1 of ITU-T X.509
  */
-class SubjectAlternativeNames extends Object implements Parseable
+class SubjectAlternativeNames extends Object implements Parsable
 {
 
     private $alternativeNamesSequence;

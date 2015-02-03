@@ -21,10 +21,10 @@
 namespace FG\X509\SAN;
 
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Exception\ParserException;
 
-class IPAddress extends Object implements Parseable
+class IPAddress extends Object implements Parsable
 {
 
     const IDENTIFIER = 0x87; // not sure yet why this is the identifier used in SAN extensions

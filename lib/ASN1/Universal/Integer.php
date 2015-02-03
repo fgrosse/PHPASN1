@@ -21,10 +21,10 @@
 namespace FG\ASN1\Universal;
 
 use FG\ASN1\Object;
-use FG\ASN1\Parseable;
+use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
-class Integer extends Object implements Parseable
+class Integer extends Object implements Parsable
 {
 
     private $contentLength;

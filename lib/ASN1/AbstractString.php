@@ -20,7 +20,7 @@
 
 namespace FG\ASN1;
 
-abstract class AbstractString extends Object implements Parseable
+abstract class AbstractString extends Object implements Parsable
 {
     private $checkStringForIllegalChars = true;
     private $allowedCharacters = array();
