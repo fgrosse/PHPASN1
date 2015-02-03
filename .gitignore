@@ -1,5 +1,12 @@
+# Project and backup files
 *~
 *.project
 .settings/*
+.idea
+
+# Composer
+vendor
+composer.lock
+
 classes/cache/*
 tmp/*
