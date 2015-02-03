@@ -147,5 +147,5 @@ try {
         }
     }
 } catch (\Exception $exception) {
-    echo '[ERROR] Catched exception:'.PHP_EOL.$exception->getMessage().PHP_EOL;
+    echo '[ERROR] Caught exception:'.PHP_EOL.$exception->getMessage().PHP_EOL;
 }
