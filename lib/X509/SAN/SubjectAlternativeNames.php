@@ -32,7 +32,6 @@ use FG\ASN1\Universal\Sequence;
  */
 class SubjectAlternativeNames extends Object implements Parsable
 {
-
     private $alternativeNamesSequence;
 
     public function __construct()

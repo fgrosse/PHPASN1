@@ -36,7 +36,6 @@ use FG\ASN1\Exception\ParserException;
  */
 class UTCTime extends AbstractTime implements Parsable
 {
-
     public static function getType()
     {
         return Identifier::UTC_TIME;

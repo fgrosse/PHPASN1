@@ -195,7 +195,7 @@ class OID
         preg_match_all('#<tt>(.+)\(\d+\)</tt>#si', $contents, $oidName);
 
         if (empty($oidName[1])) {
-            return "{$oidString} (unkown)";
+            return "{$oidString} (unknown)";
         }
 
         $oidName = ucfirst(strtolower(preg_replace('/([A-Z][a-z])/', ' $1', $oidName[1][0])));

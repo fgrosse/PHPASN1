@@ -24,7 +24,6 @@ use FG\ASN1\Identifier;
 
 class Set extends Sequence
 {
-
     public static function getType()
     {
         return Identifier::SET;

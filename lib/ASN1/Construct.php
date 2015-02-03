@@ -22,15 +22,22 @@ namespace FG\ASN1;
 
 abstract class Construct extends Object implements \Iterator, Parsable
 {
+    /** @var Object[] */
+    protected $children;
     private $iteratorPosition = 0;
 
     public function __construct(Object $child1 = null, Object $child2 = null, Object $childN = null)
     {
-        $this->value = array();
+        $this->children = array();
         $this->rewind();
 
         $children = func_get_args();
         $this->addChildren($children);
+    }
+
+    public function getContent()
+    {
+        return $this->children;
     }
 
     /**
@@ -46,7 +53,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
      */
     public function current()
     {
-        return $this->value[$this->iteratorPosition];
+        return $this->children[$this->iteratorPosition];
     }
 
     /**
@@ -70,13 +77,13 @@ abstract class Construct extends Object implements \Iterator, Parsable
      */
     public function valid()
     {
-        return isset($this->value[$this->iteratorPosition]);
+        return isset($this->children[$this->iteratorPosition]);
     }
 
     protected function calculateContentLength()
     {
         $length = 0;
-        foreach ($this->value as $component) {
+        foreach ($this->children as $component) {
             $length += $component->getObjectLength();
         }
 
@@ -86,7 +93,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     protected function getEncodedValue()
     {
         $result = '';
-        foreach ($this->value as $component) {
+        foreach ($this->children as $component) {
             $result .= $component->getBinary();
         }
 
@@ -95,7 +102,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
 
     public function addChild(Object $child)
     {
-        $this->value[] = $child;
+        $this->children[] = $child;
     }
 
     public function addChildren(array $children)
@@ -115,19 +122,31 @@ abstract class Construct extends Object implements \Iterator, Parsable
 
     public function getNumberOfChildren()
     {
-        return count($this->value);
+        return count($this->children);
     }
 
+    /**
+     * @return Object[]
+     */
     public function getChildren()
     {
-        return $this->value;
+        return $this->children;
     }
 
+    /**
+     * @return Object
+     */
     public function getFirstChild()
     {
-        return $this->value[0];
+        return $this->children[0];
     }
 
+    /**
+     * @param string $binaryData
+     * @param int $offsetIndex
+     * @return Construct|static
+     * @throws Exception\ParserException
+     */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);

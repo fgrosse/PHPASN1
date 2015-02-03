@@ -25,7 +25,6 @@ use FG\ASN1\Identifier;
 
 class T61String extends AbstractString
 {
-
     /**
      * Creates a new ASN.1 T61 String.
      * TODO The encodable characters of this type are not yet checked.

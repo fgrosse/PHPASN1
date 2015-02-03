@@ -25,6 +25,7 @@ use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
+use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\Set;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\ObjectIdentifier;
@@ -32,7 +33,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class CertificateExtensions extends Set implements Parsable
 {
-
     private $innerSequence;
     private $extensions = array();
 
@@ -83,7 +83,10 @@ class CertificateExtensions extends Set implements Parsable
             if (count($children) < 2) {
                 throw new ParserException('Could not parse Certificate Extensions: Needs at least two child elements per extension sequence (object identifier and octet string)', $tmpOffset);
             }
+            /** @var Object $objectIdentifier */
             $objectIdentifier = $children[0];
+
+            /** @var OctetString $octetString */
             $octetString = $children[1];
 
             if ($objectIdentifier->getType() != Identifier::OBJECT_IDENTIFIER) {
@@ -97,7 +100,7 @@ class CertificateExtensions extends Set implements Parsable
                 $parsedObject->addSubjectAlternativeNames($sans);
             } else {
                 // can now only parse SANs. There might be more in the future
-                $tmpOffset += $octetString->getObjectSize();
+                $tmpOffset += $octetString->getObjectLength();
             }
         }
 

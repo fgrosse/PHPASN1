@@ -242,7 +242,7 @@ class Identifier
                 break;
 
             default:
-                return "INVALID IDENTIFER OCTET: {$identifierOctet}";
+                return "INVALID IDENTIFIER OCTET: {$identifierOctet}";
         }
 
         return $classDescription;

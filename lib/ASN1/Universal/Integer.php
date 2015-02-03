@@ -27,6 +27,13 @@ use FG\ASN1\Identifier;
 
 class Integer extends Object implements Parsable
 {
+    /** @var int */
+    private $value;
+
+    /**
+     * @param int $value
+     * @throws Exception if the value is not numeric
+     */
     public function __construct($value)
     {
         if (is_numeric($value) == false) {
@@ -38,6 +45,11 @@ class Integer extends Object implements Parsable
     public static function getType()
     {
         return Identifier::INTEGER;
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     protected function calculateContentLength()

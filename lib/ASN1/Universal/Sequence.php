@@ -26,7 +26,6 @@ use FG\ASN1\Identifier;
 
 class Sequence extends Construct implements Parsable
 {
-
     public static function getType()
     {
         return Identifier::SEQUENCE;

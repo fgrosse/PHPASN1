@@ -22,6 +22,8 @@ namespace FG\ASN1;
 
 abstract class AbstractString extends Object implements Parsable
 {
+    /** @var string */
+    protected $value;
     private $checkStringForIllegalChars = true;
     private $allowedCharacters = array();
 
@@ -32,6 +34,11 @@ abstract class AbstractString extends Object implements Parsable
     public function __construct($string)
     {
         $this->value = $string;
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     protected function allowCharacter($character)

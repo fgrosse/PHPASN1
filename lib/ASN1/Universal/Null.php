@@ -27,7 +27,6 @@ use FG\ASN1\Exception\ParserException;
 
 class Null extends Object implements Parsable
 {
-
     public static function getType()
     {
         return Identifier::NULL;

@@ -26,8 +26,10 @@ use FG\ASN1\Exception\ParserException;
 
 class IPAddress extends Object implements Parsable
 {
-
     const IDENTIFIER = 0x87; // not sure yet why this is the identifier used in SAN extensions
+
+    /** @var string */
+    private $value;
 
     public function __construct($ipAddressString)
     {
@@ -37,6 +39,11 @@ class IPAddress extends Object implements Parsable
     public static function getType()
     {
         return self::IDENTIFIER;
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     protected function calculateContentLength()

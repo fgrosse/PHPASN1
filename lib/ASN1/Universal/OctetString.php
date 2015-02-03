@@ -20,12 +20,14 @@
 
 namespace FG\ASN1\Universal;
 
+use Exception;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
 class OctetString extends Object implements Parsable
 {
+    protected $value;
 
     public function __construct($value)
     {
@@ -35,7 +37,7 @@ class OctetString extends Object implements Parsable
         } elseif (is_numeric($value)) {
             $value = dechex($value);
         } else {
-            throw new \Exception("OctetString: unrecognized input type!");
+            throw new Exception("OctetString: unrecognized input type!");
         }
 
         if (strlen($value) %2 != 0) {

@@ -25,7 +25,6 @@ use FG\ASN1\Identifier;
 
 class CharacterString extends AbstractString
 {
-
     public function __construct($string)
     {
         $this->value = $string;

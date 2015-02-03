@@ -196,13 +196,13 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 10: Can not parse binary from data: Offsetindex larger than input size
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 10: Can not parse binary from data: Offset index larger than input size
      * @depends testFromBinary
      */
     public function testFromBinaryThrowsException()
     {
         $binaryData = 0x0;
         $offset = 10;
-        $parsedObject = Object::fromBinary($binaryData, $offset);
+        Object::fromBinary($binaryData, $offset);
     }
 }

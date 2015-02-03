@@ -107,12 +107,12 @@ class CertificateSubject extends Sequence implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        $rdns = array();
+        $names = array();
         $octetsToRead = $contentLength;
         while ($octetsToRead > 0) {
             $relativeDistinguishedName = RelativeDistinguishedName::fromBinary($binaryData, $offsetIndex);
             $octetsToRead -= $relativeDistinguishedName->getObjectLength();
-            $rdns[] = $relativeDistinguishedName;
+            $names[] = $relativeDistinguishedName;
         }
     }
 }

@@ -27,6 +27,9 @@ use Exception;
 
 abstract class AbstractTime extends Object
 {
+    /** @var DateTime */
+    protected $value;
+
     public function __construct($dateTime = null, $dateTimeZone = 'UTC')
     {
         if ($dateTime == null || is_string($dateTime)) {
@@ -43,6 +46,11 @@ abstract class AbstractTime extends Object
         }
 
         $this->value = $dateTime;
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     protected function getLastDateTimeErrors()

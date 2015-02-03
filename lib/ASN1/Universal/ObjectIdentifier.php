@@ -29,8 +29,8 @@ use FG\ASN1\Exception\ParserException;
 
 class ObjectIdentifier extends Object implements Parsable
 {
-
     protected $subIdentifiers;
+    protected $value;
 
     public function __construct($value)
     {
@@ -53,6 +53,11 @@ class ObjectIdentifier extends Object implements Parsable
         }
 
         $this->value = $value;
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     public static function getType()

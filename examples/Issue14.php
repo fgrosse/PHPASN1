@@ -23,6 +23,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Identifier;
+use FG\ASN1\Universal\ObjectIdentifier;
+use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\Sequence;
 
 function printObject(Object $object, $depth = 0)
@@ -100,10 +102,12 @@ try {
 
     // first navigate to the certificate extensions
     // (see ITU-T X.509 section 7 "Public-keys and public-key certificates" for cert structure)
+    /** @var Sequence $rootObject */
     assert($rootObject->getType() == Identifier::SEQUENCE);
     $topLevelContainer = $rootObject->getChildren();
     $certificateInfo = $topLevelContainer[0];
 
+    /** @var Sequence $certificateInfo */
     assert($certificateInfo->getType() == Identifier::SEQUENCE);
 
     // there need to be at least 8 child elements if the certificate extensions field is present
@@ -112,6 +116,7 @@ try {
     $certExtensions = $certInfoFields[7];
 
     // check if this is really the certificate extensions sequence
+    /** @var Object $certExtensions */
     $certExtensionsType = $certExtensions->getType();
     assert(Identifier::isContextSpecificClass($certExtensionsType));
     assert(Identifier::getTagNumber($certExtensions->getType()) == 3);
@@ -121,17 +126,20 @@ try {
     assert($certExtensions->getType() == Identifier::SEQUENCE);
 
     // now check all extensions and search for the SAN
+    /** @var Object $extensionSequence */
     foreach ($certExtensions as $extensionSequence) {
         assert($extensionSequence->getType() == Identifier::SEQUENCE);
         assert($extensionSequence->getNumberofChildren() >= 2);
 
-        $extensionSequenceChilds = $extensionSequence->getChildren();
-        $objectIdentifier = $extensionSequenceChilds[0];
+        $extensionSequenceChildren = $extensionSequence->getChildren();
+        $objectIdentifier = $extensionSequenceChildren[0];
+        /** @var ObjectIdentifier $objectIdentifier */
         assert($objectIdentifier->getType() == Identifier::OBJECT_IDENTIFIER);
 
         if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
             // now we have the wanted octet string
-            $octetString = $extensionSequenceChilds[1];
+            $octetString = $extensionSequenceChildren[1];
+            /** @var OctetString $octetString */
             $octetStringBinary = $octetString->getBinaryContent();
 
             // At this point you may want to create the sequence from the binary value of

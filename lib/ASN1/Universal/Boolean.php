@@ -27,7 +27,11 @@ use FG\ASN1\Exception\ParserException;
 
 class Boolean extends Object implements Parsable
 {
+    private $value;
 
+    /**
+     * @param bool $value
+     */
     public function __construct($value)
     {
         $this->value = $value;

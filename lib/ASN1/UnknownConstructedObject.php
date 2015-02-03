@@ -22,7 +22,6 @@ namespace FG\ASN1;
 
 class UnknownConstructedObject extends Construct
 {
-
     private $identifierOctet;
     private $contentLength;
 
@@ -44,7 +43,7 @@ class UnknownConstructedObject extends Construct
             $children[] = $newChild;
         }
 
-        $this->value = array();
+        $this->children = array();
         $this->addChildren($children);
     }
 

@@ -27,7 +27,6 @@ use FG\ASN1\Exception\ParserException;
 
 class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
 {
-
     public function __construct($subIdentifiers)
     {
         $this->value = $subIdentifiers;

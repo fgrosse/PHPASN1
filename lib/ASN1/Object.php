@@ -45,10 +45,12 @@ use FG\ASN1\Universal\BMPString;
 use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
 
-abstract class Object
+/**
+ * Class Object
+ * @method string getType This static method needs to be implemented by all instances of Object
+ */
+abstract class Object implements Parsable
 {
-    protected $value;
-
     private $contentLength;
     private $nrOfLengthOctets;
 
@@ -58,6 +60,8 @@ abstract class Object
     abstract protected function calculateContentLength();
 
     abstract protected function getEncodedValue();
+
+    abstract public function getContent();
 
     public function getBinary()
     {
@@ -132,11 +136,6 @@ abstract class Object
         return $nrOfIdentifierOctets + $nrOfLengthOctets + $contentLength;
     }
 
-    public function getContent()
-    {
-        return $this->value;
-    }
-
     public function __toString()
     {
         return $this->getContent();
@@ -152,10 +151,16 @@ abstract class Object
         return Identifier::getName(static::getType());
     }
 
+    /**
+     * @param string $binaryData
+     * @param int $offsetIndex
+     * @return \FG\ASN1\Object
+     * @throws ParserException
+     */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         if (strlen($binaryData) < $offsetIndex) {
-            throw new ParserException("Can not parse binary from data: Offsetindex larger than input size", $offsetIndex);
+            throw new ParserException("Can not parse binary from data: Offset index larger than input size", $offsetIndex);
         }
 
         $identifierOctet = ord($binaryData[$offsetIndex]);
@@ -237,9 +242,9 @@ abstract class Object
 
         if (($contentLength & 0x80) != 0) {
             // bit 8 is set -> this is the long form
-            $nrofOfLengthOctets = $contentLength & 0x7F;
+            $nrOfLengthOctets = $contentLength & 0x7F;
             $contentLength = 0x00;
-            for ($i = 0; $i < $nrofOfLengthOctets; $i++) {
+            for ($i = 0; $i < $nrOfLengthOctets; $i++) {
                 $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
             }
         }

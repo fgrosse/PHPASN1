@@ -22,6 +22,9 @@ namespace FG\ASN1;
 
 class UnknownObject extends Object
 {
+    /** @var string */
+    private $value;
+
     private $identifierOctet;
 
     public function __construct($identifierOctet, $contentLength)
@@ -29,6 +32,11 @@ class UnknownObject extends Object
         $this->identifierOctet = $identifierOctet;
         $this->value = "Unparsable Object ({$contentLength} bytes)";
         $this->setContentLength($contentLength);
+    }
+
+    public function getContent()
+    {
+        return $this->value;
     }
 
     public function getType()

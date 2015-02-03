@@ -25,7 +25,6 @@ use FG\ASN1\Identifier;
 
 class BMPString extends AbstractString
 {
-
     /**
      * Creates a new ASN.1 BMP String.
      *

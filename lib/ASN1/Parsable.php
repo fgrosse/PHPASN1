@@ -30,7 +30,7 @@ interface Parsable
      * @param string $binaryData
      * @param integer $offsetIndex
      * @throws \FG\ASN1\Exception\ParserException
-     * @return self
+     * @return static
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = null);
 }

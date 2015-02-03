@@ -40,6 +40,6 @@ class AttributeTypeAndValue extends Sequence
 
     public function __toString()
     {
-        return $this->value[0].': '.$this->value[1];
+        return $this->children[0].': '.$this->children[1];
     }
 }

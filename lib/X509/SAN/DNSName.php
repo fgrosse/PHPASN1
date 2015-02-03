@@ -24,7 +24,6 @@ use FG\ASN1\Universal\GeneralString;
 
 class DNSName extends GeneralString
 {
-
     const IDENTIFIER = 0x82; // not sure yet why this is the identifier used in SAN extensions
 
     public function __construct($dnsNameString)

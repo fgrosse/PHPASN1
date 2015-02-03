@@ -39,7 +39,7 @@ class RelativeDistinguishedName extends Set
     public function getContent()
     {
         /** @var Object $firstObject */
-        $firstObject = $this->value[0];
+        $firstObject = $this->children[0];
         return $firstObject->__toString();
     }
 }

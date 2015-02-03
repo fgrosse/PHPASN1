@@ -30,7 +30,6 @@ use FG\ASN1\Identifier;
  */
 class IA5String extends AbstractString
 {
-
     public function __construct($string)
     {
         parent::__construct($string);

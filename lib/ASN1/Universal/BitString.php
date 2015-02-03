@@ -26,7 +26,6 @@ use FG\ASN1\Identifier;
 
 class BitString extends OctetString implements Parsable
 {
-
     private $nrOfUnusedBits;
 
     /**

@@ -25,7 +25,6 @@ use FG\ASN1\Identifier;
 
 class NumericString extends AbstractString
 {
-
     /**
      * Creates a new ASN.1 NumericString.
      *

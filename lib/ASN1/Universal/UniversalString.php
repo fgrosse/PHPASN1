@@ -25,7 +25,6 @@ use FG\ASN1\Identifier;
 
 class UniversalString extends AbstractString
 {
-
     /**
      * Creates a new ASN.1 Universal String.
      * TODO The encodable characters of this type are not yet checked.
