@@ -20,19 +20,17 @@
 
 namespace FG\ASN1\Universal;
 
+use Exception;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
 class Integer extends Object implements Parsable
 {
-
-    private $contentLength;
-
     public function __construct($value)
     {
         if (is_numeric($value) == false) {
-            throw new \Exception("Invalid VALUE [{$value}] for ASN1_INTEGER");
+            throw new Exception("Invalid VALUE [{$value}] for ASN1_INTEGER");
         }
         $this->value = $value;
     }

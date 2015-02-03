@@ -107,13 +107,13 @@ abstract class Construct extends Object implements \Iterator, Parsable
 
     public function __toString()
     {
-        $nrOfChildren = $this->getNumberofChildren();
+        $nrOfChildren = $this->getNumberOfChildren();
         $childString = $nrOfChildren == 1 ? 'child' : 'children';
 
         return "[{$nrOfChildren} {$childString}]";
     }
 
-    public function getNumberofChildren()
+    public function getNumberOfChildren()
     {
         return count($this->value);
     }

@@ -20,20 +20,26 @@
 
 namespace FG\ASN1;
 
+use DateInterval;
+use DateTime;
+use DateTimeZone;
+use Exception;
+
 abstract class AbstractTime extends Object
 {
     public function __construct($dateTime = null, $dateTimeZone = 'UTC')
     {
         if ($dateTime == null || is_string($dateTime)) {
-            $timeZone = new \DateTimeZone($dateTimeZone);
-            $dateTime = new \DateTime($dateTime, $timeZone);
-            if ($dateTime == false) {
+            $timeZone = new DateTimeZone($dateTimeZone);
+            $dateTimeObject = new DateTime($dateTime, $timeZone);
+            if ($dateTimeObject == false) {
                 $errorMessage = $this->getLastDateTimeErrors();
                 $className = Identifier::getName(static::getType());
-                throw new \Exception("Could not create {$className} from date time string '{$dateTimeString}': {$errorMessage}");
+                throw new Exception(sprintf("Could not create %s from date time string '%s': %s", $className, $dateTime, $errorMessage));
             }
-        } elseif (!$dateTime instanceof \DateTime) {
-            throw new \Exception('Invalid first argument for some instance of ASN_AbstractTime constructor');
+            $dateTime = $dateTimeObject;
+        } elseif (!$dateTime instanceof DateTime) {
+            throw new Exception('Invalid first argument for some instance of ASN_AbstractTime constructor');
         }
 
         $this->value = $dateTime;
@@ -42,7 +48,7 @@ abstract class AbstractTime extends Object
     protected function getLastDateTimeErrors()
     {
         $messages = '';
-        $lastErrors = \DateTime::getLastErrors();
+        $lastErrors = DateTime::getLastErrors();
         foreach ($lastErrors['errors'] as $errorMessage) {
             $messages .= "{$errorMessage}, ";
         }
@@ -55,18 +61,18 @@ abstract class AbstractTime extends Object
         return $this->value->format("Y-m-d\tH:i:s");
     }
 
-    protected static function extractTimeZoneData(&$binaryData, &$offsetIndex, \DateTime $dateTime)
+    protected static function extractTimeZoneData(&$binaryData, &$offsetIndex, DateTime $dateTime)
     {
         $sign = $binaryData[$offsetIndex++];
         $timeOffsetHours   = intval(substr($binaryData, $offsetIndex, 2));
         $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex+2, 2));
         $offsetIndex += 4;
 
-        $intervall = new \DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");
+        $interval = new DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");
         if ($sign == '+') {
-            $dateTime->sub($intervall);
+            $dateTime->sub($interval);
         } else {
-            $dateTime->add($intervall);
+            $dateTime->add($interval);
         }
 
         return $dateTime;

@@ -20,6 +20,7 @@
 
 namespace FG\X509;
 
+use FG\ASN1\Exception\ParserException;
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
@@ -64,7 +65,7 @@ class CertificateExtensions extends Set implements Parsable
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::SET, $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex);
+        self::parseContentLength($binaryData, $offsetIndex);
 
         $tmpOffset = $offsetIndex;
         $extensions = Sequence::fromBinary($binaryData, $offsetIndex);

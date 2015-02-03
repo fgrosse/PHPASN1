@@ -185,7 +185,7 @@ class ObjectTest extends ASN1TestCase
        );
         $parsedObject = Object::fromBinary($binaryData);
         $this->assertTrue($parsedObject instanceof Sequence);
-        $this->assertEquals(2, $parsedObject->getNumberofChildren());
+        $this->assertEquals(2, $parsedObject->getNumberOfChildren());
 
         $children = $parsedObject->getChildren();
         $child1 = $children[0];

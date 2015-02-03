@@ -26,7 +26,10 @@ use FG\ASN1\Universal\UTF8String;
 
 class RDNString extends RelativeDistinguishedName
 {
-
+    /**
+     * @param string|\FG\ASN1\Universal\ObjectIdentifier $objectIdentifierString
+     * @param string|\FG\ASN1\Object $value
+     */
     public function __construct($objectIdentifierString, $value)
     {
         if (PrintableString::isValid($value)) {

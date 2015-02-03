@@ -46,6 +46,7 @@ class PrintableString extends AbstractString
      * EQUALS SIGN           =
      * QUESTION MARK         ?
      *
+     * @param string $string
      */
     public function __construct($string)
     {

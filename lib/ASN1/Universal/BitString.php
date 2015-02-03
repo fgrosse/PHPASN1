@@ -20,6 +20,7 @@
 
 namespace FG\ASN1\Universal;
 
+use Exception;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
@@ -31,8 +32,9 @@ class BitString extends OctetString implements Parsable
     /**
      * Creates a new ASN.1 BitString object.
      *
-     * @param mixed  $value          Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
-     * @param number $nrOfUnusedBits the number of unused bits in the last octet [optional].
+     * @param mixed $value Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
+     * @param int|number $nrOfUnusedBits the number of unused bits in the last octet [optional].
+     * @throws Exception
      */
     public function __construct($value, $nrOfUnusedBits = 0)
     {

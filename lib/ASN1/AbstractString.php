@@ -27,6 +27,7 @@ abstract class AbstractString extends Object implements Parsable
 
     /**
      * The abstract base class for ASN.1 classes which represent some string of character.
+     * @param string $string
      */
     public function __construct($string)
     {

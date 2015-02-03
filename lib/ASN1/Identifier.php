@@ -63,7 +63,7 @@ class Identifier
     const SET               = 0x31;
     const NUMERIC_STRING    = 0x12;
     const PRINTABLE_STRING  = 0x13;
-    const T61_STRING        = 0x14; // sometimes referred to as TeletexString
+    const T61_STRING        = 0x14; // sometimes referred to as TeletextString
     const VIDEOTEXT_STRING  = 0x15;
     const IA5_STRING        = 0x16;
     const UTC_TIME          = 0x17;
@@ -86,12 +86,12 @@ class Identifier
     /**
      * Return the name of the mapped ASN.1 type with a preceding "ASN.1 ".
      *
-     * Example:
-     * <pre>
-     * ASN.1 Octet String
-     * </pre>
+     * Example: ASN.1 Octet String
      *
      * @see Identifier::getShortName()
+     * @param $identifierOctet
+     * @return string
+     * @throws NotImplementedException if this is the long form of the identifier octets definition
      */
     public static function getName($identifierOctet)
     {
@@ -120,6 +120,9 @@ class Identifier
      *
      * @see Identifier::getName()
      * @see Identifier::getClassDescription()
+     * @param $identifierOctet
+     * @return string
+     * @throws NotImplementedException if this is the long form of the identifier octets definition
      */
     public static function getShortName($identifierOctet)
     {
@@ -212,6 +215,8 @@ class Identifier
      * Constructed context-specific
      * Primitive universal
      * </pre>
+     * @param $identifierOctet
+     * @return string
      */
     public static function getClassDescription($identifierOctet)
     {

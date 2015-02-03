@@ -30,7 +30,6 @@ use FG\X509\PublicKey;
 
 class CSR extends Sequence
 {
-
     const CSR_VERSION_NR = 0;
 
     protected $subject;
@@ -40,16 +39,28 @@ class CSR extends Sequence
 
     protected $startSequence;
 
-    public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_SIGNATURE)
+    /**
+     * @param string $commonName
+     * @param string $email
+     * @param string $organization
+     * @param string $locality
+     * @param string $state
+     * @param string $country
+     * @param string $organizationalUnit
+     * @param string $publicKey
+     * @param string $signature
+     * @param string $signatureAlgorithm
+     */
+    public function __construct($commonName, $email, $organization, $locality, $state, $country, $organizationalUnit, $publicKey, $signature, $signatureAlgorithm = OID::SHA1_WITH_RSA_SIGNATURE)
     {
         $this->subject = new CertificateSubject(
             $commonName,
             $email,
-            $orga,
+            $organization,
             $locality,
             $state,
             $country,
-            $ou
+            $organizationalUnit
         );
         $this->publicKey = $publicKey;
         $this->signature = $signature;
@@ -91,27 +102,27 @@ class CSR extends Sequence
 
     public function getVersion()
     {
-        return $this->version;
+        return self::CSR_VERSION_NR;
     }
-    public function getOrgaName()
+    public function getOrganizationName()
     {
-        return $this->orgName;
+        return $this->subject->getOrganization();
     }
     public function getLocalName()
     {
-        return $this->localName;
+        return $this->subject->getLocality();
     }
     public function getState()
     {
-        return $this->state;
+        return $this->subject->getState();
     }
     public function getCountry()
     {
-        return $this->country;
+        return $this->subject->getCountry();
     }
-    public function getOrgaUnits()
+    public function getOrganizationalUnit()
     {
-        return $this->ou;
+        return $this->subject->getOrganizationalUnit();
     }
     public function getPublicKey()
     {

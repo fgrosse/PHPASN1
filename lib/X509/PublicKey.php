@@ -28,7 +28,10 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class PublicKey extends Sequence
 {
-
+    /**
+     * @param string $hexKey
+     * @param \FG\ASN1\Object|string $algorithmIdentifierString
+     */
     public function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION)
     {
         parent::__construct(

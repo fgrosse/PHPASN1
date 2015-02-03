@@ -79,4 +79,5 @@ function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
     } else {
         return $dump;
     }
+    return null;
 }

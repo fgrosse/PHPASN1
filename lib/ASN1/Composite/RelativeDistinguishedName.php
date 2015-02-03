@@ -25,7 +25,10 @@ use FG\ASN1\Universal\Set;
 
 class RelativeDistinguishedName extends Set
 {
-
+    /**
+     * @param string|\FG\ASN1\Universal\ObjectIdentifier $objIdentifierString
+     * @param \FG\ASN1\Object $value
+     */
     public function __construct($objIdentifierString, Object $value)
     {
         // TODO: This does only support one element in the RelativeDistinguishedName Set but it it is defined as follows:
@@ -35,6 +38,8 @@ class RelativeDistinguishedName extends Set
 
     public function getContent()
     {
-        return $this->value[0]->__toString();
+        /** @var Object $firstObject */
+        $firstObject = $this->value[0];
+        return $firstObject->__toString();
     }
 }

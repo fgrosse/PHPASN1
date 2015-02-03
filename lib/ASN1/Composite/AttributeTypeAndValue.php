@@ -26,7 +26,10 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class AttributeTypeAndValue extends Sequence
 {
-
+    /**
+     * @param ObjectIdentifier|string $objIdentifier
+     * @param \FG\ASN1\Object $value
+     */
     public function __construct($objIdentifier, Object $value)
     {
         if ($objIdentifier instanceof ObjectIdentifier == false) {

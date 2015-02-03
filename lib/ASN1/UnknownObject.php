@@ -27,7 +27,7 @@ class UnknownObject extends Object
     public function __construct($identifierOctet, $contentLength)
     {
         $this->identifierOctet = $identifierOctet;
-        $this->value = "Unparseable Object ({$contentLength} bytes)";
+        $this->value = "Unparsable Object ({$contentLength} bytes)";
         $this->setContentLength($contentLength);
     }
 

@@ -20,6 +20,7 @@
 
 namespace FG\X509\CSR;
 
+use FG\ASN1\Object;
 use FG\X509\CertificateExtensions;
 use FG\ASN1\OID;
 use FG\ASN1\Parsable;
@@ -57,17 +58,17 @@ class Attributes extends Construct implements Parsable
         while ($octetsToRead > 0) {
             $initialOffset = $offsetIndex; // used to calculate how much bits have been read
             self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
-            $sequenceContentLength = self::parseContentLength($binaryData, $offsetIndex);
+            self::parseContentLength($binaryData, $offsetIndex);
 
-            $objectIDentifier = ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
-            $oidString = $objectIDentifier->getContent();
+            $objectIdentifier = ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
+            $oidString = $objectIdentifier->getContent();
             if ($oidString == OID::PKCS9_EXTENSION_REQUEST) {
                 $attribute = CertificateExtensions::fromBinary($binaryData, $offsetIndex);
             } else {
                 $attribute = Object::fromBinary($binaryData, $offsetIndex);
             }
 
-            $parsedObject->addAttribute($objectIDentifier, $attribute);
+            $parsedObject->addAttribute($objectIdentifier, $attribute);
             $octetsToRead -= ($offsetIndex - $initialOffset);
         }
 

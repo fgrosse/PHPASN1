@@ -20,6 +20,8 @@
 
 namespace FG\X509;
 
+use FG\ASN1\Composite\RelativeDistinguishedName;
+use FG\ASN1\Identifier;
 use FG\ASN1\OID;
 use FG\ASN1\Parsable;
 use FG\ASN1\Composite\RDNString;
@@ -27,7 +29,6 @@ use FG\ASN1\Universal\Sequence;
 
 class CertificateSubject extends Sequence implements Parsable
 {
-
     private $commonName;
     private $email;
     private $organization;
@@ -36,25 +37,34 @@ class CertificateSubject extends Sequence implements Parsable
     private $country;
     private $organizationalUnit;
 
-    public function __construct($commonName, $email, $orga, $locality, $state, $country, $ou)
+    /**
+     * @param string $commonName
+     * @param string $email
+     * @param string $organization
+     * @param string $locality
+     * @param string $state
+     * @param string $country
+     * @param string $organizationalUnit
+     */
+    public function __construct($commonName, $email, $organization, $locality, $state, $country, $organizationalUnit)
     {
         parent::__construct(
             new RDNString(OID::COUNTRY_NAME, $country),
             new RDNString(OID::STATE_OR_PROVINCE_NAME, $state),
             new RDNString(OID::LOCALITY_NAME, $locality),
-            new RDNString(OID::ORGANIZATION_NAME, $orga),
-            new RDNString(OID::OU_NAME, $ou),
+            new RDNString(OID::ORGANIZATION_NAME, $organization),
+            new RDNString(OID::OU_NAME, $organizationalUnit),
             new RDNString(OID::COMMON_NAME, $commonName),
             new RDNString(OID::PKCS9_EMAIL, $email)
         );
 
         $this->commonName = $commonName;
         $this->email = $email;
-        $this->organization = $orga;
+        $this->organization = $organization;
         $this->locality = $locality;
         $this->state = $state;
         $this->country = $country;
-        $this->organizationalUnit = $ou;
+        $this->organizationalUnit = $organizationalUnit;
     }
 
     public function getCommonName()
@@ -104,10 +114,5 @@ class CertificateSubject extends Sequence implements Parsable
             $octetsToRead -= $relativeDistinguishedName->getObjectLength();
             $rdns[] = $relativeDistinguishedName;
         }
-/*
-        $parsedObject = new static();
-        $parsedObject->addChildren($children);
-        $parsedObject->setContentLength($contentLength);
-        return $parsedObject;*/
     }
 }

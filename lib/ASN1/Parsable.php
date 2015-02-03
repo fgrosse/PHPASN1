@@ -20,7 +20,17 @@
 
 namespace FG\ASN1;
 
+/**
+ * The Parsable interface describes classes that can be parsed from their binary representation.
+ */
 interface Parsable
 {
+    /**
+     * Parse an instance of this class from its binary representation
+     * @param string $binaryData
+     * @param integer $offsetIndex
+     * @throws \FG\ASN1\Exception\ParserException
+     * @return self
+     */
     public static function fromBinary(&$binaryData, &$offsetIndex = null);
 }

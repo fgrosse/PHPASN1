@@ -36,7 +36,7 @@ function echoOIDRow($oidString)
   <title>PHPASN1 Examples</title>
   <meta name="description" content="Howto get the name of object identifiers with PHPASN1">
   <meta name="author" content="Friedrich Große">
-  <style type="text/css">td {padding: 0px 10px;}</style>
+  <style type="text/css">td {padding: 0 10px;}</style>
 </head>
 <body>
     <table border=1>

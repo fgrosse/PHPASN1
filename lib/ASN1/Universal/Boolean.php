@@ -58,7 +58,7 @@ class Boolean extends Object implements Parsable
             return "TRUE";
         } else {
             return "FALSE";
-        };
+        }
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)

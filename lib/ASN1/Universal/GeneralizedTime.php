@@ -37,7 +37,6 @@ use FG\ASN1\Exception\ParserException;
  */
 class GeneralizedTime extends AbstractTime implements Parsable
 {
-
     private $microseconds;
 
     public function __construct($dateTime = null, $dateTimeZone = 'UTC')

@@ -26,6 +26,11 @@ class UnknownConstructedObject extends Construct
     private $identifierOctet;
     private $contentLength;
 
+    /**
+     * @param string $binaryData
+     * @param integer $offsetIndex
+     * @throws \FG\ASN1\Exception\ParserException
+     */
     public function __construct($binaryData, &$offsetIndex)
     {
         $this->identifierOctet = $binaryData[$offsetIndex++];

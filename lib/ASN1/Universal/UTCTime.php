@@ -44,8 +44,7 @@ class UTCTime extends AbstractTime implements Parsable
 
     protected function calculateContentLength()
     {
-        // Content is a string o the following format: YYMMDDhhmmssZ (13 octets)
-        return 13;
+        return 13; // Content is a string o the following format: YYMMDDhhmmssZ (13 octets)
     }
 
     protected function getEncodedValue()
