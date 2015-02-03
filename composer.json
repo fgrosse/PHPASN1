@@ -1,25 +1,27 @@
 {
-   "name":"fgrosse/phpasn1",
-   "description":"ASN.1 Library",
-   "type":"library",
-   "homepage":"https://github.com/FGrosse/PHPASN1",
-   "license" : "GPLv3",
-   "authors":[{
-       "name":"Friedrich Große",
-       "email" : "friedrich.grosse@gmail.com",
-       "homepage":"https://github.com/FGrosse",
-       "role":"Author"
-   }],
-   "require":{
-       "php": ">=5.3.0"
-   },
-   "require-dev":{
-       "phpunit/phpunit":"~4.1"
-   },
-    "suggests" : {
-        "php-curl" : "*"
+    "name": "fgrosse/phpasn1",
+    "description": "A PHP Framework that allows you to encode and decode arbitrary ASN.1 structures using the ITU-T X.690 Encoding Rules.",
+    "type": "library",
+    "homepage": "https://github.com/FGrosse/PHPASN1",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Friedrich Große",
+            "email": "friedrich.grosse@gmail.com",
+            "homepage": "https://github.com/FGrosse",
+            "role": "Author"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
     },
-   "autoload":{
-       "classmap": ["classes/"]
-   }
+    "require-dev": {
+        "phpunit/phpunit": "~4.1"
+    },
+    "suggests": {
+        "php-curl": "*"
+    },
+    "autoload": {
+        "classmap": ["classes/"]
+    }
 }
