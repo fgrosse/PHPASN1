@@ -18,33 +18,28 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+namespace FG\X509;
 
 use FG\ASN1\OID;
+use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\Sequence;
+use FG\ASN1\Universal\BitString;
+use FG\ASN1\Universal\ObjectIdentifier;
 
-function echoOIDRow($oidString)
+class PublicKey extends Sequence
 {
-    $oidName = OID::getName($oidString);
-    echo "<tr><td>{$oidString}</td><td>{$oidName}</td></tr>";
+    /**
+     * @param string $hexKey
+     * @param \FG\ASN1\Object|string $algorithmIdentifierString
+     */
+    public function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION)
+    {
+        parent::__construct(
+            new Sequence(
+                new ObjectIdentifier($algorithmIdentifierString),
+                new Null()
+            ),
+            new BitString($hexKey)
+        );
+    }
 }
-
-?>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>PHPASN1 Examples</title>
-  <meta name="description" content="Howto get the name of object identifiers with PHPASN1">
-  <meta name="author" content="Friedrich Große">
-  <style type="text/css">td {padding: 0 10px;}</style>
-</head>
-<body>
-    <table border=1>
-        <?php
-            echoOIDRow('1.2.840.113549.1.1.1');
-            echoOIDRow('1.2.840.113549.1.1.5');
-            echoOIDRow('2.5.29.37');
-        ?>
-    </table>
-</body>
-</html>

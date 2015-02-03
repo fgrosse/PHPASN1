@@ -18,33 +18,19 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+namespace FG\ASN1;
 
-use FG\ASN1\OID;
-
-function echoOIDRow($oidString)
+/**
+ * The Parsable interface describes classes that can be parsed from their binary representation.
+ */
+interface Parsable
 {
-    $oidName = OID::getName($oidString);
-    echo "<tr><td>{$oidString}</td><td>{$oidName}</td></tr>";
+    /**
+     * Parse an instance of this class from its binary representation
+     * @param string $binaryData
+     * @param integer $offsetIndex
+     * @throws \FG\ASN1\Exception\ParserException
+     * @return static
+     */
+    public static function fromBinary(&$binaryData, &$offsetIndex = null);
 }
-
-?>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>PHPASN1 Examples</title>
-  <meta name="description" content="Howto get the name of object identifiers with PHPASN1">
-  <meta name="author" content="Friedrich Große">
-  <style type="text/css">td {padding: 0 10px;}</style>
-</head>
-<body>
-    <table border=1>
-        <?php
-            echoOIDRow('1.2.840.113549.1.1.1');
-            echoOIDRow('1.2.840.113549.1.1.5');
-            echoOIDRow('2.5.29.37');
-        ?>
-    </table>
-</body>
-</html>

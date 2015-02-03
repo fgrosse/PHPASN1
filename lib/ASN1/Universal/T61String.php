@@ -18,33 +18,27 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+namespace FG\ASN1\Universal;
 
-use FG\ASN1\OID;
+use FG\ASN1\AbstractString;
+use FG\ASN1\Identifier;
 
-function echoOIDRow($oidString)
+class T61String extends AbstractString
 {
-    $oidName = OID::getName($oidString);
-    echo "<tr><td>{$oidString}</td><td>{$oidName}</td></tr>";
-}
+    /**
+     * Creates a new ASN.1 T61 String.
+     * TODO The encodable characters of this type are not yet checked.
+     * @see http://en.wikipedia.org/wiki/ITU_T.61
+     * @param string $string
+     */
+    public function __construct($string)
+    {
+        $this->value = $string;
+        $this->allowAll();
+    }
 
-?>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>PHPASN1 Examples</title>
-  <meta name="description" content="Howto get the name of object identifiers with PHPASN1">
-  <meta name="author" content="Friedrich Große">
-  <style type="text/css">td {padding: 0 10px;}</style>
-</head>
-<body>
-    <table border=1>
-        <?php
-            echoOIDRow('1.2.840.113549.1.1.1');
-            echoOIDRow('1.2.840.113549.1.1.5');
-            echoOIDRow('2.5.29.37');
-        ?>
-    </table>
-</body>
-</html>
+    public static function getType()
+    {
+        return Identifier::T61_STRING;
+    }
+}

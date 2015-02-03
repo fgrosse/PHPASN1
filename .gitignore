@@ -10,3 +10,4 @@ composer.lock
 
 classes/cache/*
 tmp/*
+vendor/
