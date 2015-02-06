@@ -37,7 +37,6 @@ use FG\ASN1\Exception\NotImplementedException;
  */
 class Identifier
 {
-
     const CLASS_UNIVERSAL        = 0x00;
     const CLASS_APPLICATION      = 0x01;
     const CLASS_CONTEXT_SPECIFIC = 0x02;

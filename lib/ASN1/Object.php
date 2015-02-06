@@ -46,7 +46,7 @@ use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
 
 /**
- * Class Object
+ * Class Object is the base class for all concrete ASN.1 objects.
  */
 abstract class Object implements Parsable
 {
@@ -54,16 +54,37 @@ abstract class Object implements Parsable
     private $nrOfLengthOctets;
 
     /**
-     * Must return the number of octets of the content part.
+     * Must return the number of octets of the content part
+     * @return int
      */
     abstract protected function calculateContentLength();
 
+    /**
+     * Encode the object using DER encoding
+     * @see http://en.wikipedia.org/wiki/X.690#DER_encoding
+     * @return string the binary representation of an objects value
+     */
     abstract protected function getEncodedValue();
 
+    /**
+     * Return the content of this object in a non encoded form.
+     * This can be used to print the value in human readable form
+     * @return mixed
+     */
     abstract public function getContent();
 
+    /**
+     * Return the object type octet.
+     * This should use the class constants of Identifier
+     * @see Identifier
+     * @return int
+     */
     abstract public function getType();
 
+    /**
+     * Encode this object using DER encoding
+     * @return string the full binary representation of the complete object
+     */
     public function getBinary()
     {
         $result  = chr($this->getType());
@@ -152,12 +173,6 @@ abstract class Object implements Parsable
         return Identifier::getName($this->getType());
     }
 
-    /**
-     * @param string $binaryData
-     * @param int $offsetIndex
-     * @return \FG\ASN1\Object
-     * @throws ParserException
-     */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         if (strlen($binaryData) < $offsetIndex) {
