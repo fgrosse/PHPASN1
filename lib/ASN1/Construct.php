@@ -149,7 +149,8 @@ abstract class Construct extends Object implements \Iterator, Parsable
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
+        $parsedObject = new static();
+        self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
         $children = array();
@@ -160,7 +161,6 @@ abstract class Construct extends Object implements \Iterator, Parsable
             $children[] = $newChild;
         }
 
-        $parsedObject = new static();
         $parsedObject->addChildren($children);
         $parsedObject->setContentLength($contentLength);
 

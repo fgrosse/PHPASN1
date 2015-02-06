@@ -46,7 +46,7 @@ class BitString extends OctetString implements Parsable
         $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::BITSTRING;
     }

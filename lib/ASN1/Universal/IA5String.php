@@ -38,7 +38,7 @@ class IA5String extends AbstractString
         }
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::IA5_STRING;
     }

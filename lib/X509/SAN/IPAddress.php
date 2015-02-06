@@ -36,7 +36,7 @@ class IPAddress extends Object implements Parsable
         $this->value = $ipAddressString;
     }
 
-    public static function getType()
+    public function getType()
     {
         return self::IDENTIFIER;
     }

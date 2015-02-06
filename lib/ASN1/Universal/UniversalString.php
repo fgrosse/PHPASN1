@@ -37,7 +37,7 @@ class UniversalString extends AbstractString
         $this->allowAll();
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::UNIVERSAL_STRING;
     }

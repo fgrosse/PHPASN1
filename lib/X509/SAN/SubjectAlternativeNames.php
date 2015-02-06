@@ -44,7 +44,7 @@ class SubjectAlternativeNames extends Object implements Parsable
         return $this->alternativeNamesSequence->getObjectLength();
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::OCTETSTRING;
     }

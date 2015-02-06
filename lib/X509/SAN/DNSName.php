@@ -31,7 +31,7 @@ class DNSName extends GeneralString
         parent::__construct($dnsNameString);
     }
 
-    public static function getType()
+    public function getType()
     {
         return self::IDENTIFIER;
     }

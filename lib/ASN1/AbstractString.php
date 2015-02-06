@@ -110,7 +110,7 @@ abstract class AbstractString extends Object implements Parsable
         $stringLength = $this->getContentLength();
         for ($i = 0; $i < $stringLength; $i++) {
             if (in_array($this->value[$i], $this->allowedCharacters) == false) {
-                $typeName = Identifier::getName(static::getType());
+                $typeName = Identifier::getName($this->getType());
                 throw new \Exception("Could not create a {$typeName} from the character sequence '{$this->value}'.");
             }
         }
@@ -118,14 +118,15 @@ abstract class AbstractString extends Object implements Parsable
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
+        $parsedObject = new static('');
+
+        self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         $string = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
 
-        $parsedObject = new static($string);
+        $parsedObject->value = $string;
         $parsedObject->setContentLength($contentLength);
-
         return $parsedObject;
     }
 

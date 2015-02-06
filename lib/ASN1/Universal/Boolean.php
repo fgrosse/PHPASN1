@@ -37,7 +37,7 @@ class Boolean extends Object implements Parsable
         $this->value = $value;
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::BOOLEAN;
     }

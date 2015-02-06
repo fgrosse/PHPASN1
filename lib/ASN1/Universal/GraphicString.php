@@ -36,7 +36,7 @@ class GraphicString extends AbstractString
         $this->allowAll();
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::GRAPHIC_STRING;
     }

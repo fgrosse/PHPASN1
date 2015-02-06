@@ -47,7 +47,6 @@ use FG\ASN1\Universal\ObjectDescriptor;
 
 /**
  * Class Object
- * @method string getType This static method needs to be implemented by all instances of Object
  */
 abstract class Object implements Parsable
 {
@@ -63,9 +62,11 @@ abstract class Object implements Parsable
 
     abstract public function getContent();
 
+    abstract public function getType();
+
     public function getBinary()
     {
-        $result  = chr(static::getType());
+        $result  = chr($this->getType());
         $result .= $this->createLengthPart();
         $result .= $this->getEncodedValue();
 
@@ -148,7 +149,7 @@ abstract class Object implements Parsable
      */
     public function getTypeName()
     {
-        return Identifier::getName(static::getType());
+        return Identifier::getName($this->getType());
     }
 
     /**

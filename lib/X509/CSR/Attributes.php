@@ -32,7 +32,7 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class Attributes extends Construct implements Parsable
 {
-    public static function getType()
+    public function getType()
     {
         return 0xA0;
     }

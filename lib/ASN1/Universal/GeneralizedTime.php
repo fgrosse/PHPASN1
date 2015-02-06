@@ -49,7 +49,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
         }
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::GENERALIZED_TIME;
     }

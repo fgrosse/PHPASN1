@@ -60,7 +60,7 @@ class ObjectIdentifier extends Object implements Parsable
         return $this->value;
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::OBJECT_IDENTIFIER;
     }

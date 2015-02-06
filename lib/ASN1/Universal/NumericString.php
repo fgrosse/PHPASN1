@@ -40,7 +40,7 @@ class NumericString extends AbstractString
         $this->allowSpaces();
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::NUMERIC_STRING;
     }
