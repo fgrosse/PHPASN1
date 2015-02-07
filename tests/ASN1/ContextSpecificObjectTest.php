@@ -47,6 +47,10 @@ class ContextSpecificObjectTest extends ASN1TestCase
         $this->assertEquals(0, $asn->getIndex());
         $asn = new ContextSpecificObject(1, new PrintableString("test"));
         $this->assertEquals(1, $asn->getIndex());
+
+        $binary = $asn->getBinary();
+        $parsed = Object::fromBinary($binary);
+        $this->assertEquals(1, $parsed->getIndex());
     }
 
     public function testGetLength()
@@ -55,6 +59,20 @@ class ContextSpecificObjectTest extends ASN1TestCase
         $asn = new ContextSpecificObject(0, $string);
 
         $this->assertEquals($string->getObjectLength() + 2, $asn->getObjectLength());
+    }
+
+    public function testGetContent()
+    {
+        $asn = new ContextSpecificObject(0, new PrintableString("test"));
+        $binary = $asn->getBinary();
+
+        $parsed = Object::fromBinary($binary);
+        $this->assertInstanceOf('FG\ASN1\ContextSpecificObject', $parsed);
+        $this->assertEquals(1, $parsed->getNumberOfChildren());
+
+        $children = $parsed->getChildren();
+        $this->assertInstanceOf('FG\ASN1\Universal\PrintableString', $children[0]);
+        $this->assertEquals('test', $children[0]->getContent());
     }
 }
 

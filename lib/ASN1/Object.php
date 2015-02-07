@@ -165,9 +165,10 @@ abstract class Object implements Parsable
 
         $identifierOctet = ord($binaryData[$offsetIndex]);
         $classCrumb = $binaryData[$offsetIndex];
+        $cstBits = ((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | (1 << 5));
 
-        if ((hexdec(bin2hex($classCrumb)) & (Identifier::CLASS_CONTEXT_SPECIFIC << 6)) == true) {
-            //return ContextSpecificObject::fromBinary($binaryData, $offsetIndex);
+        if ((hexdec(bin2hex($classCrumb)) & $cstBits) == $cstBits) {
+            return ContextSpecificObject::fromBinary($binaryData, $offsetIndex);
         }
 
         switch ($identifierOctet) {
