@@ -20,7 +20,6 @@
 
 namespace FG\ASN1;
 
-use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Exception\ParserException;
 
 /**

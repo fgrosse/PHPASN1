@@ -30,7 +30,7 @@ class NumericStringTest extends ASN1TestCase
     public function testGetType()
     {
         $object = new NumericString("1234");
-        $this->assertEquals(Identifier::NUMERIC_STRING, $object::getType());
+        $this->assertEquals(Identifier::NUMERIC_STRING, $object->getType());
     }
 
     public function testContent()
