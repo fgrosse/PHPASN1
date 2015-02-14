@@ -173,6 +173,12 @@ abstract class Object implements Parsable
         return Identifier::getName($this->getType());
     }
 
+    /**
+     * @param string $binaryData
+     * @param int $offsetIndex
+     * @return \FG\ASN1\Object
+     * @throws ParserException
+     */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         if (strlen($binaryData) < $offsetIndex) {
@@ -180,11 +186,8 @@ abstract class Object implements Parsable
         }
 
         $identifierOctet = ord($binaryData[$offsetIndex]);
-        $classCrumb = $binaryData[$offsetIndex];
-        $cstBits = ((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | (1 << 5));
-
-        if ((hexdec(bin2hex($classCrumb)) & $cstBits) == $cstBits) {
-            return ContextSpecificObject::fromBinary($binaryData, $offsetIndex);
+        if (Identifier::isContextSpecificClass($identifierOctet) && Identifier::isConstructed($identifierOctet)) {
+            return ExplicitlyTaggedObject::fromBinary($binaryData, $offsetIndex);
         }
 
         switch ($identifierOctet) {

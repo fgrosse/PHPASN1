@@ -22,7 +22,7 @@ namespace FG\ASN1;
 
 abstract class Construct extends Object implements \Iterator, Parsable
 {
-    /** @var Object[] */
+    /** @var \FG\ASN1\Object[] */
     protected $children;
     private $iteratorPosition = 0;
 
@@ -126,7 +126,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return Object[]
+     * @return \FG\ASN1\Object[]
      */
     public function getChildren()
     {
@@ -134,7 +134,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return Object
+     * @return \FG\ASN1\Object
      */
     public function getFirstChild()
     {
