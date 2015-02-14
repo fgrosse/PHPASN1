@@ -20,6 +20,7 @@
 
 namespace FG\ASN1;
 
+use Exception;
 use FG\ASN1\Exception\NotImplementedException;
 
 /**
@@ -37,7 +38,6 @@ use FG\ASN1\Exception\NotImplementedException;
  */
 class Identifier
 {
-
     const CLASS_UNIVERSAL        = 0x00;
     const CLASS_APPLICATION      = 0x01;
     const CLASS_CONTEXT_SPECIFIC = 0x02;
@@ -77,6 +77,24 @@ class Identifier
 
     const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;
+
+    public static function create($class, $isConstructed, $tagNumber)
+    {
+        if (!is_numeric($class) || $class < self::CLASS_UNIVERSAL || $class > self::CLASS_PRIVATE) {
+            throw new Exception(sprintf('Invalid class %d given', $class));
+        }
+
+        if (!is_bool($isConstructed)) {
+            throw new Exception("\$isConstructed must be a boolean value ($isConstructed given)");
+        }
+
+        $tagNumber = self::makeNumeric($tagNumber);
+        if ($tagNumber < 0 || $tagNumber > 31) {
+            throw new Exception(sprintf('Invalid $tagNumber %d given. You can only use 5 bits to encode the tag', $tagNumber));
+        }
+
+        return ($class << 6) | ($isConstructed << 5) | $tagNumber;
+    }
 
     public static function isConstructed($identifierOctet)
     {

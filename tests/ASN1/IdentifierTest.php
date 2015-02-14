@@ -25,6 +25,12 @@ use FG\ASN1\Identifier;
 
 class IdentifierTest extends ASN1TestCase
 {
+    public function testCreate()
+    {
+        $this->assertEquals(0x02, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0x02));
+        $this->assertEquals(0x30, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = true,  0x10));
+        $this->assertEquals(0xB3, Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, $isConstructed = true,  0x13));
+    }
 
     public function testGetIdentifierName()
     {

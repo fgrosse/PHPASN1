@@ -43,7 +43,7 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
         }
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::RELATIVE_OID;
     }

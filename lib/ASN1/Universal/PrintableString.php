@@ -56,7 +56,7 @@ class PrintableString extends AbstractString
         $this->allowCharacters("'", '(', ')', '+', '-', '.', ',', '/', ':', '=', '?');
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::PRINTABLE_STRING;
     }

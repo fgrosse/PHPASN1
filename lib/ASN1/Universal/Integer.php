@@ -42,7 +42,7 @@ class Integer extends Object implements Parsable
         $this->value = $value;
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::INTEGER;
     }
@@ -86,7 +86,8 @@ class Integer extends Object implements Parsable
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
+        $parsedObject = new static(0);
+        self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
@@ -101,7 +102,7 @@ class Integer extends Object implements Parsable
             $number = gmp_sub($number, pow(2, 8*$contentLength-1));
         }
 
-        $parsedObject = new static(gmp_strval($number));
+        $parsedObject->value = gmp_strval($number);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

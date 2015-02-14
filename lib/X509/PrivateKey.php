@@ -18,21 +18,28 @@
  * along with PHPASN1.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace FG\ASN1;
-use FG\ASN1\Exception\ParserException;
+namespace FG\X509;
 
-/**
- * The Parsable interface describes classes that can be parsed from their binary DER representation.
- */
-interface Parsable
+use FG\ASN1\OID;
+use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\Sequence;
+use FG\ASN1\Universal\BitString;
+use FG\ASN1\Universal\ObjectIdentifier;
+
+class PrivateKey extends Sequence
 {
     /**
-     * Parse an instance of this class from its binary DER encoded representation
-     * @param string $binaryData
-     * @param int $offsetIndex the offset at which parsing of the $binaryData is started. This parameter ill be modified
-     *            to contain the offset index of the next object after this object has been parsed
-     * @throws ParserException if the given binary data is either invalid or not currently supported
-     * @return static
+     * @param string $hexKey
+     * @param \FG\ASN1\Object|string $algorithmIdentifierString
      */
-    public static function fromBinary(&$binaryData, &$offsetIndex = null);
+    public function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION)
+    {
+        parent::__construct(
+            new Sequence(
+                new ObjectIdentifier($algorithmIdentifierString),
+                new Null()
+            ),
+            new BitString($hexKey)
+        );
+    }
 }

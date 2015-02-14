@@ -37,7 +37,7 @@ abstract class AbstractTime extends Object
             $dateTimeObject = new DateTime($dateTime, $timeZone);
             if ($dateTimeObject == false) {
                 $errorMessage = $this->getLastDateTimeErrors();
-                $className = Identifier::getName(static::getType());
+                $className = Identifier::getName($this->getType());
                 throw new Exception(sprintf("Could not create %s from date time string '%s': %s", $className, $dateTime, $errorMessage));
             }
             $dateTime = $dateTimeObject;

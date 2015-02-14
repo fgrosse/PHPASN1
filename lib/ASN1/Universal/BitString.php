@@ -31,9 +31,9 @@ class BitString extends OctetString implements Parsable
     /**
      * Creates a new ASN.1 BitString object.
      *
-     * @param mixed $value Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
-     * @param int|number $nrOfUnusedBits the number of unused bits in the last octet [optional].
-     * @throws Exception
+     * @param string|int $value Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
+     * @param int $nrOfUnusedBits the number of unused bits in the last octet [optional].
+     * @throws Exception if the second parameter is no positive numeric value
      */
     public function __construct($value, $nrOfUnusedBits = 0)
     {
@@ -46,7 +46,7 @@ class BitString extends OctetString implements Parsable
         $this->nrOfUnusedBits = $nrOfUnusedBits;
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::BITSTRING;
     }

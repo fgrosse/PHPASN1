@@ -36,7 +36,7 @@ class VisibleString extends AbstractString
         $this->allowAll();
     }
 
-    public static function getType()
+    public function getType()
     {
         return Identifier::VISIBLE_STRING;
     }

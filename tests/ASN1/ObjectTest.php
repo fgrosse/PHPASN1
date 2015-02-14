@@ -20,10 +20,10 @@
 
 namespace FG\Test\ASN1;
 
+use FG\ASN1\ExplicitlyTaggedObject;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Object;
 use FG\ASN1\Identifier;
-use FG\ASN1\Exception\ParserException;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
@@ -38,40 +38,40 @@ use FG\ASN1\Universal\PrintableString;
 class ObjectTest extends ASN1TestCase
 {
 
-   public function testCalculateNumberOfLengthOctets()
-   {
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 32);
-       $this->assertEquals(1, $calculatedNrOfLengthOctets);
+    public function testCalculateNumberOfLengthOctets()
+    {
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 32);
+        $this->assertEquals(1, $calculatedNrOfLengthOctets);
 
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 0);
-       $this->assertEquals(1, $calculatedNrOfLengthOctets);
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 0);
+        $this->assertEquals(1, $calculatedNrOfLengthOctets);
 
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 127);
-       $this->assertEquals(1, $calculatedNrOfLengthOctets);
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 127);
+        $this->assertEquals(1, $calculatedNrOfLengthOctets);
 
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 128);
-       $this->assertEquals(2, $calculatedNrOfLengthOctets);
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 128);
+        $this->assertEquals(2, $calculatedNrOfLengthOctets);
 
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 255);
-       $this->assertEquals(2, $calculatedNrOfLengthOctets);
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 255);
+        $this->assertEquals(2, $calculatedNrOfLengthOctets);
 
-       $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
-       $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 1025);
-       $this->assertEquals(3, $calculatedNrOfLengthOctets);
-   }
+        $object = $this->getMockForAbstractClass('\FG\ASN1\Object');
+        $calculatedNrOfLengthOctets = $this->callMethod($object, 'getNumberOfLengthOctets', 1025);
+        $this->assertEquals(3, $calculatedNrOfLengthOctets);
+    }
 
     /**
      * For the real parsing tests look in the test cases of each single ASn object.
      */
     public function testFromBinary()
     {
-        // Bit String
-       $binaryData  = chr(Identifier::BITSTRING);
+        /** @var BitString $parsedObject */
+        $binaryData = chr(Identifier::BITSTRING);
         $binaryData .= chr(0x03);
         $binaryData .= chr(0x05);
         $binaryData .= chr(0xFF);
@@ -83,8 +83,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
         $this->assertEquals($expectedObject->getNumberOfUnusedBits(), $parsedObject->getNumberOfUnusedBits());
 
-       // Octet String
-       $binaryData  = chr(Identifier::OCTETSTRING);
+        /** @var OctetString $parsedObject */
+        $binaryData = chr(Identifier::OCTETSTRING);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xFF);
         $binaryData .= chr(0xA0);
@@ -94,8 +94,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof OctetString);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Boolean
-       $binaryData  = chr(Identifier::BOOLEAN);
+        /** @var \FG\ASN1\Universal\Boolean $parsedObject */
+        $binaryData = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x01);
         $binaryData .= chr(0xFF);
 
@@ -104,8 +104,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof Boolean);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Enumerated
-       $binaryData  = chr(Identifier::ENUMERATED);
+        /** @var Enumerated $parsedObject */
+        $binaryData = chr(Identifier::ENUMERATED);
         $binaryData .= chr(0x01);
         $binaryData .= chr(0x03);
 
@@ -114,9 +114,9 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof Enumerated);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // IA5 String
-       $string = 'Hello Foo World!!!11EinsEins!1';
-        $binaryData  = chr(Identifier::IA5_STRING);
+        /** @var IA5String $parsedObject */
+        $string = 'Hello Foo World!!!11EinsEins!1';
+        $binaryData = chr(Identifier::IA5_STRING);
         $binaryData .= chr(strlen($string));
         $binaryData .= $string;
 
@@ -125,8 +125,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof IA5String);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Integer
-       $binaryData  = chr(Identifier::INTEGER);
+        /** @var \FG\ASN1\Universal\Integer $parsedObject */
+        $binaryData = chr(Identifier::INTEGER);
         $binaryData .= chr(0x01);
         $binaryData .= chr(123);
 
@@ -135,8 +135,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof Integer);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Null
-       $binaryData  = chr(Identifier::NULL);
+        /** @var \FG\ASN1\Universal\Null $parsedObject */
+        $binaryData = chr(Identifier::NULL);
         $binaryData .= chr(0x00);
 
         $expectedObject = new Null();
@@ -144,8 +144,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof Null);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Object Identifier
-       $binaryData  = chr(Identifier::OBJECT_IDENTIFIER);
+        /** @var ObjectIdentifier $parsedObject */
+        $binaryData = chr(Identifier::OBJECT_IDENTIFIER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(1 * 40 + 2);
         $binaryData .= chr(3);
@@ -155,9 +155,9 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof ObjectIdentifier);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Printable String
-       $string = 'This is a test string. #?!%&""';
-        $binaryData  = chr(Identifier::PRINTABLE_STRING);
+        /** @var PrintableString $parsedObject */
+        $string = 'This is a test string. #?!%&""';
+        $binaryData = chr(Identifier::PRINTABLE_STRING);
         $binaryData .= chr(strlen($string));
         $binaryData .= $string;
 
@@ -166,8 +166,8 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof PrintableString);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-       // Sequence
-       $binaryData  = chr(Identifier::SEQUENCE);
+        /** @var Sequence $parsedObject */
+        $binaryData = chr(Identifier::SEQUENCE);
         $binaryData .= chr(0x06);
         $binaryData .= chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x01);
@@ -179,10 +179,6 @@ class ObjectTest extends ASN1TestCase
         $expectedChild1 = new Boolean(false);
         $expectedChild2 = new Integer(0x03);
 
-        $expectedObject = new Sequence(
-           $expectedChild1,
-           $expectedChild2
-       );
         $parsedObject = Object::fromBinary($binaryData);
         $this->assertTrue($parsedObject instanceof Sequence);
         $this->assertEquals(2, $parsedObject->getNumberOfChildren());
@@ -192,6 +188,12 @@ class ObjectTest extends ASN1TestCase
         $child2 = $children[1];
         $this->assertEquals($expectedChild1->getContent(), $child1->getContent());
         $this->assertEquals($expectedChild2->getContent(), $child2->getContent());
+
+        /** @var ExplicitlyTaggedObject $parsedObject */
+        $taggedObject = new ExplicitlyTaggedObject(0x01, new PrintableString('Hello tagged world'));
+        $binaryData = $taggedObject->getBinary();
+        $parsedObject = Object::fromBinary($binaryData);
+        $this->assertTrue($parsedObject instanceof ExplicitlyTaggedObject);
     }
 
     /**

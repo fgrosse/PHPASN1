@@ -46,8 +46,7 @@ use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
 
 /**
- * Class Object
- * @method string getType This static method needs to be implemented by all instances of Object
+ * Class Object is the base class for all concrete ASN.1 objects.
  */
 abstract class Object implements Parsable
 {
@@ -55,17 +54,40 @@ abstract class Object implements Parsable
     private $nrOfLengthOctets;
 
     /**
-     * Must return the number of octets of the content part.
+     * Must return the number of octets of the content part
+     * @return int
      */
     abstract protected function calculateContentLength();
 
+    /**
+     * Encode the object using DER encoding
+     * @see http://en.wikipedia.org/wiki/X.690#DER_encoding
+     * @return string the binary representation of an objects value
+     */
     abstract protected function getEncodedValue();
 
+    /**
+     * Return the content of this object in a non encoded form.
+     * This can be used to print the value in human readable form
+     * @return mixed
+     */
     abstract public function getContent();
 
+    /**
+     * Return the object type octet.
+     * This should use the class constants of Identifier
+     * @see Identifier
+     * @return int
+     */
+    abstract public function getType();
+
+    /**
+     * Encode this object using DER encoding
+     * @return string the full binary representation of the complete object
+     */
     public function getBinary()
     {
-        $result  = chr(static::getType());
+        $result  = chr($this->getType());
         $result .= $this->createLengthPart();
         $result .= $this->getEncodedValue();
 
@@ -148,7 +170,7 @@ abstract class Object implements Parsable
      */
     public function getTypeName()
     {
-        return Identifier::getName(static::getType());
+        return Identifier::getName($this->getType());
     }
 
     /**
@@ -164,6 +186,10 @@ abstract class Object implements Parsable
         }
 
         $identifierOctet = ord($binaryData[$offsetIndex]);
+        if (Identifier::isContextSpecificClass($identifierOctet) && Identifier::isConstructed($identifierOctet)) {
+            return ExplicitlyTaggedObject::fromBinary($binaryData, $offsetIndex);
+        }
+
         switch ($identifierOctet) {
             case Identifier::BITSTRING:
                 return BitString::fromBinary($binaryData, $offsetIndex);
