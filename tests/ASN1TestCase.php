@@ -46,4 +46,10 @@ abstract class ASN1TestCase extends \PHPUnit_Framework_TestCase
 
         return $method->invokeArgs($object, $arguments);
     }
+
+    protected function assertBinaryEquals($expected, $actual)
+    {
+        // TODO add logic to make the error output readable
+        $this->assertEquals($expected, $actual);
+    }
 }
