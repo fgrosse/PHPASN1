@@ -6,7 +6,6 @@
 
 # Composer
 vendor
-composer.lock
 
 classes/cache/*
 tmp/*
