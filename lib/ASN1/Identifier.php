@@ -68,6 +68,16 @@ class Identifier
     const LONG_FORM         = 0x1F; // unsupported for now
     const IS_CONSTRUCTED    = 0x20;
 
+    /**
+     * Creates an identifier. Short form identifiers are returned as integers
+     * for BC, long form identifiers will be returned as a string of octets.
+     *
+     * @param integer $class
+     * @param boolean $isConstructed
+     * @param integer $tagNumber
+     *
+     * @return integer|string
+     */
     public static function create($class, $isConstructed, $tagNumber)
     {
         if (!is_numeric($class) || $class < self::CLASS_UNIVERSAL || $class > self::CLASS_PRIVATE) {
@@ -79,11 +89,15 @@ class Identifier
         }
 
         $tagNumber = self::makeNumeric($tagNumber);
-        if ($tagNumber < 0 || $tagNumber > 31) {
-            throw new Exception(sprintf('Invalid $tagNumber %d given. You can only use 5 bits to encode the tag', $tagNumber));
+        if ($tagNumber < 0) {
+            throw new Exception(sprintf('Invalid $tagNumber %d given. You can only use positive integers.', $tagNumber));
         }
 
-        return ($class << 6) | ($isConstructed << 5) | $tagNumber;
+        if ($tagNumber < Identifier::LONG_FORM) {
+            return ($class << 6) | ($isConstructed << 5) | $tagNumber;
+        }
+
+        return self::createLongForm($class, $isConstructed, $tagNumber);
     }
 
     public static function isConstructed($identifierOctet)
@@ -298,5 +312,42 @@ class Identifier
         } else {
             return $identifierOctet;
         }
+    }
+
+    /**
+     * Tag numbers formatted to long form use exactly the same encoding
+     * rules as object identifiers. Each subsequent octet encodes 7 bits
+     * of the tag number as the least significant bits. The most significant
+     * bit is set, if any further octets are part of the tag number. The
+     * second octet represents 7 most significant bits of the tag number.
+     *
+     * See X.609#8.1.2.4
+     *
+     * @param integer $class
+     * @param boolean $isConstructed
+     * @param integer $tagNumber
+     *
+     * @return string
+     */
+    private static function createLongForm($class, $isConstructed, $tagNumber)
+    {
+        $tagBits = 0x7F;
+        $isNotLastOctet = 0x80;
+
+        $firstOctet = ($class << 6) | ($isConstructed << 5) | self::LONG_FORM;
+        $octets = '';
+
+        do {
+            $octet = $tagNumber & $tagBits;
+            $tagNumber >>= 7;
+
+            if ($octets) {
+                $octet |= $isNotLastOctet;
+            }
+
+            $octets .= chr($octet);
+        } while ($tagNumber);
+
+        return chr($firstOctet).strrev($octets);
     }
 }
