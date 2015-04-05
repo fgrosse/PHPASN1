@@ -75,7 +75,6 @@ class Identifier
      * @param integer $class
      * @param boolean $isConstructed
      * @param integer $tagNumber
-     *
      * @return integer|string
      */
     public static function create($class, $isConstructed, $tagNumber)
@@ -111,17 +110,14 @@ class Identifier
      * Example: ASN.1 Octet String
      *
      * @see Identifier::getShortName()
-     * @param $identifierOctet
+     * @param integer|string $identifier
      * @return string
-     * @throws NotImplementedException if this is the long form of the identifier octets definition
      */
-    public static function getName($identifierOctet)
+    public static function getName($identifier)
     {
-        if (!is_numeric($identifierOctet)) {
-            $identifierOctet = ord($identifierOctet);
-        }
+        $identifierOctet = self::makeNumeric($identifier);
 
-        $typeName = static::getShortName($identifierOctet);
+        $typeName = static::getShortName($identifier);
 
         if (($identifierOctet & 0x1F) <= 0x1E) {
             $typeName = "ASN.1 {$typeName}";
@@ -137,18 +133,14 @@ class Identifier
      * return its name. Else Identifier::getClassDescription() is used to retrieve
      * information about the identifier.
      *
-     * Note that the long form identifier is not yet supported by PHPASN1 and will
-     * trigger a NotImplementedException if used.
-     *
      * @see Identifier::getName()
      * @see Identifier::getClassDescription()
-     * @param $identifierOctet
+     * @param integer|string $identifier
      * @return string
-     * @throws NotImplementedException if this is the long form of the identifier octets definition
      */
-    public static function getShortName($identifierOctet)
+    public static function getShortName($identifier)
     {
-        $identifierOctet = self::makeNumeric($identifierOctet);
+        $identifierOctet = self::makeNumeric($identifier);
 
         switch ($identifierOctet) {
             case self::EOC:
@@ -216,12 +208,14 @@ class Identifier
                 return 'RESERVED (0x0F)';
 
             case self::LONG_FORM:
-                throw new NotImplementedException('Long form of identifier octets is not yet implemented');
-
             default:
-                $classDescription = self::getClassDescription($identifierOctet);
+                $classDescription = self::getClassDescription($identifier);
 
-                return "$classDescription (0x".dechex($identifierOctet).')';
+                if (is_int($identifier)) {
+                    $identifier = chr($identifier);
+                }
+
+                return "$classDescription (0x".strtoupper(bin2hex($identifier)).')';
         }
     }
 
@@ -237,11 +231,13 @@ class Identifier
      * Constructed context-specific
      * Primitive universal
      * </pre>
-     * @param $identifierOctet
+     * @param integer|string $identifier
      * @return string
      */
-    public static function getClassDescription($identifierOctet)
+    public static function getClassDescription($identifier)
     {
+        $identifierOctet = self::makeNumeric($identifier);
+
         if (self::isConstructed($identifierOctet)) {
             $classDescription = 'Constructed ';
         } else {
@@ -256,7 +252,7 @@ class Identifier
                 $classDescription .= 'application';
                 break;
             case self::CLASS_CONTEXT_SPECIFIC:
-                $tagNumber = self::getTagNumber($identifierOctet);
+                $tagNumber = self::getTagNumber($identifier);
                 $classDescription = "[$tagNumber] Context-specific";
                 break;
             case self::CLASS_PRIVATE:
@@ -270,11 +266,50 @@ class Identifier
         return $classDescription;
     }
 
-    public static function getTagNumber($identifierOctet)
+    /**
+     * @param integer|string $identifier
+     * @return integer
+     */
+    public static function getTagNumber($identifier)
     {
-        $identifierOctet = self::makeNumeric($identifierOctet);
+        $firstOctet = self::makeNumeric($identifier);
+        $tagNumber = $firstOctet & Identifier::LONG_FORM;
 
-        return $identifierOctet & 0x1F;
+        if ($tagNumber < Identifier::LONG_FORM) {
+            return $tagNumber;
+        }
+
+        // ??? This can never happen.
+        if (is_int($identifier)) {
+            $identifier = chr($identifier);
+        }
+
+        $tagNumber = 0;
+        $bitsMax = (PHP_INT_SIZE * 8) - 1;
+        $bitsUsed = 0;
+        $bitsPerOctet = 7;
+        $i = 1; // 1 to skip the 1st identifier octet
+
+        while (true) {
+            if (!isset($identifier[$i])) {
+                throw new \InvalidArgumentException(sprintf('Malformed identifier (0x%s).', strtoupper(bin2hex($identifier))));
+            }
+
+            $bitsUsed += $bitsPerOctet;
+            if ($bitsUsed > $bitsMax) {
+                throw new \InvalidArgumentException(sprintf('Identifier (0x%s) is too long and thus unsupported.', strtoupper(bin2hex($identifier))));
+            }
+
+            $octet = ord($identifier[$i++]);
+            $tagNumber <<= $bitsPerOctet;
+            $tagNumber |= ($octet & 0x7F);
+
+            if (($octet & 0x80) === 0) {
+                break;
+            }
+        }
+
+        return $tagNumber;
     }
 
     public static function isUniversalClass($identifier)

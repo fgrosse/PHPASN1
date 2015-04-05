@@ -58,6 +58,8 @@ class IdentifierTest extends ASN1TestCase
 
         $this->assertEquals('ASN.1 RESERVED (0x0E)', Identifier::getName(0x0E));
         $this->assertEquals('ASN.1 RESERVED (0x0F)', Identifier::getName(0x0F));
+
+        $this->assertEquals('Constructed private (0xFF7F)', Identifier::getName("\xFF\x7F"));
     }
 
     public function testGetIdentifierNameWithBinaryInput()
@@ -65,19 +67,41 @@ class IdentifierTest extends ASN1TestCase
         $this->assertEquals('ASN.1 Numeric String', Identifier::getName(chr(Identifier::NUMERIC_STRING)));
     }
 
-    /**
-     * @expectedException \FG\ASN1\Exception\NotImplementedException
-     * @expectedExceptionMessage Long form of identifier octets is not yet implemented
-     */
-    public function testGetIdentifierNameForLongForm()
-    {
-        Identifier::getName(0x1F);
-    }
-
     public function testGetTagNumber()
     {
         $this->assertEquals(1, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x01));
         $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
+        $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
+        $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
+    }
+
+    /**
+     * Should fail on both 64-bit and 32-bit versions of PHP.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Identifier (0xFFFFFFFFFFFFFFFFFFFF7F) is too long and thus unsupported
+     */
+    public function testGetTagNumberFailsIfIdentifierTooLong()
+    {
+        Identifier::getTagNumber("\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x7F");
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Malformed identifier (0x1F)
+     */
+    public function testGetTagNumberFailsIfLongFormIdentifierMissingSubsequentOctets()
+    {
+        Identifier::getTagNumber(Identifier::LONG_FORM);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Malformed identifier (0xFFFF)
+     */
+    public function testGetTagNumberFailsIfLastOctetSignificantBitSet()
+    {
+        Identifier::getTagNumber("\xFF\xFF");
     }
 
     public function testIsSpecificClass()
