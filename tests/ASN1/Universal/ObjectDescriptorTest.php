@@ -23,6 +23,12 @@ class ObjectDescriptorTest extends ASN1TestCase
         $this->assertEquals(Identifier::OBJECT_DESCRIPTOR, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new ObjectDescriptor("NumericString character abstract syntax");
+        $this->assertEquals(chr(Identifier::OBJECT_DESCRIPTOR), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new ObjectDescriptor("PrintableString character abstract syntax");

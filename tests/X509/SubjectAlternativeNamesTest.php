@@ -25,6 +25,12 @@ class SubjectAlternativeNamesTest extends ASN1TestCase
         $this->assertEquals(Identifier::OCTETSTRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new SubjectAlternativeNames();
+        $this->assertEquals(chr(Identifier::OCTETSTRING), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $object = new SubjectAlternativeNames();

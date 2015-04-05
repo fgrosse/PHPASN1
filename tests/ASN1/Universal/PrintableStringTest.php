@@ -23,6 +23,12 @@ class PrintableStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::PRINTABLE_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new PrintableString("Hello World");
+        $this->assertEquals(chr(Identifier::PRINTABLE_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new PrintableString("Hello World");

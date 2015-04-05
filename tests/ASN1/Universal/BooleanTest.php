@@ -23,6 +23,12 @@ class BooleanTest extends ASN1TestCase
         $this->assertEquals(Identifier::BOOLEAN, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Boolean(true);
+        $this->assertEquals(chr(Identifier::BOOLEAN), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new Boolean(true);

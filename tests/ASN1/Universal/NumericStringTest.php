@@ -23,6 +23,12 @@ class NumericStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::NUMERIC_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new NumericString("1234");
+        $this->assertEquals(chr(Identifier::NUMERIC_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new NumericString("123 45 67890");

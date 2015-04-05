@@ -23,6 +23,12 @@ class BMPStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::BMP_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new BMPString("Hello World");
+        $this->assertEquals(chr(Identifier::BMP_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new BMPString("Hello World");

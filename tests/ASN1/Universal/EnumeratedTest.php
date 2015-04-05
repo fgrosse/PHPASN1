@@ -23,6 +23,12 @@ class EnumeratedTest extends ASN1TestCase
         $this->assertEquals(Identifier::ENUMERATED, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Enumerated(1);
+        $this->assertEquals(chr(Identifier::ENUMERATED), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new Enumerated(0);

@@ -28,6 +28,12 @@ class AttributesTest extends ASN1TestCase
         $this->assertEquals(0xa0, $object->getType());  // Identifier indicates this object is context specific and constructed
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Attributes();
+        $this->assertEquals(chr(0xa0), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $attributes = new Attributes();

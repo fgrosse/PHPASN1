@@ -26,6 +26,12 @@ class SetTest extends ASN1TestCase
         $this->assertEquals(Identifier::SET, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Set();
+        $this->assertEquals(chr(Identifier::SET), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $child1 = new Integer(123);

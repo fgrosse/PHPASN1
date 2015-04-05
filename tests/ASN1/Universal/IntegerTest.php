@@ -23,6 +23,12 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals(Identifier::INTEGER, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Integer(123);
+        $this->assertEquals(chr(Identifier::INTEGER), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new Integer(1234);

@@ -32,6 +32,12 @@ class ObjectIdentifierTest extends ASN1TestCase
         $this->assertEquals(Identifier::OBJECT_IDENTIFIER, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new ObjectIdentifier('1.2.3');
+        $this->assertEquals(chr(Identifier::OBJECT_IDENTIFIER), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new ObjectIdentifier('1.2.3');

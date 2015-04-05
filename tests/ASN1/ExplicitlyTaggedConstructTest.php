@@ -24,6 +24,13 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
         $this->assertEquals($expectedType, $asn->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $asn = new ExplicitlyTaggedObject(0x1E, new PrintableString('test'));
+        $expectedIdentifier = chr(Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, $isConstructed = true, 0x1E));
+        $this->assertEquals($expectedIdentifier, $asn->getIdentifier());
+    }
+
     public function testGetTag()
     {
         $object = new ExplicitlyTaggedObject(0, new PrintableString('test'));

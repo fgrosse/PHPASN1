@@ -23,6 +23,12 @@ class GraphicStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::GRAPHIC_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new GraphicString("Hello World");
+        $this->assertEquals(chr(Identifier::GRAPHIC_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new GraphicString("Hello World");

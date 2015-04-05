@@ -22,6 +22,12 @@ class DNSNameTest extends ASN1TestCase
         $this->assertEquals(0x82, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new DNSName("test.corvespace.de");
+        $this->assertEquals(chr(0x82), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $object = new DNSName("test.corvespace.de");

@@ -23,6 +23,12 @@ class CharacterStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::CHARACTER_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new CharacterString("Hello World");
+        $this->assertEquals(chr(Identifier::CHARACTER_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new CharacterString("Hello World");

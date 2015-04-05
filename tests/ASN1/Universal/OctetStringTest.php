@@ -23,6 +23,12 @@ class OctetStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::OCTETSTRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new OctetString('30 14 06 08 2B 06 01 05 05 07 03 01 06 08 2B 06 01 05 05 07 03 02');
+        $this->assertEquals(chr(Identifier::OCTETSTRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new OctetString('A01200C3');

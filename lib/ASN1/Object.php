@@ -72,6 +72,25 @@ abstract class Object implements Parsable
     abstract public function getType();
 
     /**
+     * Returns all identifier octets. If an inheriting class models a tag with
+     * the long form identifier format, it MUST reimplement this method to
+     * return all octets of the identifier.
+     *
+     * @return string Identifier as a set of octets
+     * @throws \LogicException If the identifier format is long form
+     */
+    public function getIdentifier()
+    {
+        $firstOctet = $this->getType();
+
+        if (Identifier::LONG_FORM === (Identifier::LONG_FORM & $firstOctet)) {
+            throw new \LogicException(sprintf('Identifier of %s uses the long form and must therefor override "Object::getIdentifier()".', get_class($this)));
+        }
+
+        return chr($firstOctet);
+    }
+
+    /**
      * Encode this object using DER encoding
      * @return string the full binary representation of the complete object
      */

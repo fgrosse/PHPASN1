@@ -23,6 +23,12 @@ class UniversalStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::UNIVERSAL_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new UniversalString("Hello World");
+        $this->assertEquals(chr(Identifier::UNIVERSAL_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new UniversalString("Hello World");

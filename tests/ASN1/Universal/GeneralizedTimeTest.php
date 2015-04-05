@@ -30,6 +30,12 @@ class GeneralizedTimeTest extends ASN1TestCase
         $this->assertEquals(Identifier::GENERALIZED_TIME, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new GeneralizedTime();
+        $this->assertEquals(chr(Identifier::GENERALIZED_TIME), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $now = new \DateTime();

@@ -23,6 +23,12 @@ class T61StringTest extends ASN1TestCase
         $this->assertEquals(Identifier::T61_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new T61String("Hello World");
+        $this->assertEquals(chr(Identifier::T61_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new T61String("Hello World");

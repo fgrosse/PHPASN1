@@ -26,6 +26,12 @@ class SequenceTest extends ASN1TestCase
         $this->assertEquals(Identifier::SEQUENCE, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Sequence();
+        $this->assertEquals(chr(Identifier::SEQUENCE), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $child1 = new Integer(123);

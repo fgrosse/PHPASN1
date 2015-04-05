@@ -30,6 +30,12 @@ class UTCTimeTest extends ASN1TestCase
         $this->assertEquals(Identifier::UTC_TIME, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new UTCTime();
+        $this->assertEquals(chr(Identifier::UTC_TIME), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $now = new \DateTime();
