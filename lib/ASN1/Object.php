@@ -247,14 +247,27 @@ abstract class Object implements Parsable
             case Identifier::OBJECT_DESCRIPTOR:
                 return ObjectDescriptor::fromBinary($binaryData, $offsetIndex);
             default:
+                // At this point the identifier may be >1 byte.
                 if (Identifier::isConstructed($identifierOctet)) {
                     return new UnknownConstructedObject($binaryData, $offsetIndex);
                 } else {
-                    $offsetIndex++;
+
+                    $identifier = $binaryData[$offsetIndex++];
+
+                    if (Identifier::LONG_FORM === (Identifier::LONG_FORM & $identifierOctet)) {
+                        while (true) {
+                            $identifier .= $octet = $binaryData[$offsetIndex++];
+
+                            if (0 === (ord($octet) & 0x80)) {
+                                break;
+                            }
+                        }
+                    }
+
                     $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
                     $offsetIndex += $lengthOfUnknownObject;
 
-                    return new UnknownObject($identifierOctet, $lengthOfUnknownObject);
+                    return new UnknownObject($identifier, $lengthOfUnknownObject);
                 }
         }
     }
