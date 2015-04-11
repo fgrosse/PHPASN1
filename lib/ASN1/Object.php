@@ -96,7 +96,7 @@ abstract class Object implements Parsable
      */
     public function getBinary()
     {
-        $result  = chr($this->getType());
+        $result  = $this->getIdentifier();
         $result .= $this->createLengthPart();
         $result .= $this->getEncodedValue();
 

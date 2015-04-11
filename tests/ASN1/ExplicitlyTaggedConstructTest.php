@@ -68,16 +68,24 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
 
     /**
      * @depends testGetBinary
+     * @dataProvider getTags
      */
-    public function testFromBinary()
+    public function testFromBinary($originalTag)
     {
-        $originalTag = 0x02;
         $originalStringObject = new PrintableString('test');
         $originalObject = new ExplicitlyTaggedObject($originalTag, $originalStringObject);
         $binaryData = $originalObject->getBinary();
 
         $parsedObject = ExplicitlyTaggedObject::fromBinary($binaryData);
         $this->assertEquals($originalObject, $parsedObject);
+    }
+
+    public function getTags()
+    {
+        return array(
+            array(0x02),
+            array(0xDEADBEEF),
+        );
     }
 }
 
