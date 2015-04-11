@@ -252,18 +252,7 @@ abstract class Object implements Parsable
                     return new UnknownConstructedObject($binaryData, $offsetIndex);
                 } else {
 
-                    $identifier = $binaryData[$offsetIndex++];
-
-                    if (Identifier::LONG_FORM === (Identifier::LONG_FORM & $identifierOctet)) {
-                        while (true) {
-                            $identifier .= $octet = $binaryData[$offsetIndex++];
-
-                            if (0 === (ord($octet) & 0x80)) {
-                                break;
-                            }
-                        }
-                    }
-
+                    $identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
                     $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
                     $offsetIndex += $lengthOfUnknownObject;
 
@@ -282,6 +271,25 @@ abstract class Object implements Parsable
             $message = 'Can not create an '.Identifier::getName($expectedIdentifier).' from an '.Identifier::getName($identifierOctet);
             throw new ParserException($message, $offsetForExceptionHandling);
         }
+    }
+
+    protected static function parseBinaryIdentifier($binaryData, &$offsetIndex)
+    {
+        $identifier = $binaryData[$offsetIndex++];
+
+        if (Identifier::LONG_FORM !== (Identifier::LONG_FORM & ord($identifier))) {
+            return $identifier;
+        }
+
+        while (true) {
+            $identifier .= $octet = $binaryData[$offsetIndex++];
+
+            if (0 === (ord($octet) & 0x80)) {
+                break;
+            }
+        }
+
+        return $identifier;
     }
 
     protected static function parseContentLength(&$binaryData, &$offsetIndex, $minimumLength = 0)
