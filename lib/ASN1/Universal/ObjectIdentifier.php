@@ -10,6 +10,7 @@
 
 namespace FG\ASN1\Universal;
 
+use FG\ASN1\Base128;
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
@@ -72,13 +73,7 @@ class ObjectIdentifier extends Object implements Parsable
     {
         $encodedValue = '';
         foreach ($this->subIdentifiers as $subIdentifier) {
-            $octets = chr($subIdentifier & 0x7F);
-            $subIdentifier = $subIdentifier >> 7;
-            while ($subIdentifier > 0) {
-                $octets .= chr(0x80 | ($subIdentifier & 0x7F));
-                $subIdentifier = $subIdentifier >> 7;
-            }
-            $encodedValue .= strrev($octets);
+            $encodedValue .= Base128::encode($subIdentifier);
         }
 
         return $encodedValue;
@@ -99,16 +94,19 @@ class ObjectIdentifier extends Object implements Parsable
 
         $octetsToRead = $contentLength - 1;
         while ($octetsToRead > 0) {
-            $number = 0;
+            $octets = '';
+
             do {
-                if ($octetsToRead == 0) {
+                if (0 === $octetsToRead) {
                     throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
                 }
-                $octet = ord($binaryData[$offsetIndex++]);
-                $number = ($number << 7) + ($octet & 0x7F);
+
                 $octetsToRead--;
-            } while ($octet & 0x80);
-            $oidString .= ".{$number}";
+                $octet = $binaryData[$offsetIndex++];
+                $octets .= $octet;
+            } while (ord($octet) & 0x80);
+
+            $oidString .= sprintf('.%d', Base128::decode($octets));
         }
 
         $parsedObject = new self($oidString);

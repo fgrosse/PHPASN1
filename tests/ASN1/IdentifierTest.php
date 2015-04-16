@@ -72,36 +72,15 @@ class IdentifierTest extends ASN1TestCase
         $this->assertEquals(1, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x01));
         $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
         $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
-        $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
-    }
-
-    /**
-     * Should fail on both 64-bit and 32-bit versions of PHP.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Identifier (0xFFFFFFFFFFFFFFFFFFFF7F) is too long and thus unsupported
-     */
-    public function testGetTagNumberFailsIfIdentifierTooLong()
-    {
-        Identifier::getTagNumber("\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x7F");
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Malformed identifier (0x1F)
+     * @expectedExceptionMessage Malformed base-128 encoded value (0x0).
      */
     public function testGetTagNumberFailsIfLongFormIdentifierMissingSubsequentOctets()
     {
         Identifier::getTagNumber(Identifier::LONG_FORM);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Malformed identifier (0xFFFF)
-     */
-    public function testGetTagNumberFailsIfLastOctetSignificantBitSet()
-    {
-        Identifier::getTagNumber("\xFF\xFF");
     }
 
     public function testIsSpecificClass()

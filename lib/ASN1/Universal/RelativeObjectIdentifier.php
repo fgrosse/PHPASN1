@@ -10,6 +10,7 @@
 
 namespace FG\ASN1\Universal;
 
+use FG\ASN1\Base128;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\GeneralException;
@@ -46,16 +47,19 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
         $oidString = '';
         $octetsToRead = $contentLength;
         while ($octetsToRead > 0) {
-            $number = 0;
+            $octets = '';
+
             do {
-                if ($octetsToRead == 0) {
+                if (0 === $octetsToRead) {
                     throw new ParserException('Malformed ASN.1 Relative Object Identifier', $offsetIndex-1);
                 }
-                $octet = ord($binaryData[$offsetIndex++]);
-                $number = ($number << 7) + ($octet & 0x7F);
+
                 $octetsToRead--;
-            } while ($octet & 0x80);
-            $oidString .= "{$number}.";
+                $octet = $binaryData[$offsetIndex++];
+                $octets .= $octet;
+            } while (ord($octet) & 0x80);
+
+            $oidString .= sprintf('%d.', Base128::decode($octets));
         }
 
         // remove trailing '.'

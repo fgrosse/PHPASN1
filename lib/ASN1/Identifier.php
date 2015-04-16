@@ -96,7 +96,10 @@ class Identifier
             return ($class << 6) | ($isConstructed << 5) | $tagNumber;
         }
 
-        return self::createLongForm($class, $isConstructed, $tagNumber);
+        $firstOctet = ($class << 6) | ($isConstructed << 5) | self::LONG_FORM;
+
+        // Tag numbers formatted in long form are base-128 encoded. See X.609#8.1.2.4
+        return chr($firstOctet).Base128::encode($tagNumber);
     }
 
     public static function isConstructed($identifierOctet)
@@ -284,32 +287,7 @@ class Identifier
             $identifier = chr($identifier);
         }
 
-        $tagNumber = 0;
-        $bitsMax = (PHP_INT_SIZE * 8) - 1;
-        $bitsUsed = 0;
-        $bitsPerOctet = 7;
-        $i = 1; // 1 to skip the 1st identifier octet
-
-        while (true) {
-            if (!isset($identifier[$i])) {
-                throw new \InvalidArgumentException(sprintf('Malformed identifier (0x%s).', strtoupper(bin2hex($identifier))));
-            }
-
-            $bitsUsed += $bitsPerOctet;
-            if ($bitsUsed > $bitsMax) {
-                throw new \InvalidArgumentException(sprintf('Identifier (0x%s) is too long and thus unsupported.', strtoupper(bin2hex($identifier))));
-            }
-
-            $octet = ord($identifier[$i++]);
-            $tagNumber <<= $bitsPerOctet;
-            $tagNumber |= ($octet & 0x7F);
-
-            if (($octet & 0x80) === 0) {
-                break;
-            }
-        }
-
-        return $tagNumber;
+        return Base128::decode(substr($identifier, 1));
     }
 
     public static function isUniversalClass($identifier)
@@ -347,42 +325,5 @@ class Identifier
         } else {
             return $identifierOctet;
         }
-    }
-
-    /**
-     * Tag numbers formatted to long form use exactly the same encoding
-     * rules as object identifiers. Each subsequent octet encodes 7 bits
-     * of the tag number as the least significant bits. The most significant
-     * bit is set, if any further octets are part of the tag number. The
-     * second octet represents 7 most significant bits of the tag number.
-     *
-     * See X.609#8.1.2.4
-     *
-     * @param integer $class
-     * @param boolean $isConstructed
-     * @param integer $tagNumber
-     *
-     * @return string
-     */
-    private static function createLongForm($class, $isConstructed, $tagNumber)
-    {
-        $tagBits = 0x7F;
-        $isNotLastOctet = 0x80;
-
-        $firstOctet = ($class << 6) | ($isConstructed << 5) | self::LONG_FORM;
-        $octets = '';
-
-        do {
-            $octet = $tagNumber & $tagBits;
-            $tagNumber >>= 7;
-
-            if ($octets) {
-                $octet |= $isNotLastOctet;
-            }
-
-            $octets .= chr($octet);
-        } while ($tagNumber);
-
-        return chr($firstOctet).strrev($octets);
     }
 }
