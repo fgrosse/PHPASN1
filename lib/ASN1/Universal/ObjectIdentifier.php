@@ -91,8 +91,25 @@ class ObjectIdentifier extends Object implements Parsable
 
         $firstOctet = ord($binaryData[$offsetIndex++]);
         $oidString = floor($firstOctet/40).'.'.($firstOctet % 40);
+        $oidString .= '.'.self::parseOid($binaryData, $offsetIndex, $contentLength - 1);
 
-        $octetsToRead = $contentLength - 1;
+        $parsedObject = new self($oidString);
+        $parsedObject->setContentLength($contentLength);
+
+        return $parsedObject;
+    }
+
+    /**
+     * Parses an object identifier except for the first octet, which is parsed
+     * differently. This way relative object identifiers can also be parsed
+     * using this.
+     *
+     * @return string
+     */
+    protected static function parseOid(&$binaryData, &$offsetIndex, $octetsToRead)
+    {
+        $oid = '';
+
         while ($octetsToRead > 0) {
             $octets = '';
 
@@ -106,12 +123,10 @@ class ObjectIdentifier extends Object implements Parsable
                 $octets .= $octet;
             } while (ord($octet) & 0x80);
 
-            $oidString .= sprintf('.%d', Base128::decode($octets));
+            $oid .= sprintf('%d.', Base128::decode($octets));
         }
 
-        $parsedObject = new self($oidString);
-        $parsedObject->setContentLength($contentLength);
-
-        return $parsedObject;
+        // Remove trailing '.'
+        return substr($oid, 0, -1) ?: '';
     }
 }
