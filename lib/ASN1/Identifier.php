@@ -11,7 +11,6 @@
 namespace FG\ASN1;
 
 use Exception;
-use FG\ASN1\Exception\NotImplementedException;
 
 /**
  * The Identifier encodes the ASN.1 tag (class and number) of the type of a data value.
@@ -65,17 +64,18 @@ class Identifier
     const CHARACTER_STRING  = 0x1D; // Unrestricted character type
     const BMP_STRING        = 0x1E;
 
-    const LONG_FORM         = 0x1F; // unsupported for now
+    const LONG_FORM         = 0x1F;
     const IS_CONSTRUCTED    = 0x20;
 
     /**
      * Creates an identifier. Short form identifiers are returned as integers
      * for BC, long form identifiers will be returned as a string of octets.
      *
-     * @param integer $class
+     * @param int $class
      * @param boolean $isConstructed
-     * @param integer $tagNumber
-     * @return integer|string
+     * @param int $tagNumber
+     * @return int|string
+     * @throws Exception if the given arguments are invalid
      */
     public static function create($class, $isConstructed, $tagNumber)
     {
@@ -104,7 +104,12 @@ class Identifier
 
     public static function isConstructed($identifierOctet)
     {
-        return ($identifierOctet & self::IS_CONSTRUCTED) != 0;
+        return ($identifierOctet & self::IS_CONSTRUCTED) === self::IS_CONSTRUCTED;
+    }
+
+    public static function isLongForm($identifierOctet)
+    {
+        return ($identifierOctet & self::LONG_FORM) === self::LONG_FORM;
     }
 
     /**
@@ -113,7 +118,7 @@ class Identifier
      * Example: ASN.1 Octet String
      *
      * @see Identifier::getShortName()
-     * @param integer|string $identifier
+     * @param int|string $identifier
      * @return string
      */
     public static function getName($identifier)
@@ -122,7 +127,7 @@ class Identifier
 
         $typeName = static::getShortName($identifier);
 
-        if (($identifierOctet & 0x1F) <= 0x1E) {
+        if (($identifierOctet & self::LONG_FORM) < self::LONG_FORM) {
             $typeName = "ASN.1 {$typeName}";
         }
 
@@ -138,7 +143,7 @@ class Identifier
      *
      * @see Identifier::getName()
      * @see Identifier::getClassDescription()
-     * @param integer|string $identifier
+     * @param int|string $identifier
      * @return string
      */
     public static function getShortName($identifier)
@@ -230,11 +235,10 @@ class Identifier
      * private.
      *
      * Example:
-     * <pre>
-     * Constructed context-specific
-     * Primitive universal
-     * </pre>
-     * @param integer|string $identifier
+     *     Constructed context-specific
+     *     Primitive universal
+     *
+     * @param int|string $identifier
      * @return string
      */
     public static function getClassDescription($identifier)
@@ -270,8 +274,8 @@ class Identifier
     }
 
     /**
-     * @param integer|string $identifier
-     * @return integer
+     * @param int|string $identifier
+     * @return int
      */
     public static function getTagNumber($identifier)
     {

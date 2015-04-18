@@ -34,6 +34,7 @@ use FG\ASN1\Universal\GraphicString;
 use FG\ASN1\Universal\BMPString;
 use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
+use LogicException;
 
 /**
  * Class Object is the base class for all concrete ASN.1 objects.
@@ -77,14 +78,14 @@ abstract class Object implements Parsable
      * return all octets of the identifier.
      *
      * @return string Identifier as a set of octets
-     * @throws \LogicException If the identifier format is long form
+     * @throws LogicException If the identifier format is long form
      */
     public function getIdentifier()
     {
         $firstOctet = $this->getType();
 
-        if (Identifier::LONG_FORM === (Identifier::LONG_FORM & $firstOctet)) {
-            throw new \LogicException(sprintf('Identifier of %s uses the long form and must therefor override "Object::getIdentifier()".', get_class($this)));
+        if (Identifier::isLongForm($firstOctet)) {
+            throw new LogicException(sprintf('Identifier of %s uses the long form and must therefor override "Object::getIdentifier()".', get_class($this)));
         }
 
         return chr($firstOctet);
@@ -277,14 +278,16 @@ abstract class Object implements Parsable
     {
         $identifier = $binaryData[$offsetIndex++];
 
-        if (Identifier::LONG_FORM !== (Identifier::LONG_FORM & ord($identifier))) {
+        if (Identifier::isLongForm(ord($identifier)) == false) {
             return $identifier;
         }
 
         while (true) {
-            $identifier .= $octet = $binaryData[$offsetIndex++];
+            $nextOctet = $binaryData[$offsetIndex++];
+            $identifier .= $nextOctet;
 
-            if (0 === (ord($octet) & 0x80)) {
+            if ((ord($nextOctet) & 0x80) === 0) {
+                // the most significant bit is 0 to we have reached the end of the identifier
                 break;
             }
         }

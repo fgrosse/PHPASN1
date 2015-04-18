@@ -85,9 +85,9 @@ class ExplicitlyTaggedObject extends Object
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         $identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
-        $identifierOctet = ord($identifier);
-        assert(Identifier::isContextSpecificClass($identifierOctet));
-        assert(Identifier::isConstructed($identifierOctet));
+        $firstIdentifierOctet = ord($identifier);
+        assert(Identifier::isContextSpecificClass($firstIdentifierOctet));
+        assert(Identifier::isConstructed($firstIdentifierOctet));
         $tag = Identifier::getTagNumber($identifier);
 
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);

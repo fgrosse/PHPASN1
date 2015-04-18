@@ -104,7 +104,11 @@ class ObjectIdentifier extends Object implements Parsable
      * differently. This way relative object identifiers can also be parsed
      * using this.
      *
+     * @param $binaryData
+     * @param $offsetIndex
+     * @param $octetsToRead
      * @return string
+     * @throws ParserException
      */
     protected static function parseOid(&$binaryData, &$offsetIndex, $octetsToRead)
     {

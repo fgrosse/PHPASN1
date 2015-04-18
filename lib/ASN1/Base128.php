@@ -1,6 +1,7 @@
 <?php
 
 namespace FG\ASN1;
+use InvalidArgumentException;
 
 /**
  * A base-128 decoder.
@@ -28,7 +29,7 @@ class Base128
     /**
      * @param string $octets
      *
-     * @return integer
+     * @return int
      */
     public static function decode($octets)
     {
@@ -40,12 +41,12 @@ class Base128
 
         while (true) {
             if (!isset($octets[$i])) {
-                throw new \InvalidArgumentException(sprintf('Malformed base-128 encoded value (0x%s).', strtoupper(bin2hex($octets)) ?: '0'));
+                throw new InvalidArgumentException(sprintf('Malformed base-128 encoded value (0x%s).', strtoupper(bin2hex($octets)) ?: '0'));
             }
 
             $bitsUsed += $bitsPerOctet;
             if ($bitsUsed > $bitsMax) {
-                throw new \InvalidArgumentException(sprintf('Value (0x%s) exceeds the maximum integer length when base128-decoded.', strtoupper(bin2hex($octets))));
+                throw new InvalidArgumentException(sprintf('Value (0x%s) exceeds the maximum integer length when base128-decoded.', strtoupper(bin2hex($octets))));
             }
 
             $octet = ord($octets[$i++]);
