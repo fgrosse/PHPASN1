@@ -22,7 +22,7 @@ PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encod
 
 PHPASN1 requires at least `PHP 5.3`.
 
-It has been successfully tested using `PHP 5.3` to `PHP 5.6` and `HHVM`
+It has been successfully tested using `PHP 5.3` to `PHP 5.6`, `PHP 7` and `HHVM`
 
 For the loading of object identifier names directly from the web the [Client URL Library (CURL)](http://php.net/manual/en/book.curl.php) is used.
 
@@ -30,12 +30,14 @@ For the loading of object identifier names directly from the web the [Client URL
 
 The preferred way to install this library is to rely on Composer:
 
-    {
-        "require": {
-            // ...
-            "fgrosse/phpasn1": "dev-master"
-        }
+```json
+{
+    "require": {
+        // ...
+        "fgrosse/phpasn1": "dev-master"
     }
+}
+```
 
 ## Usage
 
@@ -55,14 +57,14 @@ use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\PrintableString;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\Set;
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 
 $integer = new Integer(123456);        
 $boolean = new Boolean(true);
 $enum = new Enumerated(1);
 $ia5String = new IA5String('Hello world');
 
-$asnNull = new Null();
+$asnNull = new NullObject();
 $objectIdentifier1 = new ObjectIdentifier('1.2.250.1.16.9');
 $objectIdentifier2 = new ObjectIdentifier(OID::RSA_ENCRYPTION);
 $printableString = new PrintableString('Foo bar');

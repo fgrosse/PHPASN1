@@ -10,13 +10,13 @@
 
 namespace FG\X509;
 
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Composite\AttributeTypeAndValue;
 
 class AlgorithmIdentifier extends AttributeTypeAndValue
 {
     public function __construct($objectIdentifierString)
     {
-        parent::__construct($objectIdentifierString, new Null());
+        parent::__construct($objectIdentifierString, new NullObject());
     }
 }
