@@ -11,7 +11,7 @@
 namespace FG\X509;
 
 use FG\ASN1\OID;
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\ObjectIdentifier;
@@ -27,7 +27,7 @@ class PrivateKey extends Sequence
         parent::__construct(
             new Sequence(
                 new ObjectIdentifier($algorithmIdentifierString),
-                new Null()
+                new NullObject()
             ),
             new BitString($hexKey)
         );

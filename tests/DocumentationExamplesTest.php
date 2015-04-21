@@ -18,7 +18,7 @@ use FG\ASN1\Universal\Enumerated;
 use FG\ASN1\Universal\IA5String;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\Set;
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Universal\PrintableString;
 use FG\ASN1\Universal\ObjectIdentifier;
 
@@ -33,7 +33,7 @@ class DocumentationExamplesTest extends ASN1TestCase
         $enum = new Enumerated(1);
         $ia5String = new IA5String('Hello world');
 
-        $asnNull = new Null();
+        $asnNull = new NullObject();
         $objectIdentifier1 = new ObjectIdentifier('1.2.250.1.16.9');
         $objectIdentifier2 = new ObjectIdentifier(OID::RSA_ENCRYPTION);
         $printableString = new PrintableString('Foo bar');

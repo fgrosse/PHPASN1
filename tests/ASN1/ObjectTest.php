@@ -18,7 +18,7 @@ use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
 use FG\ASN1\Universal\Integer;
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\Sequence;
@@ -125,13 +125,13 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof Integer);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
-        /** @var \FG\ASN1\Universal\Null $parsedObject */
+        /** @var \FG\ASN1\Universal\NullObject $parsedObject */
         $binaryData = chr(Identifier::NULL);
         $binaryData .= chr(0x00);
 
-        $expectedObject = new Null();
+        $expectedObject = new NullObject();
         $parsedObject = Object::fromBinary($binaryData);
-        $this->assertTrue($parsedObject instanceof Null);
+        $this->assertTrue($parsedObject instanceof NullObject);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
         /** @var ObjectIdentifier $parsedObject */
