@@ -160,7 +160,7 @@ abstract class Object implements Parsable
      */
     public function getObjectLength()
     {
-        $nrOfIdentifierOctets = 1; // does not support identifier long form yet
+        $nrOfIdentifierOctets = strlen($this->getIdentifier());
         $contentLength = $this->getContentLength();
         $nrOfLengthOctets = $this->getNumberOfLengthOctets($contentLength);
 

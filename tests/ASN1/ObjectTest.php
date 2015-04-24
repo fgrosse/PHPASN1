@@ -196,6 +196,7 @@ class ObjectTest extends ASN1TestCase
         $this->assertEquals(substr($binaryData, 0, 3), $parsedObject->getIdentifier());
         $this->assertCount(2, $parsedObject->getContent());
         $this->assertEquals(strlen($binaryData), $offsetIndex);
+        $this->assertEquals(10, $parsedObject->getObjectLength());
 
         // First 3 bytes are the identifier
         $binaryData = "\x1F\x81\x7F\x01\xFF";
@@ -205,6 +206,7 @@ class ObjectTest extends ASN1TestCase
         $this->assertEquals(substr($binaryData, 0, 3), $parsedObject->getIdentifier());
         $this->assertEquals('Unparsable Object (1 bytes)', $parsedObject->getContent());
         $this->assertEquals(strlen($binaryData), $offsetIndex);
+        $this->assertEquals(5, $parsedObject->getObjectLength());
     }
 
     /**
