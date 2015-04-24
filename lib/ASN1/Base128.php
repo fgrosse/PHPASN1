@@ -22,7 +22,6 @@ class Base128
             $octets .= chr(0x80 | ($value & 0x7F));
             $value >>= 7;
         }
-
         return strrev($octets);
     }
 

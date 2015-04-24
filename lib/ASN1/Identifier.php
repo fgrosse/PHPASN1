@@ -286,11 +286,6 @@ class Identifier
             return $tagNumber;
         }
 
-        // ??? This can never happen.
-        if (is_int($identifier)) {
-            $identifier = chr($identifier);
-        }
-
         return Base128::decode(substr($identifier, 1));
     }
 
