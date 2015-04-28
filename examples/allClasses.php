@@ -23,7 +23,7 @@ use FG\ASN1\Universal\UTF8String;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\ObjectIdentifier;
-use FG\ASN1\Universal\Null;
+use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Universal\UTCTime;
 use FG\ASN1\Universal\GeneralizedTime;
 use FG\ASN1\Universal\Set;
@@ -111,7 +111,7 @@ function printVariableInfo(Object $variable)
             printVariableInfo(new BitString("3082010a02820101009e2a7"));
             printVariableInfo(new OctetString('x01020304AE123200A0'));
             printVariableInfo(new ObjectIdentifier(OID::PKCS9_EMAIL));
-            printVariableInfo(new Null());
+            printVariableInfo(new NullObject());
             printVariableInfo(new UTCTime('2012-09-30 14:33'));
             printVariableInfo(new GeneralizedTime('2008-07-01 22:35:17.024540+06:30'));
 

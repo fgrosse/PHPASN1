@@ -29,7 +29,7 @@ class NullObject extends Object implements Parsable
 
     protected function getEncodedValue()
     {
-        return;
+        return null;
     }
 
     public function getContent()
