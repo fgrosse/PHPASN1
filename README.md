@@ -97,11 +97,15 @@ To see some example usage of the API classes or some generated output check out 
 
 If you found an issue or have a question submit a github issue with detailed information.
 
-In case you think you already know what caused the issue and how to fix it your code contributions is always welcome.
-Just fork the repository, implement your changes and make sure that you covered everything with tests.
+In case you already know what caused the issue and feel in the mood to fix it, your code contributions are always welcome. Just fork the repository, implement your changes and make sure that you covered everything with tests.
 Afterwards submit a pull request via github and be a little patient :) I usually try to comment and/or merge as soon as possible.
 
+### Thanks
+
+To [all contributors][1] so far!
 
 ## License
 
 This library is distributed under the [MIT License](LICENSE).
+
+[1]: https://github.com/FGrosse/PHPASN1/graphs/contributors
