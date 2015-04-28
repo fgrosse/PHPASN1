@@ -51,6 +51,7 @@ class AttributesTest extends ASN1TestCase
         $this->assertTrue(is_array($content));
         $this->assertEquals(1, sizeof($content));
 
+        /** @var Sequence $attribute */
         $attribute = $content[0];
         $this->assertTrue($attribute instanceof Sequence);
         $this->assertEquals(2, $attribute->getNumberofChildren());

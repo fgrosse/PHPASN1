@@ -15,7 +15,6 @@ use FG\X509\SAN\IPAddress;
 
 class IPAddressTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new IPAddress("192.168.0.1");
@@ -75,7 +74,7 @@ class IPAddressTest extends ASN1TestCase
         $binaryData .= chr(2);
         $binaryData .= chr(192);
         $binaryData .= chr(168);
-        $parsedObject = IPAddress::fromBinary($binaryData);
+        IPAddress::fromBinary($binaryData);
     }
 
     /**
@@ -83,18 +82,18 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new IPAddress("192.168.0.1");
-        $originalobject2 = new IPAddress("10.65.32.123");
+        $originalObject1 = new IPAddress("192.168.0.1");
+        $originalObject2 = new IPAddress("10.65.32.123");
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = IPAddress::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(6, $offset);
         $parsedObject = IPAddress::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(12, $offset);
     }
 }

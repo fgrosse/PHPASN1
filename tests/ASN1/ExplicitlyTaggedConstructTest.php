@@ -68,6 +68,7 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
 
     /**
      * @dataProvider getTags
+     * @depends testGetBinary
      */
     public function testFromBinary($originalTag)
     {
