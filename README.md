@@ -20,23 +20,16 @@ PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encod
 
 ## Dependencies
 
-PHPASN1 requires at least `PHP 5.3`.
-
+PHPASN1 requires at least `PHP 5.3` and the `gmp` extension.
 It has been successfully tested using `PHP 5.3` to `PHP 5.6`, `PHP 7` and `HHVM`
-
-For the loading of object identifier names directly from the web the [Client URL Library (CURL)](http://php.net/manual/en/book.curl.php) is used.
+For the loading of object identifier names directly from the web [curl](http://php.net/manual/en/book.curl.php) is used.
 
 ## Installation ##
 
 The preferred way to install this library is to rely on Composer:
 
-```json
-{
-    "require": {
-        // ...
-        "fgrosse/phpasn1": "dev-master"
-    }
-}
+```bash
+$ composer require fgrosse/phpasn1
 ```
 
 ## Usage
@@ -95,20 +88,20 @@ $asnObject = Object::fromBinary($binaryData);
 ```
 
 
-### Examples
+### Give me more examples!
 
 To see some example usage of the API classes or some generated output check out the [examples folder](https://github.com/FGrosse/PHPASN1/tree/master/examples).
 
 
-### Unit Tests
+### How do I contribute?
 
-PHPASN1 uses [PHP Unit](https://github.com/sebastianbergmann/phpunit). For some more detailed example usages you could look at the [tests folder](https://github.com/FGrosse/PHPASN1/tree/master/tests).  
+If you found an issue or have a question submit a github issue with detailed information.
 
-## Thanks
+In case you think you already know what caused the issue and how to fix it your code contributions is always welcome.
+Just fork the repository, implement your changes and make sure that you covered everything with tests.
+Afterwards submit a pull request via github and be a little patient :) I usually try to comment and/or merge as soon as possible.
 
-The old autoloader is no more used, but thanks [Robert](https://github.com/robertkoehler) for the help with the Autoloader :)
-I also use [this nice php script](http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/) from [Aidan Lister](http://aidanlister.com).
 
 ## License
 
-This library is release under [GNU General Public License Version 3](LICENSE).
+This library is distributed under the [MIT License](LICENSE).
