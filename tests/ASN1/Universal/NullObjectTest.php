@@ -14,7 +14,7 @@ use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\NullObject;
 
-class NullTest extends ASN1TestCase
+class NullObjectTest extends ASN1TestCase
 {
 
     public function testGetType()
