@@ -286,6 +286,9 @@ class Identifier
             return $tagNumber;
         }
 
+        if (is_numeric($identifier)) {
+            $identifier = chr($identifier);
+        }
         return Base128::decode(substr($identifier, 1));
     }
 
