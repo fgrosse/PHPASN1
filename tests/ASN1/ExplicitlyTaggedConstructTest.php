@@ -82,8 +82,9 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
     public function getTags()
     {
         return array(
-       //     array(0x02),
+            array(0x02),
             array(0x00004002),
+            array(0xDEADBEEF),
         );
     }
 }
