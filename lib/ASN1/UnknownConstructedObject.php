@@ -12,7 +12,7 @@ namespace FG\ASN1;
 
 class UnknownConstructedObject extends Construct
 {
-    private $identifierOctet;
+    private $identifier;
     private $contentLength;
 
     /**
@@ -22,8 +22,9 @@ class UnknownConstructedObject extends Construct
      */
     public function __construct($binaryData, &$offsetIndex)
     {
-        $this->identifierOctet = $binaryData[$offsetIndex++];
+        $this->identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
         $this->contentLength = self::parseContentLength($binaryData, $offsetIndex);
+
 
         $children = array();
         $octetsToRead = $this->contentLength;
@@ -39,7 +40,12 @@ class UnknownConstructedObject extends Construct
 
     public function getType()
     {
-        return $this->identifierOctet;
+        return ord($this->identifier);
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 
     protected function calculateContentLength()

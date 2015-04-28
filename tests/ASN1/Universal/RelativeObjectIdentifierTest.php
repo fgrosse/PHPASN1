@@ -23,6 +23,12 @@ class RelativeObjectIdentifierTest extends ASN1TestCase
         $this->assertEquals(Identifier::RELATIVE_OID, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new RelativeObjectIdentifier('8751.3.2');
+        $this->assertEquals(chr(Identifier::RELATIVE_OID), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new RelativeObjectIdentifier('8751.3.2');

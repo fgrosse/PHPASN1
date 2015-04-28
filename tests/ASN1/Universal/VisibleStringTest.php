@@ -23,6 +23,12 @@ class VisibleStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::VISIBLE_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new VisibleString("Hello World");
+        $this->assertEquals(chr(Identifier::VISIBLE_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new VisibleString("Hello World");

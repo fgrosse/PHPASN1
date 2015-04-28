@@ -25,6 +25,12 @@ class RelativeDistinguishedNameTest extends ASN1TestCase
        $this->assertEquals(Identifier::SET, $object->getType());
    }
 
+   public function testGetIdentifier()
+   {
+       $object = new RelativeDistinguishedName(OID::COMMON_NAME, new UTF8String("Friedrich Große"));
+       $this->assertEquals(chr(Identifier::SET), $object->getIdentifier());
+   }
+
     public function testContent()
     {
         $oid = OID::COMMON_NAME;

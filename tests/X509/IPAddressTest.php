@@ -22,6 +22,12 @@ class IPAddressTest extends ASN1TestCase
         $this->assertEquals(0x87, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new IPAddress("192.168.0.1");
+        $this->assertEquals(chr(0x87), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $object = new IPAddress("192.168.0.1");

@@ -20,6 +20,8 @@ class IdentifierTest extends ASN1TestCase
         $this->assertEquals(0x02, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0x02));
         $this->assertEquals(0x30, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = true,  0x10));
         $this->assertEquals(0xB3, Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, $isConstructed = true,  0x13));
+        $this->assertEquals("\x1F\x1F", Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0x1F));
+        $this->assertEquals("\x1F\x81\x7F", Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0xFF));
     }
 
     public function testGetIdentifierName()
@@ -56,6 +58,8 @@ class IdentifierTest extends ASN1TestCase
 
         $this->assertEquals('ASN.1 RESERVED (0x0E)', Identifier::getName(0x0E));
         $this->assertEquals('ASN.1 RESERVED (0x0F)', Identifier::getName(0x0F));
+
+        $this->assertEquals('Constructed private (0xFF7F)', Identifier::getName("\xFF\x7F"));
     }
 
     public function testGetIdentifierNameWithBinaryInput()
@@ -63,19 +67,20 @@ class IdentifierTest extends ASN1TestCase
         $this->assertEquals('ASN.1 Numeric String', Identifier::getName(chr(Identifier::NUMERIC_STRING)));
     }
 
-    /**
-     * @expectedException \FG\ASN1\Exception\NotImplementedException
-     * @expectedExceptionMessage Long form of identifier octets is not yet implemented
-     */
-    public function testGetIdentifierNameForLongForm()
-    {
-        Identifier::getName(0x1F);
-    }
-
     public function testGetTagNumber()
     {
         $this->assertEquals(1, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x01));
         $this->assertEquals(3, Identifier::getTagNumber((Identifier::CLASS_CONTEXT_SPECIFIC << 6) | 0x03));
+        $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Malformed base-128 encoded value (0x0).
+     */
+    public function testGetTagNumberFailsIfLongFormIdentifierMissingSubsequentOctets()
+    {
+        Identifier::getTagNumber(Identifier::LONG_FORM);
     }
 
     public function testIsSpecificClass()

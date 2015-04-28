@@ -23,6 +23,12 @@ class GeneralStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::GENERAL_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new GeneralString("Hello World");
+        $this->assertEquals(chr(Identifier::GENERAL_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new GeneralString("Hello World");

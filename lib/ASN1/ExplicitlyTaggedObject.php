@@ -67,7 +67,14 @@ class ExplicitlyTaggedObject extends Object
 
     public function getType()
     {
-        return Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, true, $this->tag);
+        return ord($this->getIdentifier());
+    }
+
+    public function getIdentifier()
+    {
+        $identifier = Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, true, $this->tag);
+
+        return is_int($identifier) ? chr($identifier) : $identifier;
     }
 
     public function getTag()
@@ -77,10 +84,11 @@ class ExplicitlyTaggedObject extends Object
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        $identifierOctet = ord($binaryData[$offsetIndex++]);
-        assert(Identifier::isContextSpecificClass($identifierOctet));
-        assert(Identifier::isConstructed($identifierOctet));
-        $tag = Identifier::getTagNumber($identifierOctet);
+        $identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
+        $firstIdentifierOctet = ord($identifier);
+        assert(Identifier::isContextSpecificClass($firstIdentifierOctet));
+        assert(Identifier::isConstructed($firstIdentifierOctet));
+        $tag = Identifier::getTagNumber($identifier);
 
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         $offsetIndexOfDecoratedObject = $offsetIndex;

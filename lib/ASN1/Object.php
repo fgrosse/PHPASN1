@@ -34,6 +34,7 @@ use FG\ASN1\Universal\GraphicString;
 use FG\ASN1\Universal\BMPString;
 use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
+use LogicException;
 
 /**
  * Class Object is the base class for all concrete ASN.1 objects.
@@ -72,12 +73,31 @@ abstract class Object implements Parsable
     abstract public function getType();
 
     /**
+     * Returns all identifier octets. If an inheriting class models a tag with
+     * the long form identifier format, it MUST reimplement this method to
+     * return all octets of the identifier.
+     *
+     * @return string Identifier as a set of octets
+     * @throws LogicException If the identifier format is long form
+     */
+    public function getIdentifier()
+    {
+        $firstOctet = $this->getType();
+
+        if (Identifier::isLongForm($firstOctet)) {
+            throw new LogicException(sprintf('Identifier of %s uses the long form and must therefor override "Object::getIdentifier()".', get_class($this)));
+        }
+
+        return chr($firstOctet);
+    }
+
+    /**
      * Encode this object using DER encoding
      * @return string the full binary representation of the complete object
      */
     public function getBinary()
     {
-        $result  = chr($this->getType());
+        $result  = $this->getIdentifier();
         $result .= $this->createLengthPart();
         $result .= $this->getEncodedValue();
 
@@ -141,7 +161,7 @@ abstract class Object implements Parsable
      */
     public function getObjectLength()
     {
-        $nrOfIdentifierOctets = 1; // does not support identifier long form yet
+        $nrOfIdentifierOctets = strlen($this->getIdentifier());
         $contentLength = $this->getContentLength();
         $nrOfLengthOctets = $this->getNumberOfLengthOctets($contentLength);
 
@@ -228,14 +248,16 @@ abstract class Object implements Parsable
             case Identifier::OBJECT_DESCRIPTOR:
                 return ObjectDescriptor::fromBinary($binaryData, $offsetIndex);
             default:
+                // At this point the identifier may be >1 byte.
                 if (Identifier::isConstructed($identifierOctet)) {
                     return new UnknownConstructedObject($binaryData, $offsetIndex);
                 } else {
-                    $offsetIndex++;
+
+                    $identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
                     $lengthOfUnknownObject = self::parseContentLength($binaryData, $offsetIndex);
                     $offsetIndex += $lengthOfUnknownObject;
 
-                    return new UnknownObject($identifierOctet, $lengthOfUnknownObject);
+                    return new UnknownObject($identifier, $lengthOfUnknownObject);
                 }
         }
     }
@@ -250,6 +272,27 @@ abstract class Object implements Parsable
             $message = 'Can not create an '.Identifier::getName($expectedIdentifier).' from an '.Identifier::getName($identifierOctet);
             throw new ParserException($message, $offsetForExceptionHandling);
         }
+    }
+
+    protected static function parseBinaryIdentifier($binaryData, &$offsetIndex)
+    {
+        $identifier = $binaryData[$offsetIndex++];
+
+        if (Identifier::isLongForm(ord($identifier)) == false) {
+            return $identifier;
+        }
+
+        while (true) {
+            $nextOctet = $binaryData[$offsetIndex++];
+            $identifier .= $nextOctet;
+
+            if ((ord($nextOctet) & 0x80) === 0) {
+                // the most significant bit is 0 to we have reached the end of the identifier
+                break;
+            }
+        }
+
+        return $identifier;
     }
 
     protected static function parseContentLength(&$binaryData, &$offsetIndex, $minimumLength = 0)

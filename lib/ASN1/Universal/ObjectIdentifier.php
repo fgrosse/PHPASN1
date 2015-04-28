@@ -10,6 +10,7 @@
 
 namespace FG\ASN1\Universal;
 
+use FG\ASN1\Base128;
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
@@ -72,13 +73,7 @@ class ObjectIdentifier extends Object implements Parsable
     {
         $encodedValue = '';
         foreach ($this->subIdentifiers as $subIdentifier) {
-            $octets = chr($subIdentifier & 0x7F);
-            $subIdentifier = $subIdentifier >> 7;
-            while ($subIdentifier > 0) {
-                $octets .= chr(0x80 | ($subIdentifier & 0x7F));
-                $subIdentifier = $subIdentifier >> 7;
-            }
-            $encodedValue .= strrev($octets);
+            $encodedValue .= Base128::encode($subIdentifier);
         }
 
         return $encodedValue;
@@ -96,24 +91,46 @@ class ObjectIdentifier extends Object implements Parsable
 
         $firstOctet = ord($binaryData[$offsetIndex++]);
         $oidString = floor($firstOctet/40).'.'.($firstOctet % 40);
-
-        $octetsToRead = $contentLength - 1;
-        while ($octetsToRead > 0) {
-            $number = 0;
-            do {
-                if ($octetsToRead == 0) {
-                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
-                }
-                $octet = ord($binaryData[$offsetIndex++]);
-                $number = ($number << 7) + ($octet & 0x7F);
-                $octetsToRead--;
-            } while ($octet & 0x80);
-            $oidString .= ".{$number}";
-        }
+        $oidString .= '.'.self::parseOid($binaryData, $offsetIndex, $contentLength - 1);
 
         $parsedObject = new self($oidString);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;
+    }
+
+    /**
+     * Parses an object identifier except for the first octet, which is parsed
+     * differently. This way relative object identifiers can also be parsed
+     * using this.
+     *
+     * @param $binaryData
+     * @param $offsetIndex
+     * @param $octetsToRead
+     * @return string
+     * @throws ParserException
+     */
+    protected static function parseOid(&$binaryData, &$offsetIndex, $octetsToRead)
+    {
+        $oid = '';
+
+        while ($octetsToRead > 0) {
+            $octets = '';
+
+            do {
+                if (0 === $octetsToRead) {
+                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
+                }
+
+                $octetsToRead--;
+                $octet = $binaryData[$offsetIndex++];
+                $octets .= $octet;
+            } while (ord($octet) & 0x80);
+
+            $oid .= sprintf('%d.', Base128::decode($octets));
+        }
+
+        // Remove trailing '.'
+        return substr($oid, 0, -1) ?: '';
     }
 }

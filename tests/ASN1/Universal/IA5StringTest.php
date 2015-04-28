@@ -23,6 +23,12 @@ class IA5StringTest extends ASN1TestCase
         $this->assertEquals(Identifier::IA5_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new IA5String("Hello World");
+        $this->assertEquals(chr(Identifier::IA5_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new IA5String("Hello World");

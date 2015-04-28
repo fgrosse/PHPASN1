@@ -22,6 +22,12 @@ class CertificateSubjectTest extends ASN1TestCase
         $object = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
         $this->assertEquals(Identifier::SEQUENCE, $object->getType());
     }
+
+    public function testGetIdentifier()
+    {
+        $object = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
+        $this->assertEquals(chr(Identifier::SEQUENCE), $object->getIdentifier());
+    }
     /*
     public function testFromBinary() {
         $originalobject = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");

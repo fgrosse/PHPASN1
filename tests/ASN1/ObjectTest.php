@@ -13,6 +13,8 @@ namespace FG\Test\ASN1;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Object;
+use FG\ASN1\UnknownConstructedObject;
+use FG\ASN1\UnknownObject;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\Boolean;
@@ -184,6 +186,27 @@ class ObjectTest extends ASN1TestCase
         $binaryData = $taggedObject->getBinary();
         $parsedObject = Object::fromBinary($binaryData);
         $this->assertTrue($parsedObject instanceof ExplicitlyTaggedObject);
+
+        // An unkown constructed object containing 2 integer children, first
+        // 3 bytes are the identifier.
+        $binaryData = "\x3F\x81\x7F\x06".chr(Identifier::INTEGER)."\x01\x42".chr(Identifier::INTEGER)."\x01\x69";
+        $offsetIndex = 0;
+        $parsedObject = OBject::fromBinary($binaryData, $offsetIndex);
+        $this->assertTrue($parsedObject instanceof UnknownConstructedObject);
+        $this->assertEquals(substr($binaryData, 0, 3), $parsedObject->getIdentifier());
+        $this->assertCount(2, $parsedObject->getContent());
+        $this->assertEquals(strlen($binaryData), $offsetIndex);
+        $this->assertEquals(10, $parsedObject->getObjectLength());
+
+        // First 3 bytes are the identifier
+        $binaryData = "\x1F\x81\x7F\x01\xFF";
+        $offsetIndex = 0;
+        $parsedObject = Object::fromBinary($binaryData, $offsetIndex);
+        $this->assertTrue($parsedObject instanceof UnknownObject);
+        $this->assertEquals(substr($binaryData, 0, 3), $parsedObject->getIdentifier());
+        $this->assertEquals('Unparsable Object (1 bytes)', $parsedObject->getContent());
+        $this->assertEquals(strlen($binaryData), $offsetIndex);
+        $this->assertEquals(5, $parsedObject->getObjectLength());
     }
 
     /**

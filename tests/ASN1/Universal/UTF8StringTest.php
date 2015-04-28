@@ -23,6 +23,12 @@ class UTF8StringTest extends ASN1TestCase
         $this->assertEquals(Identifier::UTF8_STRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new UTF8String("Hello World");
+        $this->assertEquals(chr(Identifier::UTF8_STRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new UTF8String("Hello World");

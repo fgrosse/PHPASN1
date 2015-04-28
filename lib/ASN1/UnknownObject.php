@@ -15,11 +15,19 @@ class UnknownObject extends Object
     /** @var string */
     private $value;
 
-    private $identifierOctet;
+    private $identifier;
 
-    public function __construct($identifierOctet, $contentLength)
+    /**
+     * @param string|integer $identifier Either the first identifier octet as int or all identifier bytes as a string
+     * @param integer        $contentLength
+     */
+    public function __construct($identifier, $contentLength)
     {
-        $this->identifierOctet = $identifierOctet;
+        if (is_int($identifier)) {
+            $identifier = chr($identifier);
+        }
+
+        $this->identifier = $identifier;
         $this->value = "Unparsable Object ({$contentLength} bytes)";
         $this->setContentLength($contentLength);
     }
@@ -31,7 +39,12 @@ class UnknownObject extends Object
 
     public function getType()
     {
-        return $this->identifierOctet;
+        return ord($this->identifier[0]);
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 
     protected function calculateContentLength()

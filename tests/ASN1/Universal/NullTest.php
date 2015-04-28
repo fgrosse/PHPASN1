@@ -23,6 +23,12 @@ class NullTest extends ASN1TestCase
         $this->assertEquals(Identifier::NULL, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new Null();
+        $this->assertEquals(chr(Identifier::NULL), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new Null();

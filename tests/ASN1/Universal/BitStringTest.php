@@ -23,6 +23,12 @@ class BitStringTest extends ASN1TestCase
         $this->assertEquals(Identifier::BITSTRING, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new BitString('A0 12 00 43');
+        $this->assertEquals(chr(Identifier::BITSTRING), $object->getIdentifier());
+    }
+
     public function testContent()
     {
         $object = new BitString('A01200C3');

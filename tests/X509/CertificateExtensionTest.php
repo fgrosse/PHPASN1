@@ -28,6 +28,12 @@ class CertificateExtensionTest extends ASN1TestCase
         $this->assertEquals(Identifier::SET, $object->getType());
     }
 
+    public function testGetIdentifier()
+    {
+        $object = new CertificateExtensions();
+        $this->assertEquals(chr(Identifier::SET), $object->getIdentifier());
+    }
+
     public function testGetContent()
     {
         $object = new CertificateExtensions();

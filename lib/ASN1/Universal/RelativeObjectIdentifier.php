@@ -43,23 +43,11 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::RELATIVE_OID, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
-        $oidString = '';
-        $octetsToRead = $contentLength;
-        while ($octetsToRead > 0) {
-            $number = 0;
-            do {
-                if ($octetsToRead == 0) {
-                    throw new ParserException('Malformed ASN.1 Relative Object Identifier', $offsetIndex-1);
-                }
-                $octet = ord($binaryData[$offsetIndex++]);
-                $number = ($number << 7) + ($octet & 0x7F);
-                $octetsToRead--;
-            } while ($octet & 0x80);
-            $oidString .= "{$number}.";
+        try {
+            $oidString = self::parseOid($binaryData, $offsetIndex, $contentLength);
+        } catch (ParserException $e) {
+            throw new ParserException('Malformed ASN.1 Relative Object Identifier', $e->getOffset());
         }
-
-        // remove trailing '.'
-        $oidString = substr($oidString, 0, -1);
 
         $parsedObject = new self($oidString);
         $parsedObject->setContentLength($contentLength);
