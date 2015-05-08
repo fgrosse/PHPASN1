@@ -41,7 +41,7 @@ class GeneralizedTimeTest extends ASN1TestCase
     {
         $now = new DateTime();
         $now->setTimezone($this->UTC);
-        $object = new GeneralizedTime();
+        $object = new GeneralizedTime($now, 'UTC');
         $content = $object->getContent();
         $this->assertTrue($content instanceof DateTime);
         $this->assertEquals($now->format(DATE_RFC3339), $content->format(DATE_RFC3339));
