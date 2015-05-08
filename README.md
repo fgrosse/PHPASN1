@@ -74,9 +74,7 @@ echo base64_encode($myBinary);
 
 ### Decoding binary data
 
-Decoding BER encoded binary data is just as easy as encoding it.
-I am currently working on this part of the API so there might be some useful methods in the future that allow you to easily navigate the
-decoded data.
+Decoding BER encoded binary data is just as easy as encoding it:
 
 ```php
 use FG\ASN1\Object;
@@ -90,7 +88,7 @@ $asnObject = Object::fromBinary($binaryData);
 
 ### Give me more examples!
 
-To see some example usage of the API classes or some generated output check out the [examples folder](https://github.com/FGrosse/PHPASN1/tree/master/examples).
+To see some example usage of the API classes or some generated output check out the [examples](https://github.com/FGrosse/PHPASN1/tree/master/examples).
 
 
 ### How do I contribute?
