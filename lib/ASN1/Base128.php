@@ -15,6 +15,10 @@ class Base128
      */
     public static function encode($value)
     {
+        if ($value > PHP_INT_MAX) {
+            throw new InvalidArgumentException(sprintf('Value (0x%s) exceeds the maximum integer length when base128-encoded.', strtoupper(dechex($value))));
+        }
+
         $octets = chr($value & 0x7F);
         $value >>= 7;
 

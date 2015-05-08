@@ -95,4 +95,13 @@ class Base128Test extends \PHPUnit_Framework_TestCase
     {
         Base128::decode("\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x7F");
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value (0xDEADBEEF) exceeds the maximum integer length when base128-encoded.
+     */
+    public function testEncodeFailsIfOverflows()
+    {
+        Base128::encode(0xDEADBEEF);
+    }
 }

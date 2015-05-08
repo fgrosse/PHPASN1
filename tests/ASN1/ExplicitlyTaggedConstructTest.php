@@ -87,19 +87,5 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
             array(0x00004002),
         );
     }
-
-    /**
-     * @depends testGetBinary
-     */
-    public function testFromBinaryWithHugeTagNumber()
-    {
-        $this->markTestSkipped('Skipped to see if this fixes the other tests on travis');
-        $originalStringObject = new PrintableString('test');
-        $originalObject = new ExplicitlyTaggedObject(0xDEADBEEF, $originalStringObject);
-        $binaryData = $originalObject->getBinary();
-
-        $parsedObject = ExplicitlyTaggedObject::fromBinary($binaryData);
-        $this->assertEquals($originalObject, $parsedObject);
-    }
 }
 
