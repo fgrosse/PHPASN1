@@ -1,7 +1,7 @@
 PHPASN1
 =======
 
-[![Build Status](https://secure.travis-ci.org/fgrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
+[![Build Status](https://secure.travis-ci.org/fgrosse/PHPASN1.png?branch=master)](http://travis-ci.org/fgrosse/PHPASN1)
 [![HHVM Status](http://hhvm.h4cc.de/badge/fgrosse/phpasn1.png)](http://hhvm.h4cc.de/package/fgrosse/phpasn1)
 
 [![Latest Stable Version](https://poser.pugx.org/fgrosse/phpasn1/v/stable.png)](https://packagist.org/packages/fgrosse/phpasn1)
@@ -88,7 +88,7 @@ $asnObject = Object::fromBinary($binaryData);
 
 ### Give me more examples!
 
-To see some example usage of the API classes or some generated output check out the [examples](https://github.com/FGrosse/PHPASN1/tree/master/examples).
+To see some example usage of the API classes or some generated output check out the [examples](https://github.com/fgrosse/PHPASN1/tree/master/examples).
 
 
 ### How do I contribute?
@@ -106,4 +106,4 @@ To [all contributors][1] so far!
 
 This library is distributed under the [MIT License](LICENSE).
 
-[1]: https://github.com/FGrosse/PHPASN1/graphs/contributors
+[1]: https://github.com/fgrosse/PHPASN1/graphs/contributors
