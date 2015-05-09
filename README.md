@@ -1,7 +1,7 @@
 PHPASN1
 =======
 
-[![Build Status](https://secure.travis-ci.org/FGrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
+[![Build Status](https://secure.travis-ci.org/fgrosse/PHPASN1.png?branch=master)](http://travis-ci.org/FGrosse/PHPASN1)
 [![HHVM Status](http://hhvm.h4cc.de/badge/fgrosse/phpasn1.png)](http://hhvm.h4cc.de/package/fgrosse/phpasn1)
 
 [![Latest Stable Version](https://poser.pugx.org/fgrosse/phpasn1/v/stable.png)](https://packagist.org/packages/fgrosse/phpasn1)
