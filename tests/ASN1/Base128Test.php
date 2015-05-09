@@ -96,12 +96,16 @@ class Base128Test extends \PHPUnit_Framework_TestCase
         Base128::decode("\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x7F");
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value (0xDEADBEEF) exceeds the maximum integer length when base128-encoded.
-     */
     public function testEncodeFailsIfOverflows()
     {
-        Base128::encode(0xDEADBEEF);
+        $value = PHP_INT_MAX+1;
+        try {
+            Base128::encode($value);
+            $this->fail('Failed to throw an exception');
+        } catch (\InvalidArgumentException $exception) {
+            $expected = sprintf('Value (0x%s) exceeds the maximum integer length when base128-encoded.', strtoupper(dechex($value)));
+            $this->assertEquals($expected, $exception->getMessage());
+        }
+
     }
 }
