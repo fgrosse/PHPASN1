@@ -145,6 +145,7 @@ class IntegerTest extends ASN1TestCase
 
     public function testBigIntegerSupport()
     {
+        // Positive bigint
         $expectedType     = chr(Identifier::INTEGER);
         $expectedLength   = chr(0x20);
         $expectedContent  = "\x7f\xff\xff\xff\xff\xff\xff\xff";
@@ -153,6 +154,20 @@ class IntegerTest extends ASN1TestCase
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
 
         $bigint = gmp_strval(gmp_sub(gmp_pow(2, 255), 1));
+        $object = new Integer($bigint);
+        $binary = $object->getBinary();
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
+
+        $obj = Object::fromBinary($binary);
+        $this->assertEquals($obj, $object);
+
+        // Test a negative number
+        $expectedLength   = chr(0x21);
+        $expectedContent  = "\x00\x80\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $bigint = gmp_strval(gmp_pow(2, 255));
         $object = new Integer($bigint);
         $binary = $object->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
