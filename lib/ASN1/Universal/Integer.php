@@ -51,7 +51,7 @@ class Integer extends Object implements Parsable
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = gmp_abs($this->value);
+        $tmpValue = gmp_abs(gmp_init($this->value));
         while (gmp_cmp($tmpValue, 127) > 0) {
             $tmpValue = $this->rightShift($tmpValue, 8);
             $nrOfOctets++;
