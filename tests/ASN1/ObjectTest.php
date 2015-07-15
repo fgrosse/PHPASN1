@@ -11,6 +11,7 @@
 namespace FG\Test\ASN1;
 
 use FG\ASN1\ExplicitlyTaggedObject;
+use FG\ASN1\Universal\GeneralizedTime;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Object;
 use FG\ASN1\UnknownConstructedObject;
@@ -158,6 +159,16 @@ class ObjectTest extends ASN1TestCase
         $this->assertTrue($parsedObject instanceof PrintableString);
         $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
 
+        /** @var GeneralizedTime $parsedObject */
+        $binaryData  = chr(Identifier::GENERALIZED_TIME);
+        $binaryData .= chr(15);
+        $binaryData .= '20120923202316Z';
+
+        $expectedObject = new GeneralizedTime('2012-09-23 20:23:16', 'UTC');
+        $parsedObject = Object::fromBinary($binaryData);
+        $this->assertTrue($parsedObject instanceof GeneralizedTime);
+        $this->assertEquals($expectedObject->getContent(), $parsedObject->getContent());
+
         /** @var Sequence $parsedObject */
         $binaryData = chr(Identifier::SEQUENCE);
         $binaryData .= chr(0x06);
@@ -187,8 +198,8 @@ class ObjectTest extends ASN1TestCase
         $parsedObject = Object::fromBinary($binaryData);
         $this->assertTrue($parsedObject instanceof ExplicitlyTaggedObject);
 
-        // An unkown constructed object containing 2 integer children, first
-        // 3 bytes are the identifier.
+        // An unknown constructed object containing 2 integer children,
+        // first 3 bytes are the identifier.
         $binaryData = "\x3F\x81\x7F\x06".chr(Identifier::INTEGER)."\x01\x42".chr(Identifier::INTEGER)."\x01\x69";
         $offsetIndex = 0;
         $parsedObject = OBject::fromBinary($binaryData, $offsetIndex);

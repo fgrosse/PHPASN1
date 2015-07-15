@@ -14,6 +14,7 @@ use FG\ASN1\Exception\ParserException;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
+use FG\ASN1\Universal\GeneralizedTime;
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\NullObject;
 use FG\ASN1\Universal\ObjectIdentifier;
@@ -223,6 +224,8 @@ abstract class Object implements Parsable
                 return Set::fromBinary($binaryData, $offsetIndex);
             case Identifier::UTC_TIME:
                 return UTCTime::fromBinary($binaryData, $offsetIndex);
+            case Identifier::GENERALIZED_TIME:
+                return GeneralizedTime::fromBinary($binaryData, $offsetIndex);
             case Identifier::IA5_STRING:
                 return IA5String::fromBinary($binaryData, $offsetIndex);
             case Identifier::PRINTABLE_STRING:
