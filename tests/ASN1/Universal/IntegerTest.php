@@ -146,20 +146,20 @@ class IntegerTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new Integer(200);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(200);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Integer(12345);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(12345);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Integer(-1891004);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(-1891004);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -167,18 +167,18 @@ class IntegerTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new Integer(12345);
-        $originalobject2 = new Integer(67890);
+        $originalObject1 = new Integer(12345);
+        $originalObject2 = new Integer(67890);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Integer::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(4, $offset);
         $parsedObject = Integer::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(9, $offset);
     }
 
