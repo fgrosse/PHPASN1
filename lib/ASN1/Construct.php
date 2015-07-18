@@ -10,7 +10,10 @@
 
 namespace FG\ASN1;
 
-abstract class Construct extends Object implements \Iterator, Parsable
+use ArrayAccess;
+use Iterator;
+
+abstract class Construct extends Object implements Iterator, ArrayAccess, Parsable
 {
     /** @var \FG\ASN1\Object[] */
     protected $children;
@@ -68,6 +71,26 @@ abstract class Construct extends Object implements \Iterator, Parsable
     public function valid()
     {
         return isset($this->children[$this->iteratorPosition]);
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->children);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->children[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->children[$offset] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->children[$offset]);
     }
 
     protected function calculateContentLength()

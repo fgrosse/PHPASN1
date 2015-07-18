@@ -98,24 +98,38 @@ class SequenceTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new Sequence(
+        $originalObject1 = new Sequence(
             new Boolean(true),
             new Integer(123)
         );
-        $originalobject2 = new Sequence(
+        $originalObject2 = new Sequence(
             new Integer(64),
             new Boolean(false)
         );
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Sequence::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = Sequence::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
+    }
+
+    public function testArrayAccess()
+    {
+        $sequence = new Sequence(
+            new Integer(42),
+            new Integer(24),
+            new Integer(123)
+        );
+
+        $children = $sequence->getChildren();
+        foreach ($children as $index => $child) {
+            $this->assertSame($child, $sequence[$index]);
+        }
     }
 }
