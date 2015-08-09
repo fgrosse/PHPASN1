@@ -10,7 +10,7 @@
 
 namespace FG\ASN1;
 
-abstract class Construct extends Object implements \Iterator, Parsable
+abstract class Construct extends Object implements \Countable, \ArrayAccess, \Iterator, Parsable
 {
     /** @var \FG\ASN1\Object[] */
     protected $children;
@@ -155,5 +155,48 @@ abstract class Construct extends Object implements \Iterator, Parsable
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->children[$offset]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->children[$offset]) ? $this->children[$offset] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->children[] = $value;
+        }
+        $this->children[$offset] = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->children[$offset]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count($mode = COUNT_NORMAL)
+    {
+        return count($this->children, $mode);
     }
 }

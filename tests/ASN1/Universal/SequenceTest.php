@@ -118,4 +118,31 @@ class SequenceTest extends ASN1TestCase
         $this->assertEquals($originalobject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
+
+    public function testSequenceAsArray()
+    {
+        $object = new Sequence();
+        $child1 = new Integer(123);
+        $child2 = new PrintableString("Hello Wold");
+        $child3 = new Boolean(true);
+        $child4 = new Integer(1234567);
+
+        $object[] = $child1;
+        $object[] = $child2;
+        $object['foo'] = $child3;
+
+        $this->assertEquals($child1, $object[0]);
+        $this->assertEquals($child2, $object[1]);
+        $this->assertEquals($child3, $object['foo']);
+        $this->assertEquals(4, count($object));
+
+        unset($object[1]);
+        $object['bar'] = $child4;
+
+        $this->assertEquals($child1, $object[0]);
+        $this->assertFalse(isset($object[1]));
+        $this->assertEquals($child3, $object['foo']);
+        $this->assertEquals($child4, $object['bar']);
+        $this->assertEquals(4, count($object));
+    }
 }
