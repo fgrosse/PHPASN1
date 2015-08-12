@@ -93,7 +93,7 @@ class Integer extends Object implements Parsable
         }
 
         if ($isNegative) {
-            $number = gmp_sub($number, pow(2, 8*$contentLength-1));
+            $number = gmp_sub($number, gmp_pow(2, 8*$contentLength-1));
         }
 
         $parsedObject->value = gmp_strval($number);
