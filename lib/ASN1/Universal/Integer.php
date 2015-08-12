@@ -42,15 +42,20 @@ class Integer extends Object implements Parsable
         return $this->value;
     }
 
+    public function rightShift($number, $positions)
+    {
+        // Shift 1 right = div / 2
+        return gmp_strval(gmp_div($number, gmp_pow(2, (int)$positions)));
+    }
+
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = abs($this->value);
-        while ($tmpValue > 127) {
-            $tmpValue = $tmpValue >> 8;
+        $tmpValue = gmp_abs(gmp_init($this->value));
+        while (gmp_cmp($tmpValue, 127) > 0) {
+            $tmpValue = $this->rightShift($tmpValue, 8);
             $nrOfOctets++;
         }
-
         return $nrOfOctets;
     }
 
@@ -60,14 +65,13 @@ class Integer extends Object implements Parsable
         $contentLength = $this->getContentLength();
 
         if ($numericValue < 0) {
-            $numericValue = abs($numericValue);
-            $numericValue = ~$numericValue & (pow(2, 8 * $contentLength) - 1);
-            $numericValue += 1;
+            $numericValue = gmp_add($numericValue, (gmp_sub(gmp_pow(2, 8 * $contentLength), 1)));
+            $numericValue = gmp_add($numericValue, 1);
         }
 
         $result = '';
         for ($shiftLength = ($contentLength-1)*8; $shiftLength >= 0; $shiftLength -= 8) {
-            $octet = $numericValue >> $shiftLength;
+            $octet = gmp_strval(gmp_mod($this->rightShift($numericValue, $shiftLength), 256));
             $result .= chr($octet);
         }
 
