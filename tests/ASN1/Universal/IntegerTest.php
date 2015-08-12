@@ -30,6 +30,14 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals(chr(Identifier::INTEGER), $object->getIdentifier());
     }
 
+    /**
+     * @expectedException \Exception
+     */
+    public function testCreateInstanceCanFail()
+    {
+        new Integer('a');
+    }
+
     public function testContent()
     {
         $object = new Integer(1234);
