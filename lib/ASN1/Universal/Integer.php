@@ -42,16 +42,10 @@ class Integer extends Object implements Parsable
         return $this->value;
     }
 
-    public function rightShift($number, $positions)
-    {
-        // Shift 1 right = div / 2
-        return gmp_strval(gmp_div($number, gmp_pow(2, (int)$positions)));
-    }
-
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = gmp_abs(gmp_init($this->value));
+        $tmpValue = gmp_abs(gmp_init($this->value, 10));
         while (gmp_cmp($tmpValue, 127) > 0) {
             $tmpValue = $this->rightShift($tmpValue, 8);
             $nrOfOctets++;
@@ -59,12 +53,18 @@ class Integer extends Object implements Parsable
         return $nrOfOctets;
     }
 
+    private function rightShift($number, $positions)
+    {
+        // Shift 1 right = div / 2
+        return gmp_strval(gmp_div($number, gmp_pow(2, (int)$positions)));
+    }
+
     protected function getEncodedValue()
     {
-        $numericValue = $this->value;
+        $numericValue = gmp_init($this->value, 10);
         $contentLength = $this->getContentLength();
 
-        if ($numericValue < 0) {
+        if (gmp_sign($numericValue) < 0) {
             $numericValue = gmp_add($numericValue, (gmp_sub(gmp_pow(2, 8 * $contentLength), 1)));
             $numericValue = gmp_add($numericValue, 1);
         }
@@ -86,7 +86,7 @@ class Integer extends Object implements Parsable
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
 
-        $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F);
+        $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
 
         for ($i = 0; $i<$contentLength-1; $i++) {
             $number = gmp_or(gmp_mul($number, 0x100), ord($binaryData[$offsetIndex++]));
