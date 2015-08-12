@@ -186,13 +186,13 @@ class IntegerTest extends ASN1TestCase
 
     public function testRangeOfBigInts()
     {
-        for ($i = 1; $i < 256; $i *= 2) {
+        for ($i = 1; $i <= 256; $i *= 2) {
             // 2 ^ n [0, 256]  large positive numbers
             $k = gmp_strval(gmp_pow(2, $i), 10);
             $this->doIntSerializationTest($k);
         }
 
-        for ($i = 1; $i < 256; $i *= 2) {
+        for ($i = 1; $i <= 256; $i *= 2) {
             // 0 - 2 ^ n [0, 256]  large negative numbers
             $k= gmp_strval(gmp_sub(0, gmp_pow(2, $i)), 10);
             $this->doIntSerializationTest($k);
