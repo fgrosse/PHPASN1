@@ -15,13 +15,19 @@ class Base128
      */
     public static function encode($value)
     {
-        $octets = chr($value & 0x7F);
-        $value >>= 7;
+        $value = gmp_init($value, 10);
+        $octets = chr(gmp_strval(gmp_and($value, 0x7f), 10));
 
-        while ($value > 0) {
-            $octets .= chr(0x80 | ($value & 0x7F));
-            $value >>= 7;
+        $rshift = function ($number, $positions) {
+            return gmp_div($number, gmp_pow(2, (int)$positions));
+        };
+
+        $value = $rshift($value, 7);
+        while (gmp_cmp($value, 0) > 0) {
+            $octets .= chr(gmp_strval(gmp_or(0x80, gmp_and($value, 0x7f)), 10));
+            $value = $rshift($value, 7);
         }
+
         return strrev($octets);
     }
 
