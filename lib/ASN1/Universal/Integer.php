@@ -53,6 +53,11 @@ class Integer extends Object implements Parsable
         return $nrOfOctets;
     }
 
+    /**
+     * @param resource|\GMP $number
+     * @param int $positions
+     * @return resource|\GMP
+     */
     private function rightShift($number, $positions)
     {
         // Shift 1 right = div / 2
