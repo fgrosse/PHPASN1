@@ -85,7 +85,8 @@ class Integer extends Object implements Parsable
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
+        $parsedObject = new static(0);
+        self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
