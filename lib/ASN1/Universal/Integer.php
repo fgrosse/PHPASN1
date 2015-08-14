@@ -56,7 +56,7 @@ class Integer extends Object implements Parsable
     private function rightShift($number, $positions)
     {
         // Shift 1 right = div / 2
-        return gmp_strval(gmp_div($number, gmp_pow(2, (int)$positions)));
+        return gmp_div($number, gmp_pow(2, (int)$positions));
     }
 
     protected function getEncodedValue()
@@ -80,8 +80,7 @@ class Integer extends Object implements Parsable
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        $parsedObject = new static(0);
-        self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
+        self::parseIdentifier($binaryData[$offsetIndex], static::getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
@@ -96,7 +95,7 @@ class Integer extends Object implements Parsable
             $number = gmp_sub($number, gmp_pow(2, 8*$contentLength-1));
         }
 
-        $parsedObject->value = gmp_strval($number);
+        $parsedObject = new static(gmp_strval($number, 10));
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;
