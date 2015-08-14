@@ -181,7 +181,7 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
 
         $obj = Object::fromBinary($binary);
-        $this->assertEquals($obj, $object);
+        $this->assertEquals($object, $obj);
     }
 
     public function testRangeOfBigInts()
