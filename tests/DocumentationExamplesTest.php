@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPASN1 written by Friedrich Große.
  *
@@ -41,7 +42,7 @@ class DocumentationExamplesTest extends ASN1TestCase
         $sequence = new Sequence($integer, $boolean, $enum, $ia5String);
         $set = new Set($sequence, $asnNull, $objectIdentifier1, $objectIdentifier2, $printableString);
 
-        $myBinary  = $sequence->getBinary();
+        $myBinary = $sequence->getBinary();
         $myBinary .= $set->getBinary();
 
         echo base64_encode($myBinary);

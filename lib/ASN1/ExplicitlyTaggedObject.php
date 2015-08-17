@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -35,7 +36,7 @@ class ExplicitlyTaggedObject extends Object
     private $tag;
 
     /**
-     * @param int $tag
+     * @param int             $tag
      * @param \FG\ASN1\Object $object
      */
     public function __construct($tag, Object $object)
@@ -62,6 +63,7 @@ class ExplicitlyTaggedObject extends Object
     public function __toString()
     {
         $decoratedType = Identifier::getShortName($this->decoratedObject->getType());
+
         return "Context specific $decoratedType with tag [{$this->tag}]";
     }
 
@@ -93,12 +95,13 @@ class ExplicitlyTaggedObject extends Object
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         $offsetIndexOfDecoratedObject = $offsetIndex;
         $decoratedObject = Object::fromBinary($binaryData, $offsetIndex);
-        if ($decoratedObject->getObjectLength() != $contentLength) {
+        if ($decoratedObject->getObjectLength() !== $contentLength) {
             throw new ParserException("Context-Specific explicitly tagged object [$tag] starting at offset $offsetIndexOfDecoratedObject is longer than allowed in the outer tag", $offsetIndexOfDecoratedObject);
         }
 
         $parsedObject = new self($tag, $decoratedObject);
         $parsedObject->setContentLength($contentLength);
+
         return $parsedObject;
     }
 }

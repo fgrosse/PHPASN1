@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -27,54 +28,56 @@ use Exception;
  */
 class Identifier
 {
-    const CLASS_UNIVERSAL        = 0x00;
-    const CLASS_APPLICATION      = 0x01;
+    const CLASS_UNIVERSAL = 0x00;
+    const CLASS_APPLICATION = 0x01;
     const CLASS_CONTEXT_SPECIFIC = 0x02;
-    const CLASS_PRIVATE          = 0x03;
+    const CLASS_PRIVATE = 0x03;
 
-    const EOC               = 0x00; // unsupported for now
-    const BOOLEAN           = 0x01;
-    const INTEGER           = 0x02;
-    const BITSTRING         = 0x03;
-    const OCTETSTRING       = 0x04;
-    const NULL              = 0x05;
+    const EOC = 0x00; // unsupported for now
+    const BOOLEAN = 0x01;
+    const INTEGER = 0x02;
+    const BITSTRING = 0x03;
+    const OCTETSTRING = 0x04;
+    const NULL = 0x05;
     const OBJECT_IDENTIFIER = 0x06;
     const OBJECT_DESCRIPTOR = 0x07;
-    const EXTERNAL          = 0x08; // unsupported for now
-    const REAL              = 0x09; // unsupported for now
-    const ENUMERATED        = 0x0A;
-    const EMBEDDED_PDV      = 0x0B; // unsupported for now
-    const UTF8_STRING       = 0x0C;
-    const RELATIVE_OID      = 0x0D;
+    const EXTERNAL = 0x08; // unsupported for now
+    const REAL = 0x09; // unsupported for now
+    const ENUMERATED = 0x0A;
+    const EMBEDDED_PDV = 0x0B; // unsupported for now
+    const UTF8_STRING = 0x0C;
+    const RELATIVE_OID = 0x0D;
     // value 0x0E and 0x0F are reserved for future use
 
-    const SEQUENCE          = 0x30;
-    const SET               = 0x31;
-    const NUMERIC_STRING    = 0x12;
-    const PRINTABLE_STRING  = 0x13;
-    const T61_STRING        = 0x14; // sometimes referred to as TeletextString
-    const VIDEOTEXT_STRING  = 0x15;
-    const IA5_STRING        = 0x16;
-    const UTC_TIME          = 0x17;
-    const GENERALIZED_TIME  = 0x18;
-    const GRAPHIC_STRING    = 0x19;
-    const VISIBLE_STRING    = 0x1A;
-    const GENERAL_STRING    = 0x1B;
-    const UNIVERSAL_STRING  = 0x1C;
-    const CHARACTER_STRING  = 0x1D; // Unrestricted character type
-    const BMP_STRING        = 0x1E;
+    const SEQUENCE = 0x30;
+    const SET = 0x31;
+    const NUMERIC_STRING = 0x12;
+    const PRINTABLE_STRING = 0x13;
+    const T61_STRING = 0x14; // sometimes referred to as TeletextString
+    const VIDEOTEXT_STRING = 0x15;
+    const IA5_STRING = 0x16;
+    const UTC_TIME = 0x17;
+    const GENERALIZED_TIME = 0x18;
+    const GRAPHIC_STRING = 0x19;
+    const VISIBLE_STRING = 0x1A;
+    const GENERAL_STRING = 0x1B;
+    const UNIVERSAL_STRING = 0x1C;
+    const CHARACTER_STRING = 0x1D; // Unrestricted character type
+    const BMP_STRING = 0x1E;
 
-    const LONG_FORM         = 0x1F;
-    const IS_CONSTRUCTED    = 0x20;
+    const LONG_FORM = 0x1F;
+    const IS_CONSTRUCTED = 0x20;
 
     /**
      * Creates an identifier. Short form identifiers are returned as integers
      * for BC, long form identifiers will be returned as a string of octets.
      *
-     * @param int $class
-     * @param boolean $isConstructed
-     * @param int $tagNumber
+     * @param int  $class
+     * @param bool $isConstructed
+     * @param int  $tagNumber
+     *
      * @return int|string
+     *
      * @throws Exception if the given arguments are invalid
      */
     public static function create($class, $isConstructed, $tagNumber)
@@ -92,7 +95,7 @@ class Identifier
             throw new Exception(sprintf('Invalid $tagNumber %d given. You can only use positive integers.', $tagNumber));
         }
 
-        if ($tagNumber < Identifier::LONG_FORM) {
+        if ($tagNumber < self::LONG_FORM) {
             return ($class << 6) | ($isConstructed << 5) | $tagNumber;
         }
 
@@ -118,7 +121,9 @@ class Identifier
      * Example: ASN.1 Octet String
      *
      * @see Identifier::getShortName()
+     *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getName($identifier)
@@ -143,7 +148,9 @@ class Identifier
      *
      * @see Identifier::getName()
      * @see Identifier::getClassDescription()
+     *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getShortName($identifier)
@@ -239,6 +246,7 @@ class Identifier
      *     Primitive universal
      *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getClassDescription($identifier)
@@ -275,20 +283,22 @@ class Identifier
 
     /**
      * @param int|string $identifier
+     *
      * @return int
      */
     public static function getTagNumber($identifier)
     {
         $firstOctet = self::makeNumeric($identifier);
-        $tagNumber = $firstOctet & Identifier::LONG_FORM;
+        $tagNumber = $firstOctet & self::LONG_FORM;
 
-        if ($tagNumber < Identifier::LONG_FORM) {
+        if ($tagNumber < self::LONG_FORM) {
             return $tagNumber;
         }
 
         if (is_numeric($identifier)) {
             $identifier = chr($identifier);
         }
+
         return Base128::decode(substr($identifier, 1));
     }
 
@@ -296,28 +306,28 @@ class Identifier
     {
         $identifier = self::makeNumeric($identifier);
 
-        return $identifier >> 6 == self::CLASS_UNIVERSAL;
+        return $identifier >> 6 === self::CLASS_UNIVERSAL;
     }
 
     public static function isApplicationClass($identifier)
     {
         $identifier = self::makeNumeric($identifier);
 
-        return $identifier >> 6 == self::CLASS_APPLICATION;
+        return $identifier >> 6 === self::CLASS_APPLICATION;
     }
 
     public static function isContextSpecificClass($identifier)
     {
         $identifier = self::makeNumeric($identifier);
 
-        return $identifier >> 6 == self::CLASS_CONTEXT_SPECIFIC;
+        return $identifier >> 6 === self::CLASS_CONTEXT_SPECIFIC;
     }
 
     public static function isPrivateClass($identifier)
     {
         $identifier = self::makeNumeric($identifier);
 
-        return $identifier >> 6 == self::CLASS_PRIVATE;
+        return $identifier >> 6 === self::CLASS_PRIVATE;
     }
 
     private static function makeNumeric($identifierOctet)

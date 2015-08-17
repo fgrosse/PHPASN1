@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -44,7 +45,7 @@ class IPAddress extends Object implements Parsable
     protected function getEncodedValue()
     {
         $ipParts = explode('.', $this->value);
-        $binary  = chr($ipParts[0]);
+        $binary = chr($ipParts[0]);
         $binary .= chr($ipParts[1]);
         $binary .= chr($ipParts[2]);
         $binary .= chr($ipParts[3]);
@@ -56,7 +57,7 @@ class IPAddress extends Object implements Parsable
     {
         self::parseIdentifier($binaryData[$offsetIndex], self::IDENTIFIER, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
-        if ($contentLength != 4) {
+        if ($contentLength !== 4) {
             throw new ParserException("A FG\\X509\SAN\IPAddress should have a content length of 4. Extracted length was {$contentLength}", $offsetIndex);
         }
 
@@ -65,7 +66,7 @@ class IPAddress extends Object implements Parsable
         $ipAddressString .= ord($binaryData[$offsetIndex++]).'.';
         $ipAddressString .= ord($binaryData[$offsetIndex++]);
 
-        $parsedObject = new IPAddress($ipAddressString);
+        $parsedObject = new self($ipAddressString);
         $parsedObject->getObjectLength();
 
         return $parsedObject;

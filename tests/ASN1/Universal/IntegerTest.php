@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -17,7 +18,6 @@ use FG\ASN1\Universal\Integer;
 
 class IntegerTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Integer(123);
@@ -137,26 +137,25 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
         $object = new Integer(7420);
-        $expectedLength   = chr(0x02);
-        $expectedContent  = chr(0x1C);
+        $expectedLength = chr(0x02);
+        $expectedContent = chr(0x1C);
         $expectedContent .= chr(0xFC);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
         $object = new Integer(-1891004);
-        $expectedLength   = chr(0x03);
-        $expectedContent  = chr(0xE3);
+        $expectedLength = chr(0x03);
+        $expectedContent = chr(0xE3);
         $expectedContent .= chr(0x25);
         $expectedContent .= chr(0x44);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
-
     }
 
     public function testBigIntegerSupport()
     {
         // Positive bigint
-        $expectedType     = chr(Identifier::INTEGER);
-        $expectedLength   = chr(0x20);
-        $expectedContent  = "\x7f\xff\xff\xff\xff\xff\xff\xff";
+        $expectedType = chr(Identifier::INTEGER);
+        $expectedLength = chr(0x20);
+        $expectedContent = "\x7f\xff\xff\xff\xff\xff\xff\xff";
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
@@ -170,8 +169,8 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($obj, $object);
 
         // Test a negative number
-        $expectedLength   = chr(0x21);
-        $expectedContent  = "\x00\x80\x00\x00\x00\x00\x00\x00\x00";
+        $expectedLength = chr(0x21);
+        $expectedContent = "\x00\x80\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
@@ -238,7 +237,7 @@ class IntegerTest extends ASN1TestCase
         $originalObject1 = new Integer(12345);
         $originalObject2 = new Integer(67890);
 
-        $binaryData  = $originalObject1->getBinary();
+        $binaryData = $originalObject1->getBinary();
         $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
@@ -257,7 +256,7 @@ class IntegerTest extends ASN1TestCase
      */
     public function testFromBinaryWithInvalidLength01()
     {
-        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData = chr(Identifier::INTEGER);
         $binaryData .= chr(0x00);
         $binaryData .= chr(0xA0);
         Integer::fromBinary($binaryData);

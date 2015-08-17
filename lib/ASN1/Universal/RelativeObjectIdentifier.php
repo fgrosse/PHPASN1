@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -23,12 +24,12 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
         $this->subIdentifiers = explode('.', $subIdentifiers);
         $nrOfSubIdentifiers = count($this->subIdentifiers);
 
-        for ($i = 0; $i < $nrOfSubIdentifiers; $i++) {
+        for ($i = 0; $i < $nrOfSubIdentifiers; ++$i) {
             if (is_numeric($this->subIdentifiers[$i])) {
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             } else {
-                throw new GeneralException("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+                throw new GeneralException("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i + 1).' is not numeric)!');
             }
         }
     }

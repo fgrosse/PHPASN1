@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -61,12 +62,12 @@ class CSR extends Sequence
 
     protected function createCSRSequence()
     {
-        $versionNr            = new Integer(self::CSR_VERSION_NR);
-        $publicKey            = new PublicKey($this->publicKey);
-        $signature            = new BitString($this->signature);
-        $signatureAlgorithm    = new AlgorithmIdentifier($this->signatureAlgorithm);
+        $versionNr = new Integer(self::CSR_VERSION_NR);
+        $publicKey = new PublicKey($this->publicKey);
+        $signature = new BitString($this->signature);
+        $signatureAlgorithm = new AlgorithmIdentifier($this->signatureAlgorithm);
 
-        $certRequestInfo  = new Sequence($versionNr, $this->subject, $publicKey);
+        $certRequestInfo = new Sequence($versionNr, $this->subject, $publicKey);
 
         $this->addChild($certRequestInfo);
         $this->addChild($signatureAlgorithm);
@@ -77,15 +78,15 @@ class CSR extends Sequence
     {
         $tmp = base64_encode($this->getBinary());
 
-        for ($i = 0; $i < strlen($tmp); $i++) {
-            if (($i+2) % 65 == 0) {
-                $tmp = substr($tmp, 0, $i+1)."\n".substr($tmp, $i+1);
+        for ($i = 0; $i < strlen($tmp); ++$i) {
+            if (($i + 2) % 65 === 0) {
+                $tmp = substr($tmp, 0, $i + 1)."\n".substr($tmp, $i + 1);
             }
         }
 
-        $result = "-----BEGIN CERTIFICATE REQUEST-----".PHP_EOL;
+        $result = '-----BEGIN CERTIFICATE REQUEST-----'.PHP_EOL;
         $result .= $tmp.PHP_EOL;
-        $result .= "-----END CERTIFICATE REQUEST-----";
+        $result .= '-----END CERTIFICATE REQUEST-----';
 
         return $result;
     }

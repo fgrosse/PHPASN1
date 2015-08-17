@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\BitString;
 
 class BitStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new BitString('A0 12 00 43');
@@ -66,7 +66,7 @@ class BitStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new BitString($hexString);
-        $this->assertEquals(1+3+1+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()
@@ -75,13 +75,13 @@ class BitStringTest extends ASN1TestCase
         $expectedLength = chr(0x02);
 
         $object = new BitString(0xFF);
-        $expectedContent  = chr(0x00);
+        $expectedContent = chr(0x00);
         $expectedContent .= chr(0xFF);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
         $object = new BitString(0xFFA034);
         $expectedLength = chr(0x04);
-        $expectedContent  = chr(0x00);
+        $expectedContent = chr(0x00);
         $expectedContent .= chr(0xFF);
         $expectedContent .= chr(0xA0);
         $expectedContent .= chr(0x34);
@@ -89,7 +89,7 @@ class BitStringTest extends ASN1TestCase
 
         $object = new BitString(0xA8, 3);
         $expectedLength = chr(0x02);
-        $expectedContent  = chr(0x03);
+        $expectedContent = chr(0x03);
         $expectedContent .= chr(0xA8);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
     }
@@ -105,7 +105,7 @@ class BitStringTest extends ASN1TestCase
         $expectedLength .= chr(1025 >> 8);   // first 8 bit of 1025
         $expectedLength .= chr(1025 & 0xFF); // last 8 bit of 1025
         $expectedContent = chr(0x00);        // number of unused bits
-        for ($i = 0; $i < $nrOfBytes; $i++) {
+        for ($i = 0; $i < $nrOfBytes; ++$i) {
             $expectedContent .= chr(0xFF);   // content
         }
 
@@ -136,7 +136,7 @@ class BitStringTest extends ASN1TestCase
         $originalobject1 = new BitString(0xA0);
         $originalobject2 = new BitString(0x314510);
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;
@@ -155,7 +155,7 @@ class BitStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithInvalidLength01()
     {
-        $binaryData  = chr(Identifier::BITSTRING);
+        $binaryData = chr(Identifier::BITSTRING);
         $binaryData .= chr(0x01);
         $binaryData .= chr(0x00);
         BitString::fromBinary($binaryData);

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,34 +17,33 @@ use FG\ASN1\Universal\GeneralString;
 
 class GeneralStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new GeneralString("Hello World");
+        $object = new GeneralString('Hello World');
         $this->assertEquals(Identifier::GENERAL_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new GeneralString("Hello World");
+        $object = new GeneralString('Hello World');
         $this->assertEquals(chr(Identifier::GENERAL_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new GeneralString("Hello World");
-        $this->assertEquals("Hello World", $object->getContent());
+        $object = new GeneralString('Hello World');
+        $this->assertEquals('Hello World', $object->getContent());
 
-        $object = new GeneralString("");
-        $this->assertEquals("", $object->getContent());
+        $object = new GeneralString('');
+        $this->assertEquals('', $object->getContent());
 
-        $object = new GeneralString("             ");
-        $this->assertEquals("             ", $object->getContent());
+        $object = new GeneralString('             ');
+        $this->assertEquals('             ', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $object = new GeneralString($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -51,7 +51,7 @@ class GeneralStringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $expectedType = chr(Identifier::GENERAL_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -64,7 +64,7 @@ class GeneralStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new GeneralString("Hello World");
+        $originalobject = new GeneralString('Hello World');
         $binaryData = $originalobject->getBinary();
         $parsedObject = GeneralString::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
@@ -75,10 +75,10 @@ class GeneralStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new GeneralString("Hello ");
-        $originalobject2 = new GeneralString(" World");
+        $originalobject1 = new GeneralString('Hello ');
+        $originalobject2 = new GeneralString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

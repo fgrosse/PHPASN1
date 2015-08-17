@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\OctetString;
 
 class OctetStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new OctetString('30 14 06 08 2B 06 01 05 05 07 03 01 06 08 2B 06 01 05 05 07 03 02');
@@ -66,7 +66,7 @@ class OctetStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new OctetString($hexString);
-        $this->assertEquals(1+3+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()
@@ -80,7 +80,7 @@ class OctetStringTest extends ASN1TestCase
 
         $object = new OctetString(0xFFA034);
         $expectedLength = chr(0x03);
-        $expectedContent  = chr(0xFF);
+        $expectedContent = chr(0xFF);
         $expectedContent .= chr(0xA0);
         $expectedContent .= chr(0x34);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
@@ -97,7 +97,7 @@ class OctetStringTest extends ASN1TestCase
         $expectedLength .= chr(1024 >> 8);   // first 8 bit of 1025
         $expectedLength .= chr(1024 & 0xFF); // last 8 bit of 1025
         $expectedContent = '';
-        for ($i = 0; $i < $nrOfBytes; $i++) {
+        for ($i = 0; $i < $nrOfBytes; ++$i) {
             $expectedContent .= chr(0xFF);   // content
         }
 
@@ -128,7 +128,7 @@ class OctetStringTest extends ASN1TestCase
         $originalobject1 = new OctetString(0xA0);
         $originalobject2 = new OctetString(0x314510);
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

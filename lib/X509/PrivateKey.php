@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -19,7 +20,7 @@ use FG\ASN1\Universal\ObjectIdentifier;
 class PrivateKey extends Sequence
 {
     /**
-     * @param string $hexKey
+     * @param string                 $hexKey
      * @param \FG\ASN1\Object|string $algorithmIdentifierString
      */
     public function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION)

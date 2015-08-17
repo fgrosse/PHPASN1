@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -17,7 +18,7 @@ class RelativeDistinguishedName extends Set
 {
     /**
      * @param string|\FG\ASN1\Universal\ObjectIdentifier $objIdentifierString
-     * @param \FG\ASN1\Object $value
+     * @param \FG\ASN1\Object                            $value
      */
     public function __construct($objIdentifierString, Object $value)
     {
@@ -30,6 +31,7 @@ class RelativeDistinguishedName extends Set
     {
         /** @var Object $firstObject */
         $firstObject = $this->children[0];
+
         return $firstObject->__toString();
     }
 }

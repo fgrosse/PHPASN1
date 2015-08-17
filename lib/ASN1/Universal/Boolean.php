@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -39,7 +40,7 @@ class Boolean extends Object implements Parsable
 
     protected function getEncodedValue()
     {
-        if ($this->value == false) {
+        if ($this->value === false) {
             return chr(0x00);
         } else {
             return chr(0xFF);
@@ -48,10 +49,10 @@ class Boolean extends Object implements Parsable
 
     public function getContent()
     {
-        if ($this->value == true) {
-            return "TRUE";
+        if ($this->value === true) {
+            return 'TRUE';
         } else {
-            return "FALSE";
+            return 'FALSE';
         }
     }
 
@@ -60,12 +61,12 @@ class Boolean extends Object implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::BOOLEAN, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        if ($contentLength != 1) {
+        if ($contentLength !== 1) {
             throw new ParserException("An ASN.1 Boolean should not have a length other than one. Extracted length was {$contentLength}", $offsetIndex);
         }
 
         $value = ord($binaryData[$offsetIndex++]);
-        $booleanValue = $value == 0xFF ? true : false;
+        $booleanValue = $value === 0xFF ? true : false;
 
         $parsedObject = new self($booleanValue);
         $parsedObject->setContentLength($contentLength);

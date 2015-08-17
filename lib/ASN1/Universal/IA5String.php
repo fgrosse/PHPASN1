@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -23,7 +24,7 @@ class IA5String extends AbstractString
     public function __construct($string)
     {
         parent::__construct($string);
-        for ($i = 1; $i < 128; $i++) {
+        for ($i = 1; $i < 128; ++$i) {
             $this->allowCharacter(chr($i));
         }
     }

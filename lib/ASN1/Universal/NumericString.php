@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -21,6 +22,7 @@ class NumericString extends AbstractString
      * The following characters are permitted:
      * Digits                0,1, ... 9
      * SPACE                 (space)
+     *
      * @param string $string
      */
     public function __construct($string)

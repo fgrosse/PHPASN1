@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\NullObject;
 
 class NullObjectTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new NullObject();
@@ -68,7 +68,7 @@ class NullObjectTest extends ASN1TestCase
         $originalobject1 = new NullObject();
         $originalobject2 = new NullObject();
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;
@@ -87,7 +87,7 @@ class NullObjectTest extends ASN1TestCase
      */
     public function testFromBinaryWithInvalidLength01()
     {
-        $binaryData  = chr(Identifier::NULL);
+        $binaryData = chr(Identifier::NULL);
         $binaryData .= chr(0x01);
         NullObject::fromBinary($binaryData);
     }

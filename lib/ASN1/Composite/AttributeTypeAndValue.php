@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -18,11 +19,11 @@ class AttributeTypeAndValue extends Sequence
 {
     /**
      * @param ObjectIdentifier|string $objIdentifier
-     * @param \FG\ASN1\Object $value
+     * @param \FG\ASN1\Object         $value
      */
     public function __construct($objIdentifier, Object $value)
     {
-        if ($objIdentifier instanceof ObjectIdentifier == false) {
+        if ($objIdentifier instanceof ObjectIdentifier === false) {
             $objIdentifier = new ObjectIdentifier($objIdentifier);
         }
         parent::__construct($objIdentifier, $value);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * View any string as a hexdump.
  *
@@ -9,29 +10,33 @@
  * with non-viewable characters.
  *
  * @version     1.3.2
+ *
  * @author      Aidan Lister <aidan@php.net>
  * @author      Peter Waller <iridum@php.net>
+ *
  * @link        http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/
- * @param       string $data The string to be dumped
- * @param       bool $htmloutput Set to false for non-HTML output
- * @param       bool $uppercase Set to true for uppercase hex
- * @param       bool $return Set to true to return the dump
+ *
+ * @param string $data       The string to be dumped
+ * @param bool   $htmloutput Set to false for non-HTML output
+ * @param bool   $uppercase  Set to true for uppercase hex
+ * @param bool   $return     Set to true to return the dump
+ *
  * @return string
  */
 function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
 {
     // Init
-    $hexi   = '';
-    $ascii  = '';
-    $dump   = ($htmloutput === true) ? '<pre>' : '';
+    $hexi = '';
+    $ascii = '';
+    $dump = ($htmloutput === true) ? '<pre>' : '';
     $offset = 0;
-    $len    = strlen($data);
+    $len = strlen($data);
 
     // Upper or lower case hexadecimal
     $x = ($uppercase === false) ? 'x' : 'X';
 
     // Iterate string
-    for ($i = $j = 0; $i < $len; $i++) {
+    for ($i = $j = 0; $i < $len; ++$i) {
         // Convert to hexidecimal
         $hexi .= sprintf("%02$x ", ord($data[$i]));
 
@@ -56,9 +61,9 @@ function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
             $dump .= sprintf("%04$x  %-49s  %s", $offset, $hexi, $ascii);
 
             // Reset vars
-            $hexi   = $ascii = '';
+            $hexi = $ascii = '';
             $offset += 16;
-            $j      = 0;
+            $j = 0;
 
             // Add newline
             if ($i !== $len - 1) {
@@ -79,5 +84,6 @@ function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
     } else {
         return $dump;
     }
+
     return null;
 }

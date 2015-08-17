@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -43,7 +44,7 @@ class Attributes extends Construct implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         $octetsToRead = $contentLength;
 
-        $parsedObject = new Attributes();
+        $parsedObject = new self();
         while ($octetsToRead > 0) {
             $initialOffset = $offsetIndex; // used to calculate how much bits have been read
             self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
@@ -51,7 +52,7 @@ class Attributes extends Construct implements Parsable
 
             $objectIdentifier = ObjectIdentifier::fromBinary($binaryData, $offsetIndex);
             $oidString = $objectIdentifier->getContent();
-            if ($oidString == OID::PKCS9_EXTENSION_REQUEST) {
+            if ($oidString === OID::PKCS9_EXTENSION_REQUEST) {
                 $attribute = CertificateExtensions::fromBinary($binaryData, $offsetIndex);
             } else {
                 $attribute = Object::fromBinary($binaryData, $offsetIndex);

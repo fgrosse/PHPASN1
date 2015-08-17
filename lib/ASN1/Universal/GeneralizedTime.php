@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -14,8 +15,9 @@ use FG\ASN1\AbstractTime;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
+
 /**
- * This ASN.1 universal type contains date and time information according to ISO 8601
+ * This ASN.1 universal type contains date and time information according to ISO 8601.
  *
  * The type consists of values representing:
  * a) a calendar date, as defined in ISO 8601; and
@@ -92,20 +94,20 @@ class GeneralizedTime extends AbstractTime implements Parsable
         $offsetIndex += $lengthOfMinimumTimeString;
         $maximumBytesToRead -= $lengthOfMinimumTimeString;
 
-        if ($contentLength == $lengthOfMinimumTimeString) {
+        if ($contentLength === $lengthOfMinimumTimeString) {
             $localTimeZone = new \DateTimeZone(date_default_timezone_get());
             $dateTime = \DateTime::createFromFormat($format, $dateTimeString, $localTimeZone);
         } else {
-            if ($binaryData[$offsetIndex] == '.') {
-                $maximumBytesToRead--; // account for the '.'
+            if ($binaryData[$offsetIndex] === '.') {
+                --$maximumBytesToRead; // account for the '.'
                 $nrOfFractionalSecondElements = 1; // account for the '.'
 
                 while ($maximumBytesToRead > 0
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != '+'
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != '-'
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != 'Z') {
-                    $nrOfFractionalSecondElements++;
-                    $maximumBytesToRead--;
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] !== '+'
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] !== '-'
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] !== 'Z') {
+                    ++$nrOfFractionalSecondElements;
+                    --$maximumBytesToRead;
                 }
 
                 $dateTimeString .= substr($binaryData, $offsetIndex, $nrOfFractionalSecondElements);
@@ -116,16 +118,16 @@ class GeneralizedTime extends AbstractTime implements Parsable
             $dateTime = \DateTime::createFromFormat($format, $dateTimeString, new \DateTimeZone('UTC'));
 
             if ($maximumBytesToRead > 0) {
-                if ($binaryData[$offsetIndex] == '+'
-                || $binaryData[$offsetIndex] == '-') {
+                if ($binaryData[$offsetIndex] === '+'
+                || $binaryData[$offsetIndex] === '-') {
                     $dateTime = static::extractTimeZoneData($binaryData, $offsetIndex, $dateTime);
-                } elseif ($binaryData[$offsetIndex++] != 'Z') {
+                } elseif ($binaryData[$offsetIndex++] !== 'Z') {
                     throw new ParserException('Invalid ISO 8601 Time String', $offsetIndex);
                 }
             }
         }
 
-        $parsedObject = new GeneralizedTime($dateTime);
+        $parsedObject = new self($dateTime);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

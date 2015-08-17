@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\Boolean;
 
 class BooleanTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Boolean(true);
@@ -85,7 +85,7 @@ class BooleanTest extends ASN1TestCase
         $originalobject1 = new Boolean(true);
         $originalobject2 = new Boolean(false);
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;
@@ -104,7 +104,7 @@ class BooleanTest extends ASN1TestCase
      */
     public function testFromBinaryWithInvalidLength01()
     {
-        $binaryData  = chr(Identifier::BOOLEAN);
+        $binaryData = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xFF);
         Boolean::fromBinary($binaryData);
@@ -117,7 +117,7 @@ class BooleanTest extends ASN1TestCase
      */
     public function testFromBinaryWithInvalidLength02()
     {
-        $binaryData  = chr(Identifier::BOOLEAN);
+        $binaryData = chr(Identifier::BOOLEAN);
         $binaryData .= chr(0x00);
         $binaryData .= chr(0xFF);
         Boolean::fromBinary($binaryData);
