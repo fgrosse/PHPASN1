@@ -1,0 +1,9 @@
+preset: symfony
+
+linting: true
+
+enabled:
+  - strict
+
+disabled:
+  - empty_return
