@@ -53,10 +53,10 @@ class NullObjectTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new NullObject();
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new NullObject();
+        $binaryData = $originalObject->getBinary();
         $parsedObject = NullObject::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -64,18 +64,18 @@ class NullObjectTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new NullObject();
-        $originalobject2 = new NullObject();
+        $originalObject1 = new NullObject();
+        $originalObject2 = new NullObject();
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = NullObject::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(2, $offset);
         $parsedObject = NullObject::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(4, $offset);
     }
 

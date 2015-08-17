@@ -13,3 +13,5 @@ disabled:
   - return
   - unalign_equals
   - unalign_double_arrow
+  - phpdoc_order
+  - phpdoc_separation

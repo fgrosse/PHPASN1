@@ -57,10 +57,10 @@ class UTF8StringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new UTF8String('Hello World');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new UTF8String('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = UTF8String::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -68,18 +68,18 @@ class UTF8StringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new UTF8String('Hello ');
-        $originalobject2 = new UTF8String(' World');
+        $originalObject1 = new UTF8String('Hello ');
+        $originalObject2 = new UTF8String(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = UTF8String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = UTF8String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

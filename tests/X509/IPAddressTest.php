@@ -57,10 +57,10 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new IPAddress('192.168.0.1');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new IPAddress('192.168.0.1');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = IPAddress::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**

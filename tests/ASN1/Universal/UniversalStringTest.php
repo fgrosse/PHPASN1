@@ -57,10 +57,10 @@ class UniversalStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new UniversalString('Hello World');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new UniversalString('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = UniversalString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -68,18 +68,18 @@ class UniversalStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new UniversalString('Hello ');
-        $originalobject2 = new UniversalString(' World');
+        $originalObject1 = new UniversalString('Hello ');
+        $originalObject2 = new UniversalString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = UniversalString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = UniversalString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

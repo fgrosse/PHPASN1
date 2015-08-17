@@ -85,15 +85,15 @@ class CertificateExtensionTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new CertificateExtensions();
+        $originalObject = new CertificateExtensions();
         $sans = new SubjectAlternativeNames();
         $sans->addDomainName(new DNSName('corvespace.de'));
         $sans->addIP(new IPAddress('192.168.0.1'));
-        $originalobject->addSubjectAlternativeNames($sans);
+        $originalObject->addSubjectAlternativeNames($sans);
 
-        $binaryData = $originalobject->getBinary();
+        $binaryData = $originalObject->getBinary();
         $parsedObject = CertificateExtensions::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -103,27 +103,27 @@ class CertificateExtensionTest extends ASN1TestCase
     {
         $objectIdentifier = new ObjectIdentifier(OID::CERT_EXT_SUBJECT_ALT_NAME);
 
-        $originalobject1 = new CertificateExtensions();
+        $originalObject1 = new CertificateExtensions();
         $sans1 = new SubjectAlternativeNames();
         $sans1->addDomainName(new DNSName('corvespace.de'));
         $sans1->addIP(new IPAddress('192.168.0.1'));
-        $originalobject1->addSubjectAlternativeNames($sans1);
+        $originalObject1->addSubjectAlternativeNames($sans1);
 
-        $originalobject2 = new CertificateExtensions();
+        $originalObject2 = new CertificateExtensions();
         $sans2 = new SubjectAlternativeNames();
         $sans2->addDomainName(new DNSName('google.com'));
-        $originalobject2->addSubjectAlternativeNames($sans2);
+        $originalObject2->addSubjectAlternativeNames($sans2);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = CertificateExtensions::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $offsetAfterFirstObject = $sans1->getObjectLength() + $objectIdentifier->getObjectLength() + 2  + 2 + 2;
         $this->assertEquals($offsetAfterFirstObject, $offset);
         $parsedObject = CertificateExtensions::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals($offsetAfterFirstObject + $sans2->getObjectLength() + $objectIdentifier->getObjectLength() + 2  + 2 + 2, $offset);
     }
 }

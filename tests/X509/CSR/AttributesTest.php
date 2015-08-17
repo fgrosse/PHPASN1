@@ -65,15 +65,15 @@ class AttributesTest extends ASN1TestCase
 
     public function testFromBinary()
     {
-        $originalobject = new Attributes();
+        $originalObject = new Attributes();
         $sans = new SubjectAlternativeNames();
         $sans->addDomainName(new DNSName('corvespace.de'));
         $extensionRequest = new CertificateExtensions();
         $extensionRequest->addSubjectAlternativeNames($sans);
-        $originalobject->addAttribute(OID::PKCS9_EXTENSION_REQUEST, $extensionRequest);
+        $originalObject->addAttribute(OID::PKCS9_EXTENSION_REQUEST, $extensionRequest);
 
-        $binaryData = $originalobject->getBinary();
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Attributes::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 }

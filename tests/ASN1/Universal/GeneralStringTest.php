@@ -63,10 +63,10 @@ class GeneralStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new GeneralString('Hello World');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new GeneralString('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = GeneralString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -74,18 +74,18 @@ class GeneralStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new GeneralString('Hello ');
-        $originalobject2 = new GeneralString(' World');
+        $originalObject1 = new GeneralString('Hello ');
+        $originalObject2 = new GeneralString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = GeneralString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = GeneralString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

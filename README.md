@@ -2,7 +2,9 @@ PHPASN1
 =======
 
 [![Build Status](https://secure.travis-ci.org/fgrosse/PHPASN1.png?branch=master)](http://travis-ci.org/fgrosse/PHPASN1)
+
 [![HHVM Status](http://hhvm.h4cc.de/badge/fgrosse/phpasn1.png)](http://hhvm.h4cc.de/package/fgrosse/phpasn1)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/fgrosse/PHPASN1/badge.svg)](https://travis-ci.org/fgrosse/PHPASN1)
 
 [![Latest Stable Version](https://poser.pugx.org/fgrosse/phpasn1/v/stable.png)](https://packagist.org/packages/fgrosse/phpasn1)
 [![Total Downloads](https://poser.pugx.org/fgrosse/phpasn1/downloads.png)](https://packagist.org/packages/fgrosse/phpasn1)
@@ -31,7 +33,7 @@ PHPASN1 requires at least `PHP 5.6` and the `gmp` extension.
 It has also been successfully tested using `PHP 7` and `HHVM`
 For the loading of object identifier names directly from the web [curl][7] is used.
 
-## Installation ##
+## Installation
 
 The preferred way to install this library is to rely on [Composer][2]:
 

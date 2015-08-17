@@ -57,10 +57,10 @@ class BMPStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new BMPString('Hello World');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new BMPString('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = BMPString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -68,18 +68,18 @@ class BMPStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new BMPString('Hello ');
-        $originalobject2 = new BMPString(' World');
+        $originalObject1 = new BMPString('Hello ');
+        $originalObject2 = new BMPString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = BMPString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = BMPString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

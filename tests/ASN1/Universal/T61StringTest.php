@@ -57,10 +57,10 @@ class T61StringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new T61String('Hello World');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new T61String('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = T61String::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -68,18 +68,18 @@ class T61StringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new T61String('Hello ');
-        $originalobject2 = new T61String(' World');
+        $originalObject1 = new T61String('Hello ');
+        $originalObject2 = new T61String(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = T61String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = T61String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

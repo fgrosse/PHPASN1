@@ -83,13 +83,13 @@ class SequenceTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new Sequence(
+        $originalObject = new Sequence(
             new Boolean(true),
             new Integer(1234567)
         );
-        $binaryData = $originalobject->getBinary();
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Sequence::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -97,24 +97,70 @@ class SequenceTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new Sequence(
+        $originalObject1 = new Sequence(
             new Boolean(true),
             new Integer(123)
         );
-        $originalobject2 = new Sequence(
+        $originalObject2 = new Sequence(
             new Integer(64),
             new Boolean(false)
         );
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Sequence::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = Sequence::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
+    }
+
+    public function testSequenceAsArray()
+    {
+        $sequence = new Sequence();
+        $child1 = new Integer(123);
+        $child2 = new PrintableString("Hello Wold");
+        $child3 = new Boolean(true);
+        $child4 = new Integer(1234567);
+
+        $sequence[] = $child1;
+        $sequence[] = $child2;
+        $sequence['foo'] = $child3;
+
+        $this->assertEquals($child1, $sequence[0]);
+        $this->assertEquals($child2, $sequence[1]);
+        $this->assertEquals($child3, $sequence['foo']);
+        $this->assertEquals(4, count($sequence));
+
+        unset($sequence[1]);
+        $sequence['bar'] = $child4;
+
+        $this->assertEquals($child1, $sequence[0]);
+        $this->assertFalse(isset($sequence[1]));
+        $this->assertEquals($child3, $sequence['foo']);
+        $this->assertEquals($child4, $sequence['bar']);
+        $this->assertEquals(4, count($sequence));
+    }
+
+    public function testIterateSequence()
+    {
+        $sequence = new Sequence(
+            new Integer(1),
+            new Integer(2),
+            new Integer(3)
+        );
+
+        foreach ($sequence as $object) {
+            $this->assertInstanceOf(Integer::class, $object);
+        }
+    }
+
+    public function testCreateEmptySequence()
+    {
+        $sequence = new Sequence(); // this should be legal
+        $this->assertEmpty($sequence);
     }
 }

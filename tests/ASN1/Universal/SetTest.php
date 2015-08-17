@@ -83,37 +83,64 @@ class SetTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new Set(
+        $originalObject = new Set(
             new Boolean(true),
             new Integer(1234567)
         );
-        $binaryData = $originalobject->getBinary();
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Set::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /*
      * @depends testFromBinary
      */
-/*    public function testFromBinaryWithOffset() {
-        $originalobject1 = new Set(
+    public function testFromBinaryWithOffset() {
+        $originalObject1 = new Set(
             new Boolean(true),
             new Integer(123)
         );
-        $originalobject2 = new Set(
+        $originalObject2 = new Set(
             new Integer(64),
             new Boolean(false)
         );
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Set::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = Set::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
-    }*/
+    }
+
+    public function testSetAsArray()
+    {
+        $object = new Set();
+        $child1 = new Integer(123);
+        $child2 = new PrintableString("Hello Wold");
+        $child3 = new Boolean(true);
+        $child4 = new Integer(1234567);
+
+        $object[] = $child1;
+        $object[] = $child2;
+        $object['foo'] = $child3;
+
+        $this->assertEquals($child1, $object[0]);
+        $this->assertEquals($child2, $object[1]);
+        $this->assertEquals($child3, $object['foo']);
+        $this->assertEquals(4, count($object));
+
+        unset($object[1]);
+        $object['bar'] = $child4;
+
+        $this->assertEquals($child1, $object[0]);
+        $this->assertFalse(isset($object[1]));
+        $this->assertEquals($child3, $object['foo']);
+        $this->assertEquals($child4, $object['bar']);
+        $this->assertEquals(4, count($object));
+    }
 }
