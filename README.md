@@ -20,8 +20,10 @@ PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects tha
 ## Changelog
 
 #### v.1.4.0
-* support big integers
 * **require PHP 5.6**
+* support big integers (closes #1 and #37)
+* enforce one code style via [styleci.io][9]
+* replace obsolete `FG\ASN1\Exception\GeneralException` with `\Exception`
 
 ## Dependencies
 
@@ -118,3 +120,4 @@ This library is distributed under the [MIT License](LICENSE).
 [6]: http://en.wikipedia.org/wiki/X.690#BER_encoding
 [7]: http://php.net/manual/en/book.curl.php
 [8]: http://en.wikipedia.org/wiki/X.690#DER_encoding
+[9]: https://styleci.io

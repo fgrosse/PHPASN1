@@ -21,7 +21,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class CertificateExtensionTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new CertificateExtensions();
@@ -39,13 +38,13 @@ class CertificateExtensionTest extends ASN1TestCase
         $object = new CertificateExtensions();
         $content = $object->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertTrue(sizeof($content) == 0);
+        $this->assertTrue(count($content) == 0);
 
         $sans = new SubjectAlternativeNames();
         $sans->addDomainName(new DNSName('corvespace.de'));
 
         $object->addSubjectAlternativeNames($sans);
-        $this->assertTrue(sizeof($object->getContent()) == 1);
+        $this->assertTrue(count($object->getContent()) == 1);
         $this->assertContains($sans, $object->getContent());
     }
 

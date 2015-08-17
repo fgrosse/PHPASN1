@@ -33,12 +33,12 @@ function printObject(Object $object, $depth = 0)
     $content = $object->getContent();
     if (is_array($content)) {
         foreach ($object as $child) {
-            printObject($child, $depth+1);
+            printObject($child, $depth + 1);
         }
     }
 }
 
-$base64 = "MIIINTCCBh2gAwIBAgIQbVVJc10C7UUjfYRHQ//7nTANBgkqhkiG9w0BAQsFADB0
+$base64 = 'MIIINTCCBh2gAwIBAgIQbVVJc10C7UUjfYRHQ//7nTANBgkqhkiG9w0BAQsFADB0
 MQswCQYDVQQGEwJCUjETMBEGA1UEChMKSUNQLUJyYXNpbDEtMCsGA1UECxMkQ2Vy
 dGlzaWduIENlcnRpZmljYWRvcmEgRGlnaXRhbCBTLkEuMSEwHwYDVQQDExhBQyBD
 ZXJ0aXNpZ24gTXVsdGlwbGEgRzUwHhcNMTIwNTI0MDAwMDAwWhcNMTMwNTIzMjM1
@@ -81,7 +81,7 @@ AsOWC9+h8v/RcCYTJpWM22MCq3Xk67nz+mXO8e7LKpzHEh2sjX3gkfw4h80zYfT7
 kTsNXVdxAHXiIahKNeRUT8fGhxvyOA0RqAXQBUaOyLyGYWRJ7Is5IqAAU6XiBHYe
 oJ3v8BTGYzIK2Ud5dZ23yzBp2ejdQzQX1ETpJoEdgELToHmfBXTkI+7ne59wSRkH
 beQXoK5y0U3gh1vIz/53GG0QMuCvq9r9xTMERcFJcpQUxJ2RjwxIFHlIFbNwCeiW
-I3DmZaXdR169kRoPIqkV3QIREs/yHBvkxXrwDt416stUnQ8KsxAEatE=";
+I3DmZaXdR169kRoPIqkV3QIREs/yHBvkxXrwDt416stUnQ8KsxAEatE=';
 
 try {
     $binaryData = base64_decode($base64);
@@ -92,12 +92,12 @@ try {
 
     // first navigate to the certificate extensions
     // (see ITU-T X.509 section 7 "Public-keys and public-key certificates" for cert structure)
-    /** @var Sequence $rootObject */
+    /* @var Sequence $rootObject */
     assert($rootObject->getType() == Identifier::SEQUENCE);
     $topLevelContainer = $rootObject->getChildren();
     $certificateInfo = $topLevelContainer[0];
 
-    /** @var Sequence $certificateInfo */
+    /* @var Sequence $certificateInfo */
     assert($certificateInfo->getType() == Identifier::SEQUENCE);
 
     // there need to be at least 8 child elements if the certificate extensions field is present
@@ -106,7 +106,7 @@ try {
     $certExtensions = $certInfoFields[7];
 
     // check if this is really the certificate extensions sequence
-    /** @var Object $certExtensions */
+    /* @var Object $certExtensions */
     $certExtensionsType = $certExtensions->getType();
     assert(Identifier::isContextSpecificClass($certExtensionsType));
     assert(Identifier::getTagNumber($certExtensions->getType()) == 3);
@@ -123,13 +123,13 @@ try {
 
         $extensionSequenceChildren = $extensionSequence->getChildren();
         $objectIdentifier = $extensionSequenceChildren[0];
-        /** @var ObjectIdentifier $objectIdentifier */
+        /* @var ObjectIdentifier $objectIdentifier */
         assert($objectIdentifier->getType() == Identifier::OBJECT_IDENTIFIER);
 
         if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
             // now we have the wanted octet string
             $octetString = $extensionSequenceChildren[1];
-            /** @var OctetString $octetString */
+            /* @var OctetString $octetString */
             $octetStringBinary = $octetString->getBinaryContent();
 
             // At this point you may want to create the sequence from the binary value of
@@ -137,7 +137,7 @@ try {
             // However a more general approach would be to understand the format of the
             // contained SAN fields and implement them in SubjectAlternativeNames.
             $sequence = Sequence::fromBinary($octetStringBinary);
-            echo "This is the parsed content of the SAN certificate extension field so far:".PHP_EOL;
+            echo 'This is the parsed content of the SAN certificate extension field so far:'.PHP_EOL;
             printObject($sequence);
 
             // The following does not work yet because PHPASN1 SAn does only support DNS and IP

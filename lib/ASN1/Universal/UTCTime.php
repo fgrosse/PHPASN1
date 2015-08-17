@@ -16,7 +16,7 @@ use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 
 /**
- * This ASN.1 universal type contains the calendar date and time
+ * This ASN.1 universal type contains the calendar date and time.
  *
  * The precision is one minute or one second and optionally a
  * local time differential from coordinated universal time.
@@ -69,7 +69,7 @@ class UTCTime extends AbstractTime implements Parsable
             throw new ParserException('Invalid UTC String', $offsetIndex);
         }
 
-        $parsedObject = new UTCTime($dateTime);
+        $parsedObject = new self($dateTime);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

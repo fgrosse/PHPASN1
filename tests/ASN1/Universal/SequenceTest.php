@@ -19,7 +19,6 @@ use FG\ASN1\Universal\Boolean;
 
 class SequenceTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Sequence();
@@ -35,7 +34,7 @@ class SequenceTest extends ASN1TestCase
     public function testContent()
     {
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $object = new Sequence($child1, $child2, $child3);
 
@@ -54,7 +53,7 @@ class SequenceTest extends ASN1TestCase
         $this->assertEquals(8, $object->getObjectLength());
 
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $object = new Sequence($child1, $child2, $child3);
         $this->assertEquals(20, $object->getObjectLength());

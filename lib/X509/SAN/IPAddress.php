@@ -65,7 +65,7 @@ class IPAddress extends Object implements Parsable
         $ipAddressString .= ord($binaryData[$offsetIndex++]).'.';
         $ipAddressString .= ord($binaryData[$offsetIndex++]);
 
-        $parsedObject = new IPAddress($ipAddressString);
+        $parsedObject = new self($ipAddressString);
         $parsedObject->getObjectLength();
 
         return $parsedObject;

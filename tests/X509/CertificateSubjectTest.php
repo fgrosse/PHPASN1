@@ -16,16 +16,15 @@ use FG\X509\CertificateSubject;
 
 class CertificateSubjectTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
+        $object = new CertificateSubject('Friedrich Große', 'friedrich.grosse@foo.de', 'Organization', 'Locality', 'State', 'Country', 'OrgaUnit');
         $this->assertEquals(Identifier::SEQUENCE, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
+        $object = new CertificateSubject('Friedrich Große', 'friedrich.grosse@foo.de', 'Organization', 'Locality', 'State', 'Country', 'OrgaUnit');
         $this->assertEquals(chr(Identifier::SEQUENCE), $object->getIdentifier());
     }
     /*

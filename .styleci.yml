@@ -1,0 +1,15 @@
+preset: symfony
+
+linting: true
+
+enabled:
+  - phpdoc_order
+
+disabled:
+  - empty_return
+  - phpdoc_align
+  - blankline_after_open_tag
+  - pre_increment
+  - return
+  - unalign_equals
+  - unalign_double_arrow

@@ -10,9 +10,9 @@
 
 namespace FG\ASN1\Universal;
 
+use Exception;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
-use FG\ASN1\Exception\GeneralException;
 use FG\ASN1\Exception\ParserException;
 
 class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
@@ -28,7 +28,7 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             } else {
-                throw new GeneralException("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+                throw new Exception("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i + 1).' is not numeric)!');
             }
         }
     }

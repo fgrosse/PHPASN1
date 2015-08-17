@@ -21,7 +21,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class AttributesTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Attributes();
@@ -39,7 +38,7 @@ class AttributesTest extends ASN1TestCase
         $attributes = new Attributes();
         $content = $attributes->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertEquals(0, sizeof($content));
+        $this->assertEquals(0, count($content));
 
         $sans = new SubjectAlternativeNames();
         $sans->addDomainName(new DNSName('corvespace.de'));
@@ -49,7 +48,7 @@ class AttributesTest extends ASN1TestCase
         $attributes->addAttribute(OID::PKCS9_EXTENSION_REQUEST, $extensionRequest);
         $content = $attributes->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertEquals(1, sizeof($content));
+        $this->assertEquals(1, count($content));
 
         /** @var Sequence $attribute */
         $attribute = $content[0];
