@@ -12,16 +12,14 @@ namespace FG\ASN1;
 
 abstract class Construct extends Object implements \Iterator, Parsable
 {
-    /** @var \FG\ASN1\Object[] */
+    /** @var Object[] */
     protected $children;
     private $iteratorPosition = 0;
 
-    public function __construct(Object $child1 = null, Object $child2 = null, Object $childN = null)
+    public function __construct(Object ...$children)
     {
-        $this->children = array();
+        $this->children = [];
         $this->rewind();
-
-        $children = func_get_args();
         $this->addChildren($children);
     }
 
@@ -116,7 +114,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return \FG\ASN1\Object[]
+     * @return Object[]
      */
     public function getChildren()
     {
@@ -124,7 +122,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return \FG\ASN1\Object
+     * @return Object
      */
     public function getFirstChild()
     {
@@ -143,7 +141,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        $children = array();
+        $children = [];
         $octetsToRead = $contentLength;
         while ($octetsToRead > 0) {
             $newChild = Object::fromBinary($binaryData, $offsetIndex);

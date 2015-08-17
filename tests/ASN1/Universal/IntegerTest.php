@@ -10,6 +10,7 @@
 
 namespace FG\Test\ASN1\Universal;
 
+use FG\ASN1\Object;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Integer;
@@ -27,6 +28,14 @@ class IntegerTest extends ASN1TestCase
     {
         $object = new Integer(123);
         $this->assertEquals(chr(Identifier::INTEGER), $object->getIdentifier());
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testCreateInstanceCanFail()
+    {
+        new Integer('a');
     }
 
     public function testContent()
@@ -139,6 +148,65 @@ class IntegerTest extends ASN1TestCase
         $expectedContent .= chr(0x25);
         $expectedContent .= chr(0x44);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
+
+    }
+
+    public function testBigIntegerSupport()
+    {
+        // Positive bigint
+        $expectedType     = chr(Identifier::INTEGER);
+        $expectedLength   = chr(0x20);
+        $expectedContent  = "\x7f\xff\xff\xff\xff\xff\xff\xff";
+        $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
+        $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
+        $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
+
+        $bigint = gmp_strval(gmp_sub(gmp_pow(2, 255), 1));
+        $object = new Integer($bigint);
+        $binary = $object->getBinary();
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
+
+        $obj = Object::fromBinary($binary);
+        $this->assertEquals($obj, $object);
+
+        // Test a negative number
+        $expectedLength   = chr(0x21);
+        $expectedContent  = "\x00\x80\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $bigint = gmp_strval(gmp_pow(2, 255));
+        $object = new Integer($bigint);
+        $binary = $object->getBinary();
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
+
+        $obj = Object::fromBinary($binary);
+        $this->assertEquals($object, $obj);
+    }
+
+    /**
+     * @dataProvider bigIntegersProvider
+     */
+    public function testSerializeBigIntegers($i)
+    {
+        $object = new Integer($i);
+        $binary = $object->getBinary();
+
+        $obj = Object::fromBinary($binary);
+        $this->assertEquals($obj->getContent(), $object->getContent());
+    }
+
+    public function bigIntegersProvider()
+    {
+        for ($i = 1; $i <= 256; $i *= 2) {
+            // 2 ^ n [0, 256]  large positive numbers
+            yield [gmp_strval(gmp_pow(2, $i), 10)];
+        }
+
+        for ($i = 1; $i <= 256; $i *= 2) {
+            // 0 - 2 ^ n [0, 256]  large negative numbers
+            yield [gmp_strval(gmp_sub(0, gmp_pow(2, $i)), 10)];
+        }
     }
 
     /**
@@ -146,20 +214,20 @@ class IntegerTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new Integer(200);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(200);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Integer(12345);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(12345);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Integer(-1891004);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Integer(-1891004);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Integer::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -167,18 +235,18 @@ class IntegerTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new Integer(12345);
-        $originalobject2 = new Integer(67890);
+        $originalObject1 = new Integer(12345);
+        $originalObject2 = new Integer(67890);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Integer::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(4, $offset);
         $parsedObject = Integer::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(9, $offset);
     }
 
