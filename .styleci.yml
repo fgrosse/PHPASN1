@@ -7,3 +7,4 @@ enabled:
 
 disabled:
   - empty_return
+  - phpdoc_align
