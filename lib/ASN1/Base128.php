@@ -1,6 +1,7 @@
 <?php
 
 namespace FG\ASN1;
+
 use InvalidArgumentException;
 
 /**
@@ -19,7 +20,7 @@ class Base128
         $octets = chr(gmp_strval(gmp_and($value, 0x7f), 10));
 
         $rightShift = function ($number, $positions) {
-            return gmp_div($number, gmp_pow(2, (int)$positions));
+            return gmp_div($number, gmp_pow(2, $positions));
         };
 
         $value = $rightShift($value, 7);
@@ -44,7 +45,7 @@ class Base128
         $i = 0;
 
         $leftShift = function ($number, $positions) {
-            return gmp_mul($number, gmp_pow(2, (int)$positions));
+            return gmp_mul($number, gmp_pow(2, $positions));
         };
 
         while (true) {

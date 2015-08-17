@@ -39,7 +39,7 @@ class SequenceTest extends ASN1TestCase
         $child3 = new Boolean(true);
         $object = new Sequence($child1, $child2, $child3);
 
-        $this->assertEquals(array($child1, $child2, $child3), $object->getContent());
+        $this->assertEquals([$child1, $child2, $child3], $object->getContent());
     }
 
     public function testGetObjectLength()
