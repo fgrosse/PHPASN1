@@ -3,7 +3,7 @@ preset: symfony
 linting: true
 
 enabled:
-  - strict
+  - phpdoc_order
 
 disabled:
   - empty_return
