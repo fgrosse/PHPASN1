@@ -1,0 +1,2 @@
+service_name: php-coveralls
+src_dir: lib
