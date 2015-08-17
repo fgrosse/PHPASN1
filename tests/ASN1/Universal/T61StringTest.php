@@ -16,28 +16,27 @@ use FG\ASN1\Universal\T61String;
 
 class T61StringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new T61String("Hello World");
+        $object = new T61String('Hello World');
         $this->assertEquals(Identifier::T61_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new T61String("Hello World");
+        $object = new T61String('Hello World');
         $this->assertEquals(chr(Identifier::T61_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new T61String("Hello World");
-        $this->assertEquals("Hello World", $object->getContent());
+        $object = new T61String('Hello World');
+        $this->assertEquals('Hello World', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $object = new T61String($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -45,7 +44,7 @@ class T61StringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $expectedType = chr(Identifier::T61_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -58,10 +57,10 @@ class T61StringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new T61String("Hello World");
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new T61String('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = T61String::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -69,18 +68,18 @@ class T61StringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new T61String("Hello ");
-        $originalobject2 = new T61String(" World");
+        $originalObject1 = new T61String('Hello ');
+        $originalObject2 = new T61String(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = T61String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = T61String::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }

@@ -16,7 +16,6 @@ use FG\ASN1\Universal\UTCTime;
 
 class UTCTimeTest extends ASN1TestCase
 {
-
     private $UTC;
 
     public function setUp()
@@ -95,7 +94,7 @@ class UTCTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithDEREncoding()
     {
-        $dateTime = new \DateTime("2012-09-23 20:23:16", $this->UTC);
+        $dateTime = new \DateTime('2012-09-23 20:23:16', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '120923202316Z';
@@ -108,7 +107,7 @@ class UTCTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithoutSecondsInUTC()
     {
-        $dateTime = new \DateTime("1987-01-15 13:15:00", $this->UTC);
+        $dateTime = new \DateTime('1987-01-15 13:15:00', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '8701151315Z';
@@ -121,14 +120,14 @@ class UTCTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithoutSecondsInOtherTimeZone()
     {
-        $dateTime = new \DateTime("2012-09-23 22:13:00", $this->UTC);
+        $dateTime = new \DateTime('2012-09-23 22:13:00', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '1209231613-0600';
         $parsedObject = UTCTime::fromBinary($binaryData);
         $this->assertEquals($dateTime, $parsedObject->getContent());
 
-        $dateTime = new \DateTime("2012-09-23 22:13:00", $this->UTC);
+        $dateTime = new \DateTime('2012-09-23 22:13:00', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '1209240213+0400';
@@ -141,14 +140,14 @@ class UTCTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithSecondsInOtherTimeZone()
     {
-        $dateTime = new \DateTime("2012-09-23 22:13:32", $this->UTC);
+        $dateTime = new \DateTime('2012-09-23 22:13:32', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '120923161332-0600';
         $parsedObject = UTCTime::fromBinary($binaryData);
         $this->assertEquals($dateTime, $parsedObject->getContent());
 
-        $dateTime = new \DateTime("2012-09-23 22:13:32", $this->UTC);
+        $dateTime = new \DateTime('2012-09-23 22:13:32', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '120924021332+0400';
@@ -167,15 +166,15 @@ class UTCTimeTest extends ASN1TestCase
         $binaryData  = chr(Identifier::UTC_TIME);
         $binaryData .= chr(11);
         $binaryData .= '1209231613Z';
-        $dateTime1 = new \DateTime("2012-09-23 16:13:00", $this->UTC);
+        $dateTime1 = new \DateTime('2012-09-23 16:13:00', $this->UTC);
         $binaryData .= chr(Identifier::UTC_TIME);
         $binaryData .= chr(13);
         $binaryData .= '120923180030Z';
-        $dateTime2 = new \DateTime("2012-09-23 18:00:30", $this->UTC);
+        $dateTime2 = new \DateTime('2012-09-23 18:00:30', $this->UTC);
         $binaryData .= chr(Identifier::UTC_TIME);
         $binaryData .= chr(17);
         $binaryData .= '120924021332+0400';
-        $dateTime3 = new \DateTime("2012-09-23 22:13:32", $this->UTC);
+        $dateTime3 = new \DateTime('2012-09-23 22:13:32', $this->UTC);
 
         $offset = 0;
         $parsedObject = UTCTime::fromBinary($binaryData, $offset);

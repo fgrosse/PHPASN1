@@ -16,7 +16,6 @@ use FG\ASN1\Universal\BitString;
 
 class BitStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new BitString('A0 12 00 43');
@@ -66,7 +65,7 @@ class BitStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new BitString($hexString);
-        $this->assertEquals(1+3+1+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()
@@ -117,15 +116,15 @@ class BitStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new BitString(0x12);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new BitString(0x12);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = BitString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new BitString(0x010203A0, 3);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new BitString(0x010203A0, 3);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = BitString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -133,18 +132,18 @@ class BitStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new BitString(0xA0);
-        $originalobject2 = new BitString(0x314510);
+        $originalObject1 = new BitString(0xA0);
+        $originalObject2 = new BitString(0x314510);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = BitString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(4, $offset);
         $parsedObject = BitString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(10, $offset);
     }
 

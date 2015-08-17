@@ -72,10 +72,12 @@ class Identifier
      * for BC, long form identifiers will be returned as a string of octets.
      *
      * @param int $class
-     * @param boolean $isConstructed
+     * @param bool $isConstructed
      * @param int $tagNumber
-     * @return int|string
+     *
      * @throws Exception if the given arguments are invalid
+     *
+     * @return int|string
      */
     public static function create($class, $isConstructed, $tagNumber)
     {
@@ -92,7 +94,7 @@ class Identifier
             throw new Exception(sprintf('Invalid $tagNumber %d given. You can only use positive integers.', $tagNumber));
         }
 
-        if ($tagNumber < Identifier::LONG_FORM) {
+        if ($tagNumber < self::LONG_FORM) {
             return ($class << 6) | ($isConstructed << 5) | $tagNumber;
         }
 
@@ -118,7 +120,9 @@ class Identifier
      * Example: ASN.1 Octet String
      *
      * @see Identifier::getShortName()
+     *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getName($identifier)
@@ -143,7 +147,9 @@ class Identifier
      *
      * @see Identifier::getName()
      * @see Identifier::getClassDescription()
+     *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getShortName($identifier)
@@ -239,6 +245,7 @@ class Identifier
      *     Primitive universal
      *
      * @param int|string $identifier
+     *
      * @return string
      */
     public static function getClassDescription($identifier)
@@ -275,14 +282,15 @@ class Identifier
 
     /**
      * @param int|string $identifier
+     *
      * @return int
      */
     public static function getTagNumber($identifier)
     {
         $firstOctet = self::makeNumeric($identifier);
-        $tagNumber = $firstOctet & Identifier::LONG_FORM;
+        $tagNumber = $firstOctet & self::LONG_FORM;
 
-        if ($tagNumber < Identifier::LONG_FORM) {
+        if ($tagNumber < self::LONG_FORM) {
             return $tagNumber;
         }
 

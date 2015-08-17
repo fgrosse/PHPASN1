@@ -17,7 +17,8 @@ class UnknownConstructedObject extends Construct
 
     /**
      * @param string $binaryData
-     * @param integer $offsetIndex
+     * @param int $offsetIndex
+     *
      * @throws \FG\ASN1\Exception\ParserException
      */
     public function __construct($binaryData, &$offsetIndex)
@@ -25,8 +26,7 @@ class UnknownConstructedObject extends Construct
         $this->identifier = self::parseBinaryIdentifier($binaryData, $offsetIndex);
         $this->contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-
-        $children = array();
+        $children = [];
         $octetsToRead = $this->contentLength;
         while ($octetsToRead > 0) {
             $newChild = Object::fromBinary($binaryData, $offsetIndex);
@@ -34,8 +34,7 @@ class UnknownConstructedObject extends Construct
             $children[] = $newChild;
         }
 
-        $this->children = array();
-        $this->addChildren($children);
+        parent::__construct(...$children);
     }
 
     public function getType()

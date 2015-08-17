@@ -18,6 +18,7 @@ class VisibleString extends AbstractString
     /**
      * Creates a new ASN.1 Visible String.
      * TODO The encodable characters of this type are not yet checked.
+     *
      * @param string $string
      */
     public function __construct($string)

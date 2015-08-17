@@ -43,7 +43,7 @@ class Attributes extends Construct implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
         $octetsToRead = $contentLength;
 
-        $parsedObject = new Attributes();
+        $parsedObject = new self();
         while ($octetsToRead > 0) {
             $initialOffset = $offsetIndex; // used to calculate how much bits have been read
             self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);

@@ -53,6 +53,6 @@ class DocumentationExamplesTest extends ASN1TestCase
         $binaryData = base64_decode($base64String);
 
         $asnObject = Object::fromBinary($binaryData);
-        $this->assertInstanceOf('\FG\ASN1\Universal\Sequence', $asnObject);
+        $this->assertInstanceOf(Sequence::class, $asnObject);
     }
 }

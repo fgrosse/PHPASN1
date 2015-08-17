@@ -16,7 +16,6 @@ use FG\ASN1\Universal\Enumerated;
 
 class EnumeratedTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Enumerated(1);
@@ -78,20 +77,20 @@ class EnumeratedTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new Enumerated(0);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Enumerated(0);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Enumerated::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Enumerated(127);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Enumerated(127);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Enumerated::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new Enumerated(200);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new Enumerated(200);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = Enumerated::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -99,18 +98,18 @@ class EnumeratedTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new Enumerated(1);
-        $originalobject2 = new Enumerated(2);
+        $originalObject1 = new Enumerated(1);
+        $originalObject2 = new Enumerated(2);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = Enumerated::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(3, $offset);
         $parsedObject = Enumerated::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(6, $offset);
     }
 }

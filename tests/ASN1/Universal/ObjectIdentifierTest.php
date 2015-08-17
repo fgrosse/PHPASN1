@@ -16,9 +16,8 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class ObjectIdentifierTest extends ASN1TestCase
 {
-
     /**
-     * @expectedException \FG\ASN1\Exception\GeneralException
+     * @expectedException \Exception
      * @expectedExceptionMessage [1.Foo.3] is no valid object identifier (sub identifier 2 is not numeric)!
      */
     public function testCreateWithInvalidObjectIdentifier()
@@ -78,10 +77,10 @@ class ObjectIdentifierTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new ObjectIdentifier('1.2.250.1.16.9');
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new ObjectIdentifier('1.2.250.1.16.9');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = ObjectIdentifier::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -89,18 +88,18 @@ class ObjectIdentifierTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new ObjectIdentifier('1.2.3');
-        $originalobject2 = new ObjectIdentifier('1.2.250.1.16.9');
+        $originalObject1 = new ObjectIdentifier('1.2.3');
+        $originalObject2 = new ObjectIdentifier('1.2.250.1.16.9');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = ObjectIdentifier::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(4, $offset);
         $parsedObject = ObjectIdentifier::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(12, $offset);
     }
 

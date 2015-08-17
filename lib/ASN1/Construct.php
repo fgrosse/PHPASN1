@@ -10,19 +10,24 @@
 
 namespace FG\ASN1;
 
-abstract class Construct extends Object implements \Iterator, Parsable
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use Iterator;
+
+abstract class Construct extends Object implements Countable, ArrayAccess, Iterator, Parsable
 {
-    /** @var \FG\ASN1\Object[] */
+    /** @var Object[] */
     protected $children;
-    private $iteratorPosition = 0;
+    private $iteratorPosition;
 
-    public function __construct(Object $child1 = null, Object $child2 = null, Object $childN = null)
+    /**
+     * @param Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
+     */
+    public function __construct(/* HH_FIXME[4858]: variadic + strict */ ...$children)
     {
-        $this->children = array();
-        $this->rewind();
-
-        $children = func_get_args();
-        $this->addChildren($children);
+        $this->children = $children;
+        $this->iteratorPosition = 0;
     }
 
     public function getContent()
@@ -30,44 +35,53 @@ abstract class Construct extends Object implements \Iterator, Parsable
         return $this->children;
     }
 
-    /**
-     * Rewind the Iterator to the first element (Iterator::rewind)
-     */
     public function rewind()
     {
         $this->iteratorPosition = 0;
     }
 
-    /**
-     * Return the current element (Iterator::current)
-     */
     public function current()
     {
         return $this->children[$this->iteratorPosition];
     }
 
-    /**
-     * Return the key of the current element (Iterator::key)
-     */
     public function key()
     {
         return $this->iteratorPosition;
     }
 
-    /**
-     * Move forward to next element (Iterator::next)
-     */
     public function next()
     {
         $this->iteratorPosition++;
     }
 
-    /**
-     * Checks if current position is valid (Iterator::valid)
-     */
     public function valid()
     {
         return isset($this->children[$this->iteratorPosition]);
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->children);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->children[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        if ($offset === null) {
+            $offset = count($this->children);
+        }
+
+        $this->children[$offset] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->children[$offset]);
     }
 
     protected function calculateContentLength()
@@ -116,7 +130,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return \FG\ASN1\Object[]
+     * @return Object[]
      */
     public function getChildren()
     {
@@ -124,7 +138,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * @return \FG\ASN1\Object
+     * @return Object
      */
     public function getFirstChild()
     {
@@ -134,8 +148,10 @@ abstract class Construct extends Object implements \Iterator, Parsable
     /**
      * @param string $binaryData
      * @param int $offsetIndex
-     * @return Construct|static
+     *
      * @throws Exception\ParserException
+     *
+     * @return Construct|static
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
@@ -143,7 +159,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        $children = array();
+        $children = [];
         $octetsToRead = $contentLength;
         while ($octetsToRead > 0) {
             $newChild = Object::fromBinary($binaryData, $offsetIndex);
@@ -155,5 +171,15 @@ abstract class Construct extends Object implements \Iterator, Parsable
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;
+    }
+
+    public function count($mode = COUNT_NORMAL)
+    {
+        return count($this->children, $mode);
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->children);
     }
 }

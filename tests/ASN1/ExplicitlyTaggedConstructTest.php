@@ -15,7 +15,7 @@ use FG\Test\ASN1TestCase;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\ASN1\Universal\PrintableString;
 
-class ExplicitlyTaggedObjectTest extends ASN1TestCase
+class ExplicitlyTaggedConstructTest extends ASN1TestCase
 {
     public function testGetType()
     {
@@ -82,10 +82,9 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
 
     public function getTags()
     {
-        return array(
-            array(0x02),
-            array(0x00004002),
-        );
+        return [
+            [0x02],
+            [0x00004002],
+        ];
     }
 }
-

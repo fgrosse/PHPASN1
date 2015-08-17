@@ -16,7 +16,7 @@ use FG\ASN1\Universal\Sequence;
 require_once __DIR__.'/../vendor/autoload.php';
 
 // $data has been generated using https://pkijs.org/examples/OCSP_resp_complex_example.html
-$data = "MIIEXgoBAKCCBFcwggRTBgkrBgEFBQcwAQEEggREMIIEQDBeoSAwHjEcMAkGA1UE
+$data = 'MIIEXgoBAKCCBFcwggRTBgkrBgEFBQcwAQEEggREMIIEQDBeoSAwHjEcMAkGA1UE
 BhMCUlUwDwYDVQQDHggAVABlAHMAdBgPMjAxNTA3MTYxNzU0MjFaMCkwJzASMAcG
 BSsOAwIaBAEBBAEBAgEBgAAYDzIwMTUwNzE2MTc1NDIxWjALBgkqhkiG9w0BAQUD
 ggEBAG5B1xOnhgzgpsnspWd9c4eLIeOY1XXl7q2DUO2kGji4WbBXtWDMEv7QQO9/
@@ -39,11 +39,11 @@ AQBfubKPTvmDGrDxoqCbPwFoPRC0STwPL2GV8f5sD/Sbyc0NoJdygUO2DvquGGn5
 u4zuDLmjpj26Dk4te3BVohsLTXbvJ5a/TT2VanwNOyx85lXPxy3V8Rr1AwlmHZoz
 DDbUGbe/noUDJCgMjvaKKvLykIhIcW+g6W7SOcKRflw5H8kzDv816XFODSC3X1Uw
 o3aVy9du/0mH+g4HvyVVplO90tdoHD1gHUMZwuen4dbTzhWv4dtLFelWM5lGWbLE
-Wn7kJghclgIxv10nkGyfrowt";
+Wn7kJghclgIxv10nkGyfrowt';
 
 // OCSP response status according to
 // https://tools.ietf.org/html/rfc6960#section-4.2.1
-$validResponseStatuses = [
+$validResponseStatuses = array(
     0 => 'Response has valid confirmations',
     1 => 'Illegal confirmation request',
     2 => 'Internal error in issuer',
@@ -51,17 +51,17 @@ $validResponseStatuses = [
     // (4) is not used
     5 => 'Must sign the request',
     6 => 'Request unauthorized',
-];
+);
 
 $ocspResponse = Sequence::fromBinary(base64_decode($data));
 
-/** @var Enumerated $responseStatus */
+/* @var Enumerated $responseStatus */
 $elements = $ocspResponse->getChildren();
 $responseStatus = $elements[0];
 $responseStatusCode = $responseStatus->getContent();
 
 echo PHP_EOL;
-echo "OCSP response status: $responseStatusCode ({$validResponseStatuses[$responseStatusCode]})" . PHP_EOL;
+echo "OCSP response status: $responseStatusCode ({$validResponseStatuses[$responseStatusCode]})".PHP_EOL;
 
 /** @var ExplicitlyTaggedObject $responseBytes */
 $responseBytes = $elements[1];
@@ -71,7 +71,7 @@ $responseBytesSequence = $responseBytes->getContent();
 
 /** @var ObjectIdentifier $responseType */
 $responseType = $responseBytesSequence->getChildren()[0];
-echo "ResponseType: {$responseType}" . PHP_EOL;
+echo "ResponseType: {$responseType}".PHP_EOL;
 
 $response = $responseBytesSequence->getChildren()[1];
-echo "Response (octet string): {$response}" . PHP_EOL;
+echo "Response (octet string): {$response}".PHP_EOL;

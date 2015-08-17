@@ -10,6 +10,7 @@
 
 namespace FG\ASN1\Composite;
 
+use FG\ASN1\Exception\NotImplementedException;
 use FG\ASN1\Object;
 use FG\ASN1\Universal\Set;
 
@@ -31,5 +32,19 @@ class RelativeDistinguishedName extends Set
         /** @var Object $firstObject */
         $firstObject = $this->children[0];
         return $firstObject->__toString();
+    }
+
+    /**
+     * At the current version this code can not work since the implementation of Construct requires
+     * the class to support a constructor without arguments.
+     *
+     * @deprecated this function is not yet implemented! Feel free to submit a pull request on github
+     * @param string $binaryData
+     * @param int $offsetIndex
+     * @throws NotImplementedException
+     */
+    public static function fromBinary(&$binaryData, &$offsetIndex = 0)
+    {
+        throw new NotImplementedException();
     }
 }

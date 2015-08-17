@@ -17,25 +17,25 @@ class IPAddressTest extends ASN1TestCase
 {
     public function testGetType()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals(0x87, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals(chr(0x87), $object->getIdentifier());
     }
 
     public function testGetContent()
     {
-        $object = new IPAddress("192.168.0.1");
-        $this->assertEquals("192.168.0.1", $object->getContent());
+        $object = new IPAddress('192.168.0.1');
+        $this->assertEquals('192.168.0.1', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $expectedSize = 6; // Type + Length + 4 Byte
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
@@ -48,7 +48,7 @@ class IPAddressTest extends ASN1TestCase
         $ipAddress .= chr(168);
         $ipAddress .= chr(0);
         $ipAddress .= chr(1);
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals($expectedType.$expectedLength.$ipAddress, $object->getBinary());
     }
 
@@ -57,10 +57,10 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new IPAddress("192.168.0.1");
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new IPAddress('192.168.0.1');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = IPAddress::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -82,8 +82,8 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalObject1 = new IPAddress("192.168.0.1");
-        $originalObject2 = new IPAddress("10.65.32.123");
+        $originalObject1 = new IPAddress('192.168.0.1');
+        $originalObject2 = new IPAddress('10.65.32.123');
 
         $binaryData  = $originalObject1->getBinary();
         $binaryData .= $originalObject2->getBinary();

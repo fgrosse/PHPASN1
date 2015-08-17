@@ -16,7 +16,6 @@ use FG\ASN1\Universal\OctetString;
 
 class OctetStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new OctetString('30 14 06 08 2B 06 01 05 05 07 03 01 06 08 2B 06 01 05 05 07 03 02');
@@ -66,7 +65,7 @@ class OctetStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new OctetString($hexString);
-        $this->assertEquals(1+3+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()
@@ -109,15 +108,15 @@ class OctetStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new OctetString(0x12);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new OctetString(0x12);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = OctetString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
 
-        $originalobject = new OctetString(0x010203A0);
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new OctetString(0x010203A0);
+        $binaryData = $originalObject->getBinary();
         $parsedObject = OctetString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -125,18 +124,18 @@ class OctetStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new OctetString(0xA0);
-        $originalobject2 = new OctetString(0x314510);
+        $originalObject1 = new OctetString(0xA0);
+        $originalObject2 = new OctetString(0x314510);
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = OctetString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(3, $offset);
         $parsedObject = OctetString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(8, $offset);
     }
 }

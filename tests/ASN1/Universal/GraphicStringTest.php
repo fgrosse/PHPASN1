@@ -16,34 +16,33 @@ use FG\ASN1\Universal\GraphicString;
 
 class GraphicStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new GraphicString("Hello World");
+        $object = new GraphicString('Hello World');
         $this->assertEquals(Identifier::GRAPHIC_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new GraphicString("Hello World");
+        $object = new GraphicString('Hello World');
         $this->assertEquals(chr(Identifier::GRAPHIC_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new GraphicString("Hello World");
-        $this->assertEquals("Hello World", $object->getContent());
+        $object = new GraphicString('Hello World');
+        $this->assertEquals('Hello World', $object->getContent());
 
-        $object = new GraphicString("");
-        $this->assertEquals("", $object->getContent());
+        $object = new GraphicString('');
+        $this->assertEquals('', $object->getContent());
 
-        $object = new GraphicString("             ");
-        $this->assertEquals("             ", $object->getContent());
+        $object = new GraphicString('             ');
+        $this->assertEquals('             ', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $object = new GraphicString($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -51,7 +50,7 @@ class GraphicStringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $expectedType = chr(Identifier::GRAPHIC_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -64,10 +63,10 @@ class GraphicStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new GraphicString("Hello World");
-        $binaryData = $originalobject->getBinary();
+        $originalObject = new GraphicString('Hello World');
+        $binaryData = $originalObject->getBinary();
         $parsedObject = GraphicString::fromBinary($binaryData);
-        $this->assertEquals($originalobject, $parsedObject);
+        $this->assertEquals($originalObject, $parsedObject);
     }
 
     /**
@@ -75,18 +74,18 @@ class GraphicStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new GraphicString("Hello ");
-        $originalobject2 = new GraphicString(" World");
+        $originalObject1 = new GraphicString('Hello ');
+        $originalObject2 = new GraphicString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
-        $binaryData .= $originalobject2->getBinary();
+        $binaryData  = $originalObject1->getBinary();
+        $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;
         $parsedObject = GraphicString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject1, $parsedObject);
+        $this->assertEquals($originalObject1, $parsedObject);
         $this->assertEquals(8, $offset);
         $parsedObject = GraphicString::fromBinary($binaryData, $offset);
-        $this->assertEquals($originalobject2, $parsedObject);
+        $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals(16, $offset);
     }
 }
