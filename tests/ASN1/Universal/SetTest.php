@@ -132,7 +132,7 @@ class SetTest extends ASN1TestCase
         $this->assertEquals($child1, $object[0]);
         $this->assertEquals($child2, $object[1]);
         $this->assertEquals($child3, $object['foo']);
-        $this->assertEquals(4, count($object));
+        $this->assertEquals(3, count($object));
 
         unset($object[1]);
         $object['bar'] = $child4;
@@ -141,6 +141,6 @@ class SetTest extends ASN1TestCase
         $this->assertFalse(isset($object[1]));
         $this->assertEquals($child3, $object['foo']);
         $this->assertEquals($child4, $object['bar']);
-        $this->assertEquals(4, count($object));
+        $this->assertEquals(3, count($object));
     }
 }

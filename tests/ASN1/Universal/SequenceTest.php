@@ -133,7 +133,7 @@ class SequenceTest extends ASN1TestCase
         $this->assertEquals($child1, $sequence[0]);
         $this->assertEquals($child2, $sequence[1]);
         $this->assertEquals($child3, $sequence['foo']);
-        $this->assertEquals(4, count($sequence));
+        $this->assertEquals(3, count($sequence));
 
         unset($sequence[1]);
         $sequence['bar'] = $child4;
@@ -142,7 +142,7 @@ class SequenceTest extends ASN1TestCase
         $this->assertFalse(isset($sequence[1]));
         $this->assertEquals($child3, $sequence['foo']);
         $this->assertEquals($child4, $sequence['bar']);
-        $this->assertEquals(4, count($sequence));
+        $this->assertEquals(3, count($sequence));
     }
 
     public function testIterateSequence()

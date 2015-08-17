@@ -13,12 +13,13 @@ namespace FG\ASN1;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use IteratorAggregate;
+use Iterator;
 
-abstract class Construct extends Object implements Countable, ArrayAccess, Parsable, IteratorAggregate
+abstract class Construct extends Object implements Countable, ArrayAccess, Iterator, Parsable
 {
     /** @var Object[] */
     protected $children;
+    private $iteratorPosition;
 
     /**
      * @param Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
@@ -26,11 +27,61 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Parsa
     public function __construct(/* HH_FIXME[4858]: variadic + strict */ ...$children)
     {
         $this->children = $children;
+        $this->iteratorPosition = 0;
     }
 
     public function getContent()
     {
         return $this->children;
+    }
+
+    public function rewind()
+    {
+        $this->iteratorPosition = 0;
+    }
+
+    public function current()
+    {
+        return $this->children[$this->iteratorPosition];
+    }
+
+    public function key()
+    {
+        return $this->iteratorPosition;
+    }
+
+    public function next()
+    {
+        $this->iteratorPosition++;
+    }
+
+    public function valid()
+    {
+        return isset($this->children[$this->iteratorPosition]);
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->children);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->children[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        if ($offset === null) {
+            $offset = count($this->children);
+        }
+
+        $this->children[$offset] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->children[$offset]);
     }
 
     protected function calculateContentLength()
@@ -120,29 +171,6 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Parsa
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->children[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        return isset($this->children[$offset]) ? $this->children[$offset] : null;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->children[] = $value;
-        }
-        $this->children[$offset] = $value;
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->children[$offset]);
     }
 
     public function count($mode = COUNT_NORMAL)

@@ -43,7 +43,7 @@ Wn7kJghclgIxv10nkGyfrowt';
 
 // OCSP response status according to
 // https://tools.ietf.org/html/rfc6960#section-4.2.1
-$validResponseStatuses = [
+$validResponseStatuses = array(
     0 => 'Response has valid confirmations',
     1 => 'Illegal confirmation request',
     2 => 'Internal error in issuer',
@@ -51,7 +51,7 @@ $validResponseStatuses = [
     // (4) is not used
     5 => 'Must sign the request',
     6 => 'Request unauthorized',
-];
+);
 
 $ocspResponse = Sequence::fromBinary(base64_decode($data));
 
