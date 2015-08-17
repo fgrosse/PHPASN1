@@ -27,24 +27,24 @@ class TemplateParserTest extends PHPUnit_Framework_TestCase
 
         $data = base64_encode($sequence->getBinary());
 
-        $template = array(
-            Identifier::SEQUENCE => array(
-                Identifier::SET => array(
+        $template = [
+            Identifier::SEQUENCE => [
+                Identifier::SET => [
                     Identifier::OBJECT_IDENTIFIER,
-                    Identifier::SEQUENCE => array(
+                    Identifier::SEQUENCE => [
                         Identifier::INTEGER,
                         Identifier::BITSTRING,
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
 
         $parser = new TemplateParser();
         $object = $parser->parseBase64($data, $template);
-        $this->assertInstanceOf('FG\ASN1\Universal\Set', $object[0]);
-        $this->assertInstanceOf('FG\ASN1\Universal\ObjectIdentifier', $object[0][0]);
-        $this->assertInstanceOf('FG\ASN1\Universal\Sequence', $object[0][1]);
-        $this->assertInstanceOf('FG\ASN1\Universal\Integer', $object[0][1][0]);
-        $this->assertInstanceOf('FG\ASN1\Universal\BitString', $object[0][1][1]);
+        $this->assertInstanceOf(Set::class, $object[0]);
+        $this->assertInstanceOf(ObjectIdentifier::class, $object[0][0]);
+        $this->assertInstanceOf(Sequence::class, $object[0][1]);
+        $this->assertInstanceOf(Integer::class, $object[0][1][0]);
+        $this->assertInstanceOf(BitString::class, $object[0][1][1]);
     }
 }
