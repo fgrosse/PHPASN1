@@ -20,7 +20,10 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Parsa
     /** @var Object[] */
     protected $children;
 
-    public function __construct(Object ...$children)
+    /**
+     * @param Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
+     */
+    public function __construct(/* HH_FIXME[4858]: variadic + strict */ ...$children)
     {
         $this->children = $children;
     }
