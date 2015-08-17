@@ -97,7 +97,7 @@ class CertificateSubject extends Sequence implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        $names = array();
+        $names = [];
         $octetsToRead = $contentLength;
         while ($octetsToRead > 0) {
             $relativeDistinguishedName = RelativeDistinguishedName::fromBinary($binaryData, $offsetIndex);

@@ -24,12 +24,12 @@ use FG\X509\SAN\SubjectAlternativeNames;
 class CertificateExtensions extends Set implements Parsable
 {
     private $innerSequence;
-    private $extensions = array();
+    private $extensions = [];
 
     public function __construct()
     {
         $this->innerSequence = new Sequence();
-        $this->addChild($this->innerSequence);
+        parent::__construct($this->innerSequence);
     }
 
     public function addSubjectAlternativeNames(SubjectAlternativeNames $sans)

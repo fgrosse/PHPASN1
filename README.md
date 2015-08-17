@@ -9,24 +9,29 @@ PHPASN1
 [![Latest Unstable Version](https://poser.pugx.org/fgrosse/phpasn1/v/unstable.png)](https://packagist.org/packages/fgrosse/phpasn1)
 [![License](https://poser.pugx.org/fgrosse/phpasn1/license.png)](https://packagist.org/packages/fgrosse/phpasn1)
 
-A PHP Framework that allows you to encode and decode arbitrary [ASN.1](http://www.itu.int/ITU-T/asn1/) structures
-using the [ITU-T X.690 Encoding Rules](http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690).
-This encoding is very frequently used in [X.509 PKI environments](http://en.wikipedia.org/wiki/X.509) or the communication between heterogeneous computer systems.
+A PHP Framework that allows you to encode and decode arbitrary [ASN.1][3] structures
+using the [ITU-T X.690 Encoding Rules][4].
+This encoding is very frequently used in [X.509 PKI environments][5] or the communication between heterogeneous computer systems.
 
 The API allows you to encode ASN.1 structures to create binary data such as certificate
 signing requests (CSR), X.509 certificates or certificate revocation lists (CRL).
-PHPASN1 can also read [BER encoded](http://en.wikipedia.org/wiki/X.690#BER_encoding) binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
+PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
+## Changelog
+
+#### v.1.4.0
+* support big integers
+* **require PHP 5.6**
 
 ## Dependencies
 
-PHPASN1 requires at least `PHP 5.3` and the `gmp` extension.
-It has been successfully tested using `PHP 5.3` to `PHP 5.6`, `PHP 7` and `HHVM`
-For the loading of object identifier names directly from the web [curl](http://php.net/manual/en/book.curl.php) is used.
+PHPASN1 requires at least `PHP 5.6` and the `gmp` extension.
+It has also been successfully tested using `PHP 7` and `HHVM`
+For the loading of object identifier names directly from the web [curl][7] is used.
 
 ## Installation ##
 
-The preferred way to install this library is to rely on Composer:
+The preferred way to install this library is to rely on [Composer][2]:
 
 ```bash
 $ composer require fgrosse/phpasn1
@@ -38,10 +43,9 @@ $ composer require fgrosse/phpasn1
 
 PHPASN1 offers you a class for each of the implemented ASN.1 universal types.
 The constructors should be pretty self explanatory so you should have no big trouble getting started.
-All data will be encoded using [DER encoding](http://en.wikipedia.org/wiki/X.690#DER_encoding)
+All data will be encoded using [DER encoding][8]
 
 ```php
-
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
@@ -107,3 +111,10 @@ To [all contributors][1] so far!
 This library is distributed under the [MIT License](LICENSE).
 
 [1]: https://github.com/fgrosse/PHPASN1/graphs/contributors
+[2]: https://getcomposer.org/
+[3]: http://www.itu.int/ITU-T/asn1/
+[4]: http://www.itu.int/ITU-T/recommendations/rec.aspx?rec=x.690
+[5]: http://en.wikipedia.org/wiki/X.509
+[6]: http://en.wikipedia.org/wiki/X.690#BER_encoding
+[7]: http://php.net/manual/en/book.curl.php
+[8]: http://en.wikipedia.org/wiki/X.690#DER_encoding
