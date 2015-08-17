@@ -90,7 +90,6 @@ class Integer extends Object implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
-
         $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
 
         for ($i = 0; $i<$contentLength-1; $i++) {
