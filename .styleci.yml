@@ -9,3 +9,4 @@ disabled:
   - empty_return
   - phpdoc_align
   - blankline_after_open_tag
+  - pre_increment
