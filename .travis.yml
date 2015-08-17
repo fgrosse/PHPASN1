@@ -18,4 +18,5 @@ script:
 
 after_script:
   # code coverage currently does not seem to be supported on travis php 7 or hhvm
-  - php vendor/bin/coveralls
+  - head build/logs/clover.xml
+  - vendor/bin/coveralls --verbose --no-interaction
