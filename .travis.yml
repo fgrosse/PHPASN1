@@ -10,4 +10,7 @@ before_script:
 
 script:
     - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-    - vendor/bin/coveralls --verbose
+
+after_script:
+  # code coverage currently does not seem to be supported on travis php 7 or hhvm
+  - php vendor/bin/coveralls
