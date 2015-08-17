@@ -11,8 +11,7 @@ cache:
     - vendor
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --no-interaction
+  - composer install
 
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
