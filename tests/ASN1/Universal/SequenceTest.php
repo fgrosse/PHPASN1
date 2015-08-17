@@ -122,7 +122,7 @@ class SequenceTest extends ASN1TestCase
     {
         $sequence = new Sequence();
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $child4 = new Integer(1234567);
 

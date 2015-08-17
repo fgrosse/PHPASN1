@@ -34,9 +34,10 @@ class CertificateSubjectTest extends ASN1TestCase
         $this->assertEquals(chr(Identifier::SEQUENCE), $object->getIdentifier());
     }
 
-    public function testFromBinary() {
+    public function testFromBinary()
+    {
         $this->markTestIncomplete('Not implemented');
-        $originalObject = new CertificateSubject("Friedrich Große", "friedrich.grosse@foo.de", "Organization", "Locality", "State", "Country", "OrgaUnit");
+        $originalObject = new CertificateSubject('Friedrich Große', 'friedrich.grosse@foo.de', 'Organization', 'Locality', 'State', 'Country', 'OrgaUnit');
 
         $binaryData = $originalObject->getBinary();
         $parsedObject = CertificateSubject::fromBinary($binaryData);
@@ -46,7 +47,8 @@ class CertificateSubjectTest extends ASN1TestCase
     /**
      * @depends testFromBinary
      */
-    public function testFromBinaryWithOffset() {
+    public function testFromBinaryWithOffset()
+    {
         $objectIdentifier = new ObjectIdentifier(OID::CERT_EXT_SUBJECT_ALT_NAME);
 
         $originalObject1 = new CertificateExtensions();

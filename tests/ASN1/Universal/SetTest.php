@@ -95,7 +95,8 @@ class SetTest extends ASN1TestCase
     /*
      * @depends testFromBinary
      */
-    public function testFromBinaryWithOffset() {
+    public function testFromBinaryWithOffset()
+    {
         $originalObject1 = new Set(
             new Boolean(true),
             new Integer(123)
@@ -121,7 +122,7 @@ class SetTest extends ASN1TestCase
     {
         $object = new Set();
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $child4 = new Integer(1234567);
 

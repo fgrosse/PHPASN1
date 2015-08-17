@@ -41,7 +41,6 @@ class RelativeDistinguishedName extends Set
      * @deprecated this function is not yet implemented! Feel free to submit a pull request on github
      * @param string $binaryData
      * @param int $offsetIndex
-     * @return void
      * @throws NotImplementedException
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)

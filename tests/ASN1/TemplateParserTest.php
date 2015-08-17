@@ -34,9 +34,9 @@ class TemplateParserTest extends PHPUnit_Framework_TestCase
                     Identifier::SEQUENCE => [
                         Identifier::INTEGER,
                         Identifier::BITSTRING,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $parser = new TemplateParser();
