@@ -16,7 +16,6 @@ use FG\ASN1\Universal\OctetString;
 
 class OctetStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new OctetString('30 14 06 08 2B 06 01 05 05 07 03 01 06 08 2B 06 01 05 05 07 03 02');
@@ -66,7 +65,7 @@ class OctetStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new OctetString($hexString);
-        $this->assertEquals(1+3+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()

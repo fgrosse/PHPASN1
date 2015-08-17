@@ -9,13 +9,17 @@
  * with non-viewable characters.
  *
  * @version     1.3.2
+ *
  * @author      Aidan Lister <aidan@php.net>
  * @author      Peter Waller <iridum@php.net>
+ *
  * @link        http://aidanlister.com/2004/04/viewing-binary-data-as-a-hexdump-in-php/
+ *
  * @param       string $data The string to be dumped
  * @param       bool $htmloutput Set to false for non-HTML output
  * @param       bool $uppercase Set to true for uppercase hex
  * @param       bool $return Set to true to return the dump
+ *
  * @return string
  */
 function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)

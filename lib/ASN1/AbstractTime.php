@@ -63,7 +63,7 @@ abstract class AbstractTime extends Object
     {
         $sign = $binaryData[$offsetIndex++];
         $timeOffsetHours   = intval(substr($binaryData, $offsetIndex, 2));
-        $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex+2, 2));
+        $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex + 2, 2));
         $offsetIndex += 4;
 
         $interval = new DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");

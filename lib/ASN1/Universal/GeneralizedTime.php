@@ -14,8 +14,9 @@ use FG\ASN1\AbstractTime;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
+
 /**
- * This ASN.1 universal type contains date and time information according to ISO 8601
+ * This ASN.1 universal type contains date and time information according to ISO 8601.
  *
  * The type consists of values representing:
  * a) a calendar date, as defined in ISO 8601; and
@@ -101,9 +102,9 @@ class GeneralizedTime extends AbstractTime implements Parsable
                 $nrOfFractionalSecondElements = 1; // account for the '.'
 
                 while ($maximumBytesToRead > 0
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != '+'
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != '-'
-                      && $binaryData[$offsetIndex+$nrOfFractionalSecondElements] != 'Z') {
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] != '+'
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] != '-'
+                      && $binaryData[$offsetIndex + $nrOfFractionalSecondElements] != 'Z') {
                     $nrOfFractionalSecondElements++;
                     $maximumBytesToRead--;
                 }
@@ -125,7 +126,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
             }
         }
 
-        $parsedObject = new GeneralizedTime($dateTime);
+        $parsedObject = new self($dateTime);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

@@ -16,7 +16,6 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class ObjectIdentifierTest extends ASN1TestCase
 {
-
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage [1.Foo.3] is no valid object identifier (sub identifier 2 is not numeric)!

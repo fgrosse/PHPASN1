@@ -49,9 +49,9 @@ class Boolean extends Object implements Parsable
     public function getContent()
     {
         if ($this->value == true) {
-            return "TRUE";
+            return 'TRUE';
         } else {
-            return "FALSE";
+            return 'FALSE';
         }
     }
 

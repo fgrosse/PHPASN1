@@ -17,7 +17,8 @@ class UnknownConstructedObject extends Construct
 
     /**
      * @param string $binaryData
-     * @param integer $offsetIndex
+     * @param int $offsetIndex
+     *
      * @throws \FG\ASN1\Exception\ParserException
      */
     public function __construct($binaryData, &$offsetIndex)

@@ -16,7 +16,6 @@ use FG\ASN1\Universal\Boolean;
 
 class BooleanTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Boolean(true);

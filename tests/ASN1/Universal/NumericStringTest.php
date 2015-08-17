@@ -16,31 +16,30 @@ use FG\ASN1\Universal\NumericString;
 
 class NumericStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new NumericString("1234");
+        $object = new NumericString('1234');
         $this->assertEquals(Identifier::NUMERIC_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new NumericString("1234");
+        $object = new NumericString('1234');
         $this->assertEquals(chr(Identifier::NUMERIC_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new NumericString("123 45 67890");
-        $this->assertEquals("123 45 67890", $object->getContent());
+        $object = new NumericString('123 45 67890');
+        $this->assertEquals('123 45 67890', $object->getContent());
 
-        $object = new NumericString("             ");
-        $this->assertEquals("             ", $object->getContent());
+        $object = new NumericString('             ');
+        $this->assertEquals('             ', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "123  4 55677 0987";
+        $string = '123  4 55677 0987';
         $object = new NumericString($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -48,7 +47,7 @@ class NumericStringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "123  4 55677 0987";
+        $string = '123  4 55677 0987';
         $expectedType = chr(Identifier::NUMERIC_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -61,7 +60,7 @@ class NumericStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new NumericString("123 45  5322");
+        $originalobject = new NumericString('123 45  5322');
         $binaryData = $originalobject->getBinary();
         $parsedObject = NumericString::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
@@ -72,8 +71,8 @@ class NumericStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new NumericString("1324 0");
-        $originalobject2 = new NumericString("1 2 3 ");
+        $originalobject1 = new NumericString('1324 0');
+        $originalobject2 = new NumericString('1 2 3 ');
 
         $binaryData  = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
@@ -90,14 +89,14 @@ class NumericStringTest extends ASN1TestCase
     public function testCreateStringWithValidCharacters()
     {
         $object = new NumericString('1234');
-        $this->assertEquals(pack("H*", "120431323334"), $object->getBinary());
+        $this->assertEquals(pack('H*', '120431323334'), $object->getBinary());
         $object = new NumericString('321 98 76');
-        $this->assertEquals(pack("H*", "1209333231203938203736"), $object->getBinary());
+        $this->assertEquals(pack('H*', '1209333231203938203736'), $object->getBinary());
     }
 
     public function testCreateStringWithInvalidCharacters()
     {
-        $invalidString = "Hello World";
+        $invalidString = 'Hello World';
         try {
             $object = new NumericString($invalidString);
             $object->getBinary();
@@ -106,7 +105,7 @@ class NumericStringTest extends ASN1TestCase
             $this->assertEquals("Could not create a ASN.1 Numeric String from the character sequence '{$invalidString}'.", $exception->getMessage());
         }
 
-        $invalidString = "123,456";
+        $invalidString = '123,456';
         try {
             $object = new NumericString($invalidString);
             $object->getBinary();
@@ -115,7 +114,7 @@ class NumericStringTest extends ASN1TestCase
             $this->assertEquals("Could not create a ASN.1 Numeric String from the character sequence '{$invalidString}'.", $exception->getMessage());
         }
 
-        $invalidString = "+123456";
+        $invalidString = '+123456';
         try {
             $object = new NumericString($invalidString);
             $object->getBinary();
@@ -124,7 +123,7 @@ class NumericStringTest extends ASN1TestCase
             $this->assertEquals("Could not create a ASN.1 Numeric String from the character sequence '{$invalidString}'.", $exception->getMessage());
         }
 
-        $invalidString = "-123456";
+        $invalidString = '-123456';
         try {
             $object = new NumericString($invalidString);
             $object->getBinary();

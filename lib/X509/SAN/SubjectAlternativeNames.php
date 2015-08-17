@@ -18,7 +18,7 @@ use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Sequence;
 
 /**
- * See section 8.3.2.1 of ITU-T X.509
+ * See section 8.3.2.1 of ITU-T X.509.
  */
 class SubjectAlternativeNames extends Object implements Parsable
 {
@@ -73,10 +73,10 @@ class SubjectAlternativeNames extends Object implements Parsable
         $offsetOfSequence += $sequence->getNumberOfLengthOctets() + 1;
 
         if ($sequence->getObjectLength() != $contentLength) {
-            throw new ParserException("Can not parse Subject Alternative Names: The Sequence length does not match the length of the surrounding octet string", $offsetIndex);
+            throw new ParserException('Can not parse Subject Alternative Names: The Sequence length does not match the length of the surrounding octet string', $offsetIndex);
         }
 
-        $parsedObject = new SubjectAlternativeNames();
+        $parsedObject = new self();
         /** @var Object $object */
         foreach ($sequence as $object) {
             if ($object->getType() == DNSName::IDENTIFIER) {
@@ -86,7 +86,7 @@ class SubjectAlternativeNames extends Object implements Parsable
                 $ip = IPAddress::fromBinary($binaryData, $offsetOfSequence);
                 $parsedObject->addIP($ip);
             } else {
-                throw new ParserException("Could not parse Subject Alternative Name: Only DNSName and IP SANs are currently supported", $offsetIndex);
+                throw new ParserException('Could not parse Subject Alternative Name: Only DNSName and IP SANs are currently supported', $offsetIndex);
             }
         }
 

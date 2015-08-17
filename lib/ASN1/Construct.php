@@ -119,8 +119,10 @@ abstract class Construct extends Object implements Iterator, Parsable
     /**
      * @param string $binaryData
      * @param int $offsetIndex
-     * @return Construct|static
+     *
      * @throws Exception\ParserException
+     *
+     * @return Construct|static
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {

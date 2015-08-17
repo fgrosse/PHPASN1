@@ -21,6 +21,7 @@ class NumericString extends AbstractString
      * The following characters are permitted:
      * Digits                0,1, ... 9
      * SPACE                 (space)
+     *
      * @param string $string
      */
     public function __construct($string)

@@ -33,7 +33,7 @@ class ObjectIdentifier extends Object implements Parsable
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             } else {
-                throw new Exception("[{$value}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+                throw new Exception("[{$value}] is no valid object identifier (sub identifier ".($i + 1).' is not numeric)!');
             }
         }
 
@@ -90,7 +90,7 @@ class ObjectIdentifier extends Object implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $firstOctet = ord($binaryData[$offsetIndex++]);
-        $oidString = floor($firstOctet/40).'.'.($firstOctet % 40);
+        $oidString = floor($firstOctet / 40).'.'.($firstOctet % 40);
         $oidString .= '.'.self::parseOid($binaryData, $offsetIndex, $contentLength - 1);
 
         $parsedObject = new self($oidString);
@@ -107,8 +107,10 @@ class ObjectIdentifier extends Object implements Parsable
      * @param $binaryData
      * @param $offsetIndex
      * @param $octetsToRead
-     * @return string
+     *
      * @throws ParserException
+     *
+     * @return string
      */
     protected static function parseOid(&$binaryData, &$offsetIndex, $octetsToRead)
     {
@@ -119,7 +121,7 @@ class ObjectIdentifier extends Object implements Parsable
 
             do {
                 if (0 === $octetsToRead) {
-                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
+                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex - 1);
                 }
 
                 $octetsToRead--;

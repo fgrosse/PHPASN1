@@ -12,7 +12,6 @@ namespace FG\ASN1\Exception;
 
 class ParserException extends \Exception
 {
-
     private $errorMessage;
     private $offset;
 

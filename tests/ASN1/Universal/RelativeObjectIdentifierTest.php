@@ -16,7 +16,6 @@ use FG\ASN1\Universal\RelativeObjectIdentifier;
 
 class RelativeObjectIdentifierTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new RelativeObjectIdentifier('8751.3.2');
@@ -38,10 +37,10 @@ class RelativeObjectIdentifierTest extends ASN1TestCase
     public function testGetObjectLength()
     {
         $object = new RelativeObjectIdentifier('1.2.3');
-        $this->assertEquals(2+3, $object->getObjectLength());
+        $this->assertEquals(2 + 3, $object->getObjectLength());
 
         $object = new RelativeObjectIdentifier('1.2.250.1.16.9');
-        $this->assertEquals(2+7, $object->getObjectLength());
+        $this->assertEquals(2 + 7, $object->getObjectLength());
     }
 
     public function testGetBinary()

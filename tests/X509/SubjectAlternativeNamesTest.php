@@ -18,7 +18,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class SubjectAlternativeNamesTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new SubjectAlternativeNames();
@@ -36,16 +35,16 @@ class SubjectAlternativeNamesTest extends ASN1TestCase
         $object = new SubjectAlternativeNames();
         $content = $object->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertTrue(sizeof($content) == 0);
+        $this->assertTrue(count($content) == 0);
 
         $dnsName = new DNSName('corvespace.de');
         $object->addDomainName($dnsName);
-        $this->assertTrue(sizeof($object->getContent()) == 1);
+        $this->assertTrue(count($object->getContent()) == 1);
         $this->assertContains($dnsName, $object->getContent());
 
         $ipAddress = new IPAddress('192.168.0.1');
         $object->addIP($ipAddress);
-        $this->assertTrue(sizeof($object->getContent()) == 2);
+        $this->assertTrue(count($object->getContent()) == 2);
         $this->assertContains($ipAddress, $object->getContent());
     }
 

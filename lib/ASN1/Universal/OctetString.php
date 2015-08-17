@@ -27,12 +27,12 @@ class OctetString extends Object implements Parsable
         } elseif (is_numeric($value)) {
             $value = dechex($value);
         } else {
-            throw new Exception("OctetString: unrecognized input type!");
+            throw new Exception('OctetString: unrecognized input type!');
         }
 
-        if (strlen($value) %2 != 0) {
+        if (strlen($value) % 2 != 0) {
             // transform values like 1F2 to 01F2
-            $value = "0".$value;
+            $value = '0'.$value;
         }
 
         $this->value = $value;
@@ -45,7 +45,7 @@ class OctetString extends Object implements Parsable
 
     protected function calculateContentLength()
     {
-        return strlen($this->value)/2;
+        return strlen($this->value) / 2;
     }
 
     protected function getEncodedValue()
@@ -81,7 +81,7 @@ class OctetString extends Object implements Parsable
         $value = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
 
-        $parsedObject = new OctetString(bin2hex($value));
+        $parsedObject = new self(bin2hex($value));
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

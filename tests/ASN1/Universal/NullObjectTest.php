@@ -16,7 +16,6 @@ use FG\ASN1\Universal\NullObject;
 
 class NullObjectTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new NullObject();
