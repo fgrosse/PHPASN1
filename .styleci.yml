@@ -2,9 +2,6 @@ preset: symfony
 
 linting: true
 
-enabled:
-  - phpdoc_order
-
 disabled:
   - empty_return
   - phpdoc_align
