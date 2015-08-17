@@ -163,3 +163,4 @@ This library is distributed under the [MIT License](LICENSE).
 [8]: http://en.wikipedia.org/wiki/X.690#DER_encoding
 [9]: https://styleci.io
 [10]: https://coveralls.io/github/fgrosse/PHPASN1
+[11]: https://github.com/fgrosse/PHPASN1/blob/master/tests/ASN1/TemplateParserTest.php#L16
