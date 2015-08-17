@@ -16,7 +16,6 @@ use FG\ASN1\Universal\BitString;
 
 class BitStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new BitString('A0 12 00 43');
@@ -66,7 +65,7 @@ class BitStringTest extends ASN1TestCase
     {
         $hexString = '0x'.str_repeat('FF', 1024);
         $object = new BitString($hexString);
-        $this->assertEquals(1+3+1+1024, $object->getObjectLength());
+        $this->assertEquals(1 + 3 + 1 + 1024, $object->getObjectLength());
     }
 
     public function testGetBinary()

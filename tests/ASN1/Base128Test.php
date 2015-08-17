@@ -1,6 +1,6 @@
 <?php
 
-namespace FG\Tests\ASN1;
+namespace FG\tests\ASN1;
 
 use FG\ASN1\Base128;
 
@@ -86,5 +86,4 @@ class Base128Test extends \PHPUnit_Framework_TestCase
     {
         Base128::decode("\xFF\xFF");
     }
-
 }

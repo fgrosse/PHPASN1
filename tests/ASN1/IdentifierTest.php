@@ -18,8 +18,8 @@ class IdentifierTest extends ASN1TestCase
     public function testCreate()
     {
         $this->assertEquals(0x02, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0x02));
-        $this->assertEquals(0x30, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = true,  0x10));
-        $this->assertEquals(0xB3, Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, $isConstructed = true,  0x13));
+        $this->assertEquals(0x30, Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = true, 0x10));
+        $this->assertEquals(0xB3, Identifier::create(Identifier::CLASS_CONTEXT_SPECIFIC, $isConstructed = true, 0x13));
         $this->assertEquals("\x1F\x1F", Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0x1F));
         $this->assertEquals("\x1F\x81\x7F", Identifier::create(Identifier::CLASS_UNIVERSAL, $isConstructed = false, 0xFF));
     }

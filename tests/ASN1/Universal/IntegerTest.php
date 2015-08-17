@@ -17,7 +17,6 @@ use FG\ASN1\Universal\Integer;
 
 class IntegerTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Integer(123);
@@ -148,7 +147,6 @@ class IntegerTest extends ASN1TestCase
         $expectedContent .= chr(0x25);
         $expectedContent .= chr(0x44);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
-
     }
 
     public function testBigIntegerSupport()

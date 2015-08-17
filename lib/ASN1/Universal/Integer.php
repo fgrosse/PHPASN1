@@ -22,6 +22,7 @@ class Integer extends Object implements Parsable
 
     /**
      * @param int $value
+     *
      * @throws Exception if the value is not numeric
      */
     public function __construct($value)
@@ -56,12 +57,13 @@ class Integer extends Object implements Parsable
     /**
      * @param resource|\GMP $number
      * @param int $positions
+     *
      * @return resource|\GMP
      */
     private function rightShift($number, $positions)
     {
         // Shift 1 right = div / 2
-        return gmp_div($number, gmp_pow(2, (int)$positions));
+        return gmp_div($number, gmp_pow(2, (int) $positions));
     }
 
     protected function getEncodedValue()
@@ -75,7 +77,7 @@ class Integer extends Object implements Parsable
         }
 
         $result = '';
-        for ($shiftLength = ($contentLength-1)*8; $shiftLength >= 0; $shiftLength -= 8) {
+        for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
             $octet = gmp_strval(gmp_mod($this->rightShift($numericValue, $shiftLength), 256));
             $result .= chr($octet);
         }
@@ -92,12 +94,12 @@ class Integer extends Object implements Parsable
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
         $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
 
-        for ($i = 0; $i<$contentLength-1; $i++) {
+        for ($i = 0; $i < $contentLength - 1; $i++) {
             $number = gmp_or(gmp_mul($number, 0x100), ord($binaryData[$offsetIndex++]));
         }
 
         if ($isNegative) {
-            $number = gmp_sub($number, gmp_pow(2, 8*$contentLength-1));
+            $number = gmp_sub($number, gmp_pow(2, 8 * $contentLength - 1));
         }
 
         $parsedObject = new static(gmp_strval($number, 10));

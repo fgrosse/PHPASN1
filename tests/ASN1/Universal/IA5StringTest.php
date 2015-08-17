@@ -16,34 +16,33 @@ use FG\ASN1\Universal\IA5String;
 
 class IA5StringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new IA5String("Hello World");
+        $object = new IA5String('Hello World');
         $this->assertEquals(Identifier::IA5_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new IA5String("Hello World");
+        $object = new IA5String('Hello World');
         $this->assertEquals(chr(Identifier::IA5_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new IA5String("Hello World");
-        $this->assertEquals("Hello World", $object->getContent());
+        $object = new IA5String('Hello World');
+        $this->assertEquals('Hello World', $object->getContent());
 
-        $object = new IA5String("");
-        $this->assertEquals("", $object->getContent());
+        $object = new IA5String('');
+        $this->assertEquals('', $object->getContent());
 
-        $object = new IA5String("             ");
-        $this->assertEquals("             ", $object->getContent());
+        $object = new IA5String('             ');
+        $this->assertEquals('             ', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $object = new IA5String($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -51,7 +50,7 @@ class IA5StringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $expectedType = chr(Identifier::IA5_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -64,7 +63,7 @@ class IA5StringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new IA5String("Hello World");
+        $originalobject = new IA5String('Hello World');
         $binaryData = $originalobject->getBinary();
         $parsedObject = IA5String::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
@@ -75,8 +74,8 @@ class IA5StringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new IA5String("Hello ");
-        $originalobject2 = new IA5String(" World");
+        $originalobject1 = new IA5String('Hello ');
+        $originalobject2 = new IA5String(' World');
 
         $binaryData  = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();

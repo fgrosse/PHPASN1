@@ -61,7 +61,7 @@ class CertificateExtensions extends Set implements Parsable
         $extensions = Sequence::fromBinary($binaryData, $offsetIndex);
         $tmpOffset += 1 + $extensions->getNumberOfLengthOctets();
 
-        $parsedObject = new CertificateExtensions();
+        $parsedObject = new self();
         foreach ($extensions as $extension) {
             if ($extension->getType() != Identifier::SEQUENCE) {
                 //FIXME wrong offset index

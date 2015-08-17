@@ -28,7 +28,7 @@ class RelativeObjectIdentifier extends ObjectIdentifier implements Parsable
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             } else {
-                throw new Exception("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+                throw new Exception("[{$subIdentifiers}] is no valid object identifier (sub identifier ".($i + 1).' is not numeric)!');
             }
         }
     }

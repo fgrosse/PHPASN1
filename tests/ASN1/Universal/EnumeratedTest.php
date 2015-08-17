@@ -16,7 +16,6 @@ use FG\ASN1\Universal\Enumerated;
 
 class EnumeratedTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Enumerated(1);

@@ -17,7 +17,6 @@ use FG\ASN1\Universal\GeneralizedTime;
 
 class GeneralizedTimeTest extends ASN1TestCase
 {
-
     private $UTC;
 
     public function setUp()
@@ -108,7 +107,7 @@ class GeneralizedTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithDEREncoding()
     {
-        $dateTime = new DateTime("2012-09-23 20:23:16", $this->UTC);
+        $dateTime = new DateTime('2012-09-23 20:23:16', $this->UTC);
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(15);
         $binaryData .= '20120923202316Z';
@@ -121,7 +120,7 @@ class GeneralizedTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithDEREncodingAndFractionalSecondsPart()
     {
-        $dateTime = new DateTime("2012-09-23 22:21:03.5435440", $this->UTC);
+        $dateTime = new DateTime('2012-09-23 22:21:03.5435440', $this->UTC);
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(22);
         $binaryData .= '20120923222103.543544Z';
@@ -134,7 +133,7 @@ class GeneralizedTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithLocalTimeZone()
     {
-        $dateTime = new DateTime("2012-09-23 20:23:16");
+        $dateTime = new DateTime('2012-09-23 20:23:16');
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(14);
         $binaryData .= '20120923202316';
@@ -147,14 +146,14 @@ class GeneralizedTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithOtherTimeZone()
     {
-        $dateTime = new DateTime("2012-09-23 22:13:59", $this->UTC);
+        $dateTime = new DateTime('2012-09-23 22:13:59', $this->UTC);
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(19);
         $binaryData .= '20120923161359-0600';
         $parsedObject = GeneralizedTime::fromBinary($binaryData);
         $this->assertEquals($dateTime, $parsedObject->getContent());
 
-        $dateTime = new DateTime("2012-09-23 22:13:59", $this->UTC);
+        $dateTime = new DateTime('2012-09-23 22:13:59', $this->UTC);
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(19);
         $binaryData .= '20120924021359+0400';
@@ -167,7 +166,7 @@ class GeneralizedTimeTest extends ASN1TestCase
      */
     public function testFromBinaryWithBEREncodingWithFractionalSecondsPartAndOtherTimeZone()
     {
-        $dateTime = new DateTime("2012-09-23 22:13:59.525", $this->UTC);
+        $dateTime = new DateTime('2012-09-23 22:13:59.525', $this->UTC);
         $binaryData  = chr(Identifier::GENERALIZED_TIME);
         $binaryData .= chr(23);
         $binaryData .= '20120923161359.525-0600';

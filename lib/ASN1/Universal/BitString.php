@@ -23,6 +23,7 @@ class BitString extends OctetString implements Parsable
      *
      * @param string|int $value Either the hexadecimal value as a string (spaces are allowed - leading 0x is optional) or a numeric value
      * @param int $nrOfUnusedBits the number of unused bits in the last octet [optional].
+     *
      * @throws Exception if the second parameter is no positive numeric value
      */
     public function __construct($value, $nrOfUnusedBits = 0)
@@ -30,7 +31,7 @@ class BitString extends OctetString implements Parsable
         parent::__construct($value);
 
         if (!is_numeric($nrOfUnusedBits) || $nrOfUnusedBits < 0) {
-            throw new Exception("BitString: second parameter needs to be a positive number (or zero)!");
+            throw new Exception('BitString: second parameter needs to be a positive number (or zero)!');
         }
 
         $this->nrOfUnusedBits = $nrOfUnusedBits;
@@ -67,10 +68,10 @@ class BitString extends OctetString implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 2);
 
         $nrOfUnusedBits = ord($binaryData[$offsetIndex]);
-        $value = substr($binaryData, $offsetIndex+1, $contentLength-1);
+        $value = substr($binaryData, $offsetIndex + 1, $contentLength - 1);
         $offsetIndex += $contentLength;
 
-        $parsedObject = new BitString(bin2hex($value), $nrOfUnusedBits);
+        $parsedObject = new self(bin2hex($value), $nrOfUnusedBits);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

@@ -25,6 +25,7 @@ class BMPString extends AbstractString
      * characters outside the Basic Multilingual Plane) of ISO/IEC 10646-1.
      *
      * TODO The encodable characters of this type are not yet checked.
+     *
      * @param string $string
      */
     public function __construct($string)

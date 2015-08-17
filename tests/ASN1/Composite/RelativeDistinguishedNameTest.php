@@ -18,18 +18,17 @@ use FG\ASN1\Composite\RelativeDistinguishedName;
 
 class RelativeDistinguishedNameTest extends ASN1TestCase
 {
+    public function testGetType()
+    {
+        $object = new RelativeDistinguishedName(OID::COMMON_NAME, new UTF8String('Friedrich Große'));
+        $this->assertEquals(Identifier::SET, $object->getType());
+    }
 
-   public function testGetType()
-   {
-       $object = new RelativeDistinguishedName(OID::COMMON_NAME, new UTF8String("Friedrich Große"));
-       $this->assertEquals(Identifier::SET, $object->getType());
-   }
-
-   public function testGetIdentifier()
-   {
-       $object = new RelativeDistinguishedName(OID::COMMON_NAME, new UTF8String("Friedrich Große"));
-       $this->assertEquals(chr(Identifier::SET), $object->getIdentifier());
-   }
+    public function testGetIdentifier()
+    {
+        $object = new RelativeDistinguishedName(OID::COMMON_NAME, new UTF8String('Friedrich Große'));
+        $this->assertEquals(chr(Identifier::SET), $object->getIdentifier());
+    }
 
     public function testContent()
     {
@@ -76,7 +75,7 @@ class RelativeDistinguishedNameTest extends ASN1TestCase
         $this->assertEquals($originalobject, $parsedObject);
     }*/
 
-    /**
+    /*
      * @depends testFromBinary
      */
     /*public function testFromBinaryWithOffset() {
