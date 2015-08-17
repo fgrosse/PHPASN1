@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -17,25 +18,25 @@ class IPAddressTest extends ASN1TestCase
 {
     public function testGetType()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals(0x87, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals(chr(0x87), $object->getIdentifier());
     }
 
     public function testGetContent()
     {
-        $object = new IPAddress("192.168.0.1");
-        $this->assertEquals("192.168.0.1", $object->getContent());
+        $object = new IPAddress('192.168.0.1');
+        $this->assertEquals('192.168.0.1', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $expectedSize = 6; // Type + Length + 4 Byte
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
@@ -44,11 +45,11 @@ class IPAddressTest extends ASN1TestCase
     {
         $expectedType = chr(0x87);
         $expectedLength = chr(4);
-        $ipAddress  = chr(192);
+        $ipAddress = chr(192);
         $ipAddress .= chr(168);
         $ipAddress .= chr(0);
         $ipAddress .= chr(1);
-        $object = new IPAddress("192.168.0.1");
+        $object = new IPAddress('192.168.0.1');
         $this->assertEquals($expectedType.$expectedLength.$ipAddress, $object->getBinary());
     }
 
@@ -57,7 +58,7 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new IPAddress("192.168.0.1");
+        $originalobject = new IPAddress('192.168.0.1');
         $binaryData = $originalobject->getBinary();
         $parsedObject = IPAddress::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
@@ -70,7 +71,7 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinaryWithWrongLengthThrowsException()
     {
-        $binaryData  = chr(0x87);
+        $binaryData = chr(0x87);
         $binaryData .= chr(2);
         $binaryData .= chr(192);
         $binaryData .= chr(168);
@@ -82,10 +83,10 @@ class IPAddressTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalObject1 = new IPAddress("192.168.0.1");
-        $originalObject2 = new IPAddress("10.65.32.123");
+        $originalObject1 = new IPAddress('192.168.0.1');
+        $originalObject2 = new IPAddress('10.65.32.123');
 
-        $binaryData  = $originalObject1->getBinary();
+        $binaryData = $originalObject1->getBinary();
         $binaryData .= $originalObject2->getBinary();
 
         $offset = 0;

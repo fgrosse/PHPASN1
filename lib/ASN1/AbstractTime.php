@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -22,10 +23,10 @@ abstract class AbstractTime extends Object
 
     public function __construct($dateTime = null, $dateTimeZone = 'UTC')
     {
-        if ($dateTime == null || is_string($dateTime)) {
+        if ($dateTime === null || is_string($dateTime)) {
             $timeZone = new DateTimeZone($dateTimeZone);
             $dateTimeObject = new DateTime($dateTime, $timeZone);
-            if ($dateTimeObject == false) {
+            if ($dateTimeObject === false) {
                 $errorMessage = $this->getLastDateTimeErrors();
                 $className = Identifier::getName($this->getType());
                 throw new Exception(sprintf("Could not create %s from date time string '%s': %s", $className, $dateTime, $errorMessage));
@@ -62,12 +63,12 @@ abstract class AbstractTime extends Object
     protected static function extractTimeZoneData(&$binaryData, &$offsetIndex, DateTime $dateTime)
     {
         $sign = $binaryData[$offsetIndex++];
-        $timeOffsetHours   = intval(substr($binaryData, $offsetIndex, 2));
-        $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex+2, 2));
+        $timeOffsetHours = intval(substr($binaryData, $offsetIndex, 2));
+        $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex + 2, 2));
         $offsetIndex += 4;
 
         $interval = new DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");
-        if ($sign == '+') {
+        if ($sign === '+') {
             $dateTime->sub($interval);
         } else {
             $dateTime->add($interval);

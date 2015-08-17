@@ -53,7 +53,7 @@ function printObject(Object $object, $depth = 0)
     $content = $object->getContent();
     if (is_array($content)) {
         foreach ($object as $child) {
-            printObject($child, $depth+1);
+            printObject($child, $depth + 1);
         }
     }
 }

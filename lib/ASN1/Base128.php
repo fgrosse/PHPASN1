@@ -10,7 +10,7 @@ use InvalidArgumentException;
 class Base128
 {
     /**
-     * @param integer $value
+     * @param int $value
      *
      * @return string
      */
@@ -36,6 +36,7 @@ class Base128
      * @param string $octets
      *
      * @return int
+     *
      * @throws InvalidArgumentException if the given octets represent a malformed base-128 value or the decoded value would exceed the the maximum integer length
      */
     public static function decode($octets)

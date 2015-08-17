@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -28,12 +29,12 @@ class ObjectIdentifier extends Object implements Parsable
         $this->subIdentifiers = explode('.', $value);
         $nrOfSubIdentifiers = count($this->subIdentifiers);
 
-        for ($i = 0; $i < $nrOfSubIdentifiers; $i++) {
+        for ($i = 0; $i < $nrOfSubIdentifiers; ++$i) {
             if (is_numeric($this->subIdentifiers[$i])) {
                 // enforce the integer type
                 $this->subIdentifiers[$i] = intval($this->subIdentifiers[$i]);
             } else {
-                throw new GeneralException("[{$value}] is no valid object identifier (sub identifier ".($i+1)." is not numeric)!");
+                throw new GeneralException("[{$value}] is no valid object identifier (sub identifier ".($i + 1).' is not numeric)!');
             }
         }
 
@@ -62,7 +63,7 @@ class ObjectIdentifier extends Object implements Parsable
         foreach ($this->subIdentifiers as $subIdentifier) {
             do {
                 $subIdentifier = $subIdentifier >> 7;
-                $length++;
+                ++$length;
             } while ($subIdentifier > 0);
         }
 
@@ -90,7 +91,7 @@ class ObjectIdentifier extends Object implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $firstOctet = ord($binaryData[$offsetIndex++]);
-        $oidString = floor($firstOctet/40).'.'.($firstOctet % 40);
+        $oidString = floor($firstOctet / 40).'.'.($firstOctet % 40);
         $oidString .= '.'.self::parseOid($binaryData, $offsetIndex, $contentLength - 1);
 
         $parsedObject = new self($oidString);
@@ -107,7 +108,9 @@ class ObjectIdentifier extends Object implements Parsable
      * @param $binaryData
      * @param $offsetIndex
      * @param $octetsToRead
+     *
      * @return string
+     *
      * @throws ParserException
      */
     protected static function parseOid(&$binaryData, &$offsetIndex, $octetsToRead)
@@ -119,10 +122,10 @@ class ObjectIdentifier extends Object implements Parsable
 
             do {
                 if (0 === $octetsToRead) {
-                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex-1);
+                    throw new ParserException('Malformed ASN.1 Object Identifier', $offsetIndex - 1);
                 }
 
-                $octetsToRead--;
+                --$octetsToRead;
                 $octet = $binaryData[$offsetIndex++];
                 $octets .= $octet;
             } while (ord($octet) & 0x80);

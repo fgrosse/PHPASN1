@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -29,7 +30,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * Rewind the Iterator to the first element (Iterator::rewind)
+     * Rewind the Iterator to the first element (Iterator::rewind).
      */
     public function rewind()
     {
@@ -37,7 +38,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * Return the current element (Iterator::current)
+     * Return the current element (Iterator::current).
      */
     public function current()
     {
@@ -45,7 +46,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * Return the key of the current element (Iterator::key)
+     * Return the key of the current element (Iterator::key).
      */
     public function key()
     {
@@ -53,15 +54,15 @@ abstract class Construct extends Object implements \Iterator, Parsable
     }
 
     /**
-     * Move forward to next element (Iterator::next)
+     * Move forward to next element (Iterator::next).
      */
     public function next()
     {
-        $this->iteratorPosition++;
+        ++$this->iteratorPosition;
     }
 
     /**
-     * Checks if current position is valid (Iterator::valid)
+     * Checks if current position is valid (Iterator::valid).
      */
     public function valid()
     {
@@ -103,7 +104,7 @@ abstract class Construct extends Object implements \Iterator, Parsable
     public function __toString()
     {
         $nrOfChildren = $this->getNumberOfChildren();
-        $childString = $nrOfChildren == 1 ? 'child' : 'children';
+        $childString = $nrOfChildren === 1 ? 'child' : 'children';
 
         return "[{$nrOfChildren} {$childString}]";
     }
@@ -131,8 +132,10 @@ abstract class Construct extends Object implements \Iterator, Parsable
 
     /**
      * @param string $binaryData
-     * @param int $offsetIndex
+     * @param int    $offsetIndex
+     *
      * @return Construct|static
+     *
      * @throws Exception\ParserException
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)

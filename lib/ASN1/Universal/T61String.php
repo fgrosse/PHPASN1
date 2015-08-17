@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -18,7 +19,9 @@ class T61String extends AbstractString
     /**
      * Creates a new ASN.1 T61 String.
      * TODO The encodable characters of this type are not yet checked.
+     *
      * @see http://en.wikipedia.org/wiki/ITU_T.61
+     *
      * @param string $string
      */
     public function __construct($string)

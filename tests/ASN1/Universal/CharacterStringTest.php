@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,28 +17,27 @@ use FG\ASN1\Universal\CharacterString;
 
 class CharacterStringTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
-        $object = new CharacterString("Hello World");
+        $object = new CharacterString('Hello World');
         $this->assertEquals(Identifier::CHARACTER_STRING, $object->getType());
     }
 
     public function testGetIdentifier()
     {
-        $object = new CharacterString("Hello World");
+        $object = new CharacterString('Hello World');
         $this->assertEquals(chr(Identifier::CHARACTER_STRING), $object->getIdentifier());
     }
 
     public function testContent()
     {
-        $object = new CharacterString("Hello World");
-        $this->assertEquals("Hello World", $object->getContent());
+        $object = new CharacterString('Hello World');
+        $this->assertEquals('Hello World', $object->getContent());
     }
 
     public function testGetObjectLength()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $object = new CharacterString($string);
         $expectedSize = 2 + strlen($string);
         $this->assertEquals($expectedSize, $object->getObjectLength());
@@ -45,7 +45,7 @@ class CharacterStringTest extends ASN1TestCase
 
     public function testGetBinary()
     {
-        $string = "Hello World";
+        $string = 'Hello World';
         $expectedType = chr(Identifier::CHARACTER_STRING);
         $expectedLength = chr(strlen($string));
 
@@ -58,7 +58,7 @@ class CharacterStringTest extends ASN1TestCase
      */
     public function testFromBinary()
     {
-        $originalobject = new CharacterString("Hello World");
+        $originalobject = new CharacterString('Hello World');
         $binaryData = $originalobject->getBinary();
         $parsedObject = CharacterString::fromBinary($binaryData);
         $this->assertEquals($originalobject, $parsedObject);
@@ -69,10 +69,10 @@ class CharacterStringTest extends ASN1TestCase
      */
     public function testFromBinaryWithOffset()
     {
-        $originalobject1 = new CharacterString("Hello ");
-        $originalobject2 = new CharacterString(" World");
+        $originalobject1 = new CharacterString('Hello ');
+        $originalobject2 = new CharacterString(' World');
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

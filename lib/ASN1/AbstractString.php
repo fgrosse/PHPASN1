@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -21,6 +22,7 @@ abstract class AbstractString extends Object implements Parsable
 
     /**
      * The abstract base class for ASN.1 classes which represent some string of character.
+     *
      * @param string $string
      */
     public function __construct($string)
@@ -99,8 +101,8 @@ abstract class AbstractString extends Object implements Parsable
     protected function checkString()
     {
         $stringLength = $this->getContentLength();
-        for ($i = 0; $i < $stringLength; $i++) {
-            if (in_array($this->value[$i], $this->allowedCharacters) == false) {
+        for ($i = 0; $i < $stringLength; ++$i) {
+            if (in_array($this->value[$i], $this->allowedCharacters) === false) {
                 $typeName = Identifier::getName($this->getType());
                 throw new Exception("Could not create a {$typeName} from the character sequence '{$this->value}'.");
             }
@@ -118,6 +120,7 @@ abstract class AbstractString extends Object implements Parsable
 
         $parsedObject->value = $string;
         $parsedObject->setContentLength($contentLength);
+
         return $parsedObject;
     }
 

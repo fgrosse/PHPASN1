@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -42,7 +43,7 @@ class NullObject extends Object implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::NULL, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        if ($contentLength != 0) {
+        if ($contentLength !== 0) {
             throw new ParserException("An ASN.1 Null should not have a length other than zero. Extracted length was {$contentLength}", $offsetIndex);
         }
 

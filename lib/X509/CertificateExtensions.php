@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -61,9 +62,9 @@ class CertificateExtensions extends Set implements Parsable
         $extensions = Sequence::fromBinary($binaryData, $offsetIndex);
         $tmpOffset += 1 + $extensions->getNumberOfLengthOctets();
 
-        $parsedObject = new CertificateExtensions();
+        $parsedObject = new self();
         foreach ($extensions as $extension) {
-            if ($extension->getType() != Identifier::SEQUENCE) {
+            if ($extension->getType() !== Identifier::SEQUENCE) {
                 //FIXME wrong offset index
                 throw new ParserException('Could not parse Certificate Extensions: Expected ASN.1 Sequence but got '.$extension->getTypeName(), $offsetIndex);
             }
@@ -79,13 +80,13 @@ class CertificateExtensions extends Set implements Parsable
             /** @var OctetString $octetString */
             $octetString = $children[1];
 
-            if ($objectIdentifier->getType() != Identifier::OBJECT_IDENTIFIER) {
+            if ($objectIdentifier->getType() !== Identifier::OBJECT_IDENTIFIER) {
                 throw new ParserException('Could not parse Certificate Extensions: Expected ASN.1 Object Identifier but got '.$extension->getTypeName(), $tmpOffset);
             }
 
             $tmpOffset += $objectIdentifier->getObjectLength();
 
-            if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
+            if ($objectIdentifier->getContent() === OID::CERT_EXT_SUBJECT_ALT_NAME) {
                 $sans = SubjectAlternativeNames::fromBinary($binaryData, $tmpOffset);
                 $parsedObject->addSubjectAlternativeNames($sans);
             } else {

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\ObjectIdentifier;
 
 class ObjectIdentifierTest extends ASN1TestCase
 {
-
     /**
      * @expectedException \FG\ASN1\Exception\GeneralException
      * @expectedExceptionMessage [1.Foo.3] is no valid object identifier (sub identifier 2 is not numeric)!
@@ -56,15 +56,15 @@ class ObjectIdentifierTest extends ASN1TestCase
     public function testGetBinary()
     {
         $object = new ObjectIdentifier('1.2.3');
-        $expectedType     = chr(Identifier::OBJECT_IDENTIFIER);
-        $expectedLength   = chr(0x02);
-        $expectedContent  = chr(1 * 40 + 2);
+        $expectedType = chr(Identifier::OBJECT_IDENTIFIER);
+        $expectedLength = chr(0x02);
+        $expectedContent = chr(1 * 40 + 2);
         $expectedContent .= chr(3);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
         $object = new ObjectIdentifier('1.2.250.1.16.9');
-        $expectedLength   = chr(0x06);
-        $expectedContent  = chr(1 * 40 + 2); // 1.2
+        $expectedLength = chr(0x06);
+        $expectedContent = chr(1 * 40 + 2); // 1.2
         $expectedContent .= chr(128 | 1);    // 250
         $expectedContent .= chr(122);        //
         $expectedContent .= chr(1);          //   1
@@ -92,7 +92,7 @@ class ObjectIdentifierTest extends ASN1TestCase
         $originalobject1 = new ObjectIdentifier('1.2.3');
         $originalobject2 = new ObjectIdentifier('1.2.250.1.16.9');
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;
@@ -111,7 +111,7 @@ class ObjectIdentifierTest extends ASN1TestCase
      */
     public function testFromBinaryWithMalformedOID()
     {
-        $binaryData  = chr(Identifier::OBJECT_IDENTIFIER);
+        $binaryData = chr(Identifier::OBJECT_IDENTIFIER);
         $binaryData .= chr(0x03);
         $binaryData .= chr(42);
         $binaryData .= chr(128 | 1);

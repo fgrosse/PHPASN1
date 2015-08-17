@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -21,7 +22,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class CertificateExtensionTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new CertificateExtensions();
@@ -39,13 +39,13 @@ class CertificateExtensionTest extends ASN1TestCase
         $object = new CertificateExtensions();
         $content = $object->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertTrue(sizeof($content) == 0);
+        $this->assertTrue(count($content) === 0);
 
         $sans = new SubjectAlternativeNames();
         $sans->addDomainName(new DNSName('corvespace.de'));
 
         $object->addSubjectAlternativeNames($sans);
-        $this->assertTrue(sizeof($object->getContent()) == 1);
+        $this->assertTrue(count($object->getContent()) === 1);
         $this->assertContains($sans, $object->getContent());
     }
 
@@ -72,7 +72,7 @@ class CertificateExtensionTest extends ASN1TestCase
 
         $expectedType = chr(Identifier::SET);
         $expectedLength = chr(2 + 2 + $objectIdentifier->getObjectLength() + $sans->getObjectLength());
-        $expectedContent  = chr(Identifier::SEQUENCE);
+        $expectedContent = chr(Identifier::SEQUENCE);
         $expectedContent .= chr(2 + $objectIdentifier->getObjectLength() + $sans->getObjectLength());
         $expectedContent .= chr(Identifier::SEQUENCE);
         $expectedContent .= chr($objectIdentifier->getObjectLength() + $sans->getObjectLength());
@@ -115,7 +115,7 @@ class CertificateExtensionTest extends ASN1TestCase
         $sans2->addDomainName(new DNSName('google.com'));
         $originalobject2->addSubjectAlternativeNames($sans2);
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

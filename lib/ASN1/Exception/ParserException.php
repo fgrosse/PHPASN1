@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -12,7 +13,6 @@ namespace FG\ASN1\Exception;
 
 class ParserException extends \Exception
 {
-
     private $errorMessage;
     private $offset;
 

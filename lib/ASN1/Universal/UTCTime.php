@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,7 @@ use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 
 /**
- * This ASN.1 universal type contains the calendar date and time
+ * This ASN.1 universal type contains the calendar date and time.
  *
  * The precision is one minute or one second and optionally a
  * local time differential from coordinated universal time.
@@ -51,9 +52,9 @@ class UTCTime extends AbstractTime implements Parsable
         $offsetIndex += 10;
 
         // extract optional seconds part
-        if ($binaryData[$offsetIndex] != 'Z'
-        && $binaryData[$offsetIndex] != '+'
-        && $binaryData[$offsetIndex] != '-') {
+        if ($binaryData[$offsetIndex] !== 'Z'
+        && $binaryData[$offsetIndex] !== '+'
+        && $binaryData[$offsetIndex] !== '-') {
             $dateTimeString .= substr($binaryData, $offsetIndex, 2);
             $offsetIndex += 2;
             $format .= 's';
@@ -62,14 +63,14 @@ class UTCTime extends AbstractTime implements Parsable
         $dateTime = \DateTime::createFromFormat($format, $dateTimeString, new \DateTimeZone('UTC'));
 
         // extract time zone settings
-        if ($binaryData[$offsetIndex] == '+'
-        || $binaryData[$offsetIndex] == '-') {
+        if ($binaryData[$offsetIndex] === '+'
+        || $binaryData[$offsetIndex] === '-') {
             $dateTime = static::extractTimeZoneData($binaryData, $offsetIndex, $dateTime);
-        } elseif ($binaryData[$offsetIndex++] != 'Z') {
+        } elseif ($binaryData[$offsetIndex++] !== 'Z') {
             throw new ParserException('Invalid UTC String', $offsetIndex);
         }
 
-        $parsedObject = new UTCTime($dateTime);
+        $parsedObject = new self($dateTime);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

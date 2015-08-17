@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -19,7 +20,6 @@ use FG\ASN1\Universal\Boolean;
 
 class SequenceTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Sequence();
@@ -35,7 +35,7 @@ class SequenceTest extends ASN1TestCase
     public function testContent()
     {
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $object = new Sequence($child1, $child2, $child3);
 
@@ -54,7 +54,7 @@ class SequenceTest extends ASN1TestCase
         $this->assertEquals(8, $object->getObjectLength());
 
         $child1 = new Integer(123);
-        $child2 = new PrintableString("Hello Wold");
+        $child2 = new PrintableString('Hello Wold');
         $child3 = new Boolean(true);
         $object = new Sequence($child1, $child2, $child3);
         $this->assertEquals(20, $object->getObjectLength());
@@ -74,7 +74,7 @@ class SequenceTest extends ASN1TestCase
         $child2 = new Boolean(true);
         $object = new Sequence($child1, $child2);
         $expectedLength = chr(0x06);
-        $expectedContent  = $child1->getBinary();
+        $expectedContent = $child1->getBinary();
         $expectedContent .= $child2->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
     }
@@ -107,7 +107,7 @@ class SequenceTest extends ASN1TestCase
             new Boolean(false)
         );
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

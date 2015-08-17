@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -13,7 +14,7 @@ use FG\ASN1\Identifier;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$hex = "a02b302906092a864886f70d01090e311c301a30180603551d110411300f820d636f72766573706163652e6465";
+$hex = 'a02b302906092a864886f70d01090e311c301a30180603551d110411300f820d636f72766573706163652e6465';
 $asn = Object::fromBinary(hex2bin($hex));
 
 function printObject(Object $object, $depth = 0)
@@ -23,18 +24,18 @@ function printObject(Object $object, $depth = 0)
     $depthString = str_repeat('━', $depth);
     if ($depth > 0) {
         $treeSymbol = '┣';
-        $name = ' ' . $name;
+        $name = ' '.$name;
     }
 
     echo "{$treeSymbol}{$depthString}{$name} : ";
-    echo $object->__toString() . PHP_EOL;
+    echo $object->__toString().PHP_EOL;
 
     $content = $object->getContent();
     if ($content instanceof Object) {
-        printObject($content, $depth+1);
-    } else if (is_array($content)) {
+        printObject($content, $depth + 1);
+    } elseif (is_array($content)) {
         foreach ($object as $child) {
-            printObject($child, $depth+1);
+            printObject($child, $depth + 1);
         }
     }
 }

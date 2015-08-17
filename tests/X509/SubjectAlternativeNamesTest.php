@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -18,7 +19,6 @@ use FG\X509\SAN\SubjectAlternativeNames;
 
 class SubjectAlternativeNamesTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new SubjectAlternativeNames();
@@ -36,16 +36,16 @@ class SubjectAlternativeNamesTest extends ASN1TestCase
         $object = new SubjectAlternativeNames();
         $content = $object->getContent();
         $this->assertTrue(is_array($content));
-        $this->assertTrue(sizeof($content) == 0);
+        $this->assertTrue(count($content) === 0);
 
         $dnsName = new DNSName('corvespace.de');
         $object->addDomainName($dnsName);
-        $this->assertTrue(sizeof($object->getContent()) == 1);
+        $this->assertTrue(count($object->getContent()) === 1);
         $this->assertContains($dnsName, $object->getContent());
 
         $ipAddress = new IPAddress('192.168.0.1');
         $object->addIP($ipAddress);
-        $this->assertTrue(sizeof($object->getContent()) == 2);
+        $this->assertTrue(count($object->getContent()) === 2);
         $this->assertContains($ipAddress, $object->getContent());
     }
 
@@ -66,7 +66,7 @@ class SubjectAlternativeNamesTest extends ASN1TestCase
 
         $expectedType = chr(Identifier::OCTETSTRING);
         $expectedLength = chr(0x13);
-        $expectedContent  = chr(Identifier::SEQUENCE);
+        $expectedContent = chr(Identifier::SEQUENCE);
         $expectedContent .= chr(0x11);
         $expectedContent .= $dnsName->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
@@ -98,7 +98,7 @@ class SubjectAlternativeNamesTest extends ASN1TestCase
         $originalobject2 = new SubjectAlternativeNames();
         $originalobject2->addDomainName(new DNSName('google.com'));
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

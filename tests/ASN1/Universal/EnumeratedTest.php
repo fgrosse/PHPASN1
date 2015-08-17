@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -16,7 +17,6 @@ use FG\ASN1\Universal\Enumerated;
 
 class EnumeratedTest extends ASN1TestCase
 {
-
     public function testGetType()
     {
         $object = new Enumerated(1);
@@ -67,8 +67,8 @@ class EnumeratedTest extends ASN1TestCase
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
         $object = new Enumerated(7420);
-        $expectedLength   = chr(0x02);
-        $expectedContent  = chr(0x1C);
+        $expectedLength = chr(0x02);
+        $expectedContent = chr(0x1C);
         $expectedContent .= chr(0xFC);
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
     }
@@ -102,7 +102,7 @@ class EnumeratedTest extends ASN1TestCase
         $originalobject1 = new Enumerated(1);
         $originalobject2 = new Enumerated(2);
 
-        $binaryData  = $originalobject1->getBinary();
+        $binaryData = $originalobject1->getBinary();
         $binaryData .= $originalobject2->getBinary();
 
         $offset = 0;

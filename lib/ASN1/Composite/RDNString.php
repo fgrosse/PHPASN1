@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the PHPASN1 library.
  *
@@ -18,7 +19,7 @@ class RDNString extends RelativeDistinguishedName
 {
     /**
      * @param string|\FG\ASN1\Universal\ObjectIdentifier $objectIdentifierString
-     * @param string|\FG\ASN1\Object $value
+     * @param string|\FG\ASN1\Object                     $value
      */
     public function __construct($objectIdentifierString, $value)
     {
