@@ -27,7 +27,8 @@ PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects tha
 * enforce one code style via [styleci.io][9]
 * track code coverage via [coveralls.io][10]
 * replace obsolete `FG\ASN1\Exception\GeneralException` with `\Exception`
-* `Construct` (`Sequence`, `Set`) does now implement `ArrayAccess`, `Countable` and `IteratorAggregate` so its easier to use 
+* `Construct` (`Sequence`, `Set`) does now implement `ArrayAccess`, `Countable` and `Iterator` so its easier to use
+* add [`TemplateParser`][11]
 
 ## Dependencies
 
@@ -94,6 +95,42 @@ $binaryData = base64_decode($base64String);
 $asnObject = Object::fromBinary($binaryData);
 // do stuff
 ```
+
+If you already know exactly how your expected data should look like you can use the `FG\ASN1\TemplateParser`:
+
+```php
+use FG\ASN1\TemplateParser;
+
+// first define your template
+$template = [
+    Identifier::SEQUENCE => [
+        Identifier::SET => [
+            Identifier::OBJECT_IDENTIFIER,
+            Identifier::SEQUENCE => [
+                Identifier::INTEGER,
+                Identifier::BITSTRING,
+            ]
+        ]
+    ]
+];
+
+// if your binary data is not matching the template you provided this will throw an `\Exception`:
+$parser = new TemplateParser();
+$object = $parser->parseBinary($data, $template);
+
+// there is also a convenience function if you parse binary data from base64:
+$object = $parser->parseBase64($data, $template);
+```
+
+You can use this function to make sure your data has exactly the format you are expecting.
+
+### Navigating decoded data
+
+All constructed classes (i.e. `Sequence` and `Set`) can be navigated by array access or using an iterator.
+You can find examples
+[here](https://github.com/fgrosse/PHPASN1/blob/f6442cadda9d36f3518c737e32f28300a588b777/tests/ASN1/Universal/SequenceTest.php#L148-148),
+[here](https://github.com/fgrosse/PHPASN1/blob/f6442cadda9d36f3518c737e32f28300a588b777/tests/ASN1/Universal/SequenceTest.php#L121) and 
+[here](https://github.com/fgrosse/PHPASN1/blob/f6442cadda9d36f3518c737e32f28300a588b777/tests/ASN1/TemplateParserTest.php#L45).
 
 
 ### Give me more examples!
