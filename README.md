@@ -25,7 +25,9 @@ PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects tha
 * **require PHP 5.6**
 * support big integers (closes #1 and #37)
 * enforce one code style via [styleci.io][9]
+* track code coverage via [coveralls.io][10]
 * replace obsolete `FG\ASN1\Exception\GeneralException` with `\Exception`
+* `Construct` (`Sequence`, `Set`) does now implement `ArrayAccess`, `Countable` and `IteratorAggregate` so its easier to use 
 
 ## Dependencies
 
@@ -123,3 +125,4 @@ This library is distributed under the [MIT License](LICENSE).
 [7]: http://php.net/manual/en/book.curl.php
 [8]: http://en.wikipedia.org/wiki/X.690#DER_encoding
 [9]: https://styleci.io
+[10]: https://coveralls.io/github/fgrosse/PHPASN1
