@@ -179,11 +179,8 @@ class CertificateExtensionTest extends ASN1TestCase
 
         $serialized = $extension->getBinary();
         $parsed = CertificateExtensions::fromBinary($serialized);
-
         for ($i = 0; $i < count($content); $i++) {
             $this->assertEquals($content[$i], $parsed->getContent()[$i]);
         }
-
-
     }
 }

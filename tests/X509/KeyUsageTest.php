@@ -36,6 +36,14 @@ class KeyUsageTest extends ASN1TestCase
         KeyUsage::makeFlagsFromNames(['unknown']);
     }
 
+    /**
+     * @expectedException \Exception
+     */
+    public function testDecodeRejectsNonIntegers()
+    {
+        KeyUsage::decodeFlags('unknown');
+    }
+
     public function testDecodesFlags()
     {
         $names = KeyUsage::getNames();
