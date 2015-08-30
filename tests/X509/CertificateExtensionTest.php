@@ -10,11 +10,14 @@
 
 namespace FG\Test\X509;
 
+use FG\ASN1\Object;
+use FG\ASN1\Universal\OctetString;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\OID;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\X509\CertificateExtensions;
+use FG\X509\KeyUsage;
 use FG\X509\SAN\DNSName;
 use FG\X509\SAN\IPAddress;
 use FG\X509\SAN\SubjectAlternativeNames;
@@ -125,5 +128,62 @@ class CertificateExtensionTest extends ASN1TestCase
         $parsedObject = CertificateExtensions::fromBinary($binaryData, $offset);
         $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals($offsetAfterFirstObject + $sans2->getObjectLength() + $objectIdentifier->getObjectLength() + 2  + 2 + 2, $offset);
+    }
+
+    private function assertCaExtensions(array $content)
+    {
+        /** @var Object[] $content */
+        $this->assertEquals(4, count($content));
+
+        $first = $content[0];
+        $this->assertEquals(Identifier::OCTETSTRING, $first->getType());
+
+        $second = $content[1];
+        $this->assertEquals(Identifier::SEQUENCE, $second->getType());
+        $secondContent = $second->getContent();
+        $this->assertEquals(Identifier::OCTETSTRING, $secondContent[0]->getType());
+
+        $third = $content[2];
+        $this->assertEquals(Identifier::SEQUENCE, $third->getType());
+        $thirdContent = $third->getContent();
+        $this->assertEquals(Identifier::BOOLEAN, $thirdContent[0]->getType());
+
+        $fourth = $content[3];
+        $this->assertEquals(Identifier::BITSTRING, $fourth->getType());
+
+    }
+
+    public function testCaExtensions()
+    {
+        $extension = new CertificateExtensions();
+
+        $hash = strtoupper(hash('sha256', 'test'));
+        $extension->addSubjectKeyIdentifier($hash);
+        $extension->addIssuerKeyIdentifier($hash);
+        $extension->addCertAuthorityConstraint(true);
+
+        $i = KeyUsage::KEY_ENCIPHERMENT | KeyUsage::NON_REPUDIATION;
+        $eHex = decHex($i);
+        $eHex = strlen($eHex) % 2 == 1 ? '0' . $eHex : $eHex;
+
+        $extension->addKeyUsage($i);
+        /** @var Object[] $content */
+        $content = $extension->getContent();
+
+        $this->assertCaExtensions($content);
+
+        $this->assertEquals($hash, $content[0]->getContent());
+        $this->assertEquals($hash, $content[1]->getContent()[0]->getContent());
+        $this->assertTrue(true, $content[2]->getContent()[0]->getContent());
+        $this->assertEquals($eHex, $content[3]->getContent());
+
+        $serialized = $extension->getBinary();
+        $parsed = CertificateExtensions::fromBinary($serialized);
+
+        for ($i = 0; $i < count($content); $i++) {
+            $this->assertEquals($content[$i], $parsed->getContent()[$i]);
+        }
+
+
     }
 }
