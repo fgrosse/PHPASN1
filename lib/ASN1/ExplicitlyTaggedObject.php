@@ -95,7 +95,7 @@ class ExplicitlyTaggedObject extends Object
         $decoratedObject = Object::fromBinary($binaryData, $offsetIndex);
         $decoratedObjectLength = $decoratedObject->getObjectLength();
         if ($decoratedObjectLength != $contentLength) {
-            throw new ParserException("Context-Specific explicitly tagged object [$tag] starting at offset $offsetIndexOfDecoratedObject is ".($decoratedObjectLength < $contentLength ? 'shorter than required' : 'longer than allowed')." in the outer tag", $offsetIndexOfDecoratedObject);
+            throw new ParserException("Context-Specific explicitly tagged object [$tag] starting at offset $offsetIndexOfDecoratedObject is ".($decoratedObjectLength < $contentLength ? 'shorter than required' : 'longer than allowed').' in the outer tag', $offsetIndexOfDecoratedObject);
         }
 
         $parsedObject = new self($tag, $decoratedObject);
