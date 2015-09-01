@@ -202,7 +202,7 @@ abstract class Object implements Parsable
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        if (strlen($binaryData) < $offsetIndex) {
+        if (strlen($binaryData) <= $offsetIndex) {
             throw new ParserException('Can not parse binary from data: Offset index larger than input size', $offsetIndex);
         }
 
@@ -288,6 +288,10 @@ abstract class Object implements Parsable
 
     protected static function parseBinaryIdentifier($binaryData, &$offsetIndex)
     {
+        if (strlen($binaryData) <= $offsetIndex) {
+            throw new ParserException('Can not parse binary identifier from data: Offset index larger than input size', $offsetIndex);
+        }
+
         $identifier = $binaryData[$offsetIndex++];
 
         if (Identifier::isLongForm(ord($identifier)) == false) {
@@ -295,6 +299,9 @@ abstract class Object implements Parsable
         }
 
         while (true) {
+            if (strlen($binaryData) <= $offsetIndex) {
+                throw new ParserException('Can not parse binary identifier from data: Offset index larger than input size', $offsetIndex);
+            }
             $nextOctet = $binaryData[$offsetIndex++];
             $identifier .= $nextOctet;
 
@@ -309,13 +316,19 @@ abstract class Object implements Parsable
 
     protected static function parseContentLength(&$binaryData, &$offsetIndex, $minimumLength = 0)
     {
-        $contentLength = ord($binaryData[$offsetIndex++]);
+        if (strlen($binaryData) <= $offsetIndex) {
+            throw new ParserException('Can not parse content length from data: Offset index larger than input size', $offsetIndex);
+        }
 
+        $contentLength = ord($binaryData[$offsetIndex++]);
         if (($contentLength & 0x80) != 0) {
             // bit 8 is set -> this is the long form
             $nrOfLengthOctets = $contentLength & 0x7F;
             $contentLength = 0x00;
             for ($i = 0; $i < $nrOfLengthOctets; $i++) {
+                if (strlen($binaryData) <= $offsetIndex) {
+                    throw new ParserException('Can not parse content length (long form) from data: Offset index larger than input size', $offsetIndex);
+                }
                 $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
             }
         }
