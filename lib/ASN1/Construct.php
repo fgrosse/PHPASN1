@@ -21,12 +21,9 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Itera
     protected $children;
     private $iteratorPosition;
 
-    /**
-     * @param Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
-     */
-    public function __construct(/* HH_FIXME[4858]: variadic + strict */ ...$children)
+    public function __construct(Object $child1 = null, Object $child2 = null, Object $childN = null)
     {
-        $this->children = $children;
+        $this->children = func_get_args();
         $this->iteratorPosition = 0;
     }
 

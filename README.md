@@ -18,6 +18,12 @@ The API allows you to encode ASN.1 structures to create binary data such as cert
 signing requests (CSR), X.509 certificates or certificate revocation lists (CRL).
 PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
+## About this branch
+
+**This branch is basically deprecated and only here for everybody who can not update to PHP5.6 yet and still needs to use PHP5.5.**
+
+I highly recommend moving to PHP 5.6 on the main branch since new PHPASN1 features are not guaranteed to be merged into this branch. 
+
 ## Changelog
 
 #### v.1.4.0

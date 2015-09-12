@@ -39,8 +39,9 @@ abstract class AbstractString extends Object implements Parsable
         $this->allowedCharacters[] = $character;
     }
 
-    protected function allowCharacters(...$characters)
+    protected function allowCharacters($character1, $character2 = null, $characterN = null)
     {
+        $characters = func_get_args();
         foreach ($characters as $character) {
             $this->allowedCharacters[] = $character;
         }
