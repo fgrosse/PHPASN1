@@ -289,7 +289,7 @@ abstract class Object implements Parsable
     protected static function parseBinaryIdentifier($binaryData, &$offsetIndex)
     {
         if (strlen($binaryData) <= $offsetIndex) {
-            throw new ParserException('Can not parse binary identifier from data: Offset index larger than input size', $offsetIndex);
+            throw new ParserException('Can not parse identifier from data: Offset index larger than input size', $offsetIndex);
         }
 
         $identifier = $binaryData[$offsetIndex++];
@@ -300,7 +300,7 @@ abstract class Object implements Parsable
 
         while (true) {
             if (strlen($binaryData) <= $offsetIndex) {
-                throw new ParserException('Can not parse binary identifier from data: Offset index larger than input size', $offsetIndex);
+                throw new ParserException('Can not parse identifier (long form) from data: Offset index larger than input size', $offsetIndex);
             }
             $nextOctet = $binaryData[$offsetIndex++];
             $identifier .= $nextOctet;
