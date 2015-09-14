@@ -11,11 +11,12 @@
 namespace FG\Test\ASN1;
 
 use FG\ASN1\Identifier;
+use FG\ASN1\Object;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\ASN1\Universal\PrintableString;
 
-class ExplicitlyTaggedConstructTest extends ASN1TestCase
+class ExplicitlyTaggedObjectTest extends ASN1TestCase
 {
     public function testGetType()
     {
