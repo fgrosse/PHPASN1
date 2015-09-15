@@ -95,6 +95,7 @@ class SetTest extends ASN1TestCase
     /*
      * @depends testFromBinary
      */
+
     public function testFromBinaryWithOffset()
     {
         $originalObject1 = new Set(

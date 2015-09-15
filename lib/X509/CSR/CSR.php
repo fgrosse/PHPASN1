@@ -94,34 +94,42 @@ class CSR extends Sequence
     {
         return self::CSR_VERSION_NR;
     }
+
     public function getOrganizationName()
     {
         return $this->subject->getOrganization();
     }
+
     public function getLocalName()
     {
         return $this->subject->getLocality();
     }
+
     public function getState()
     {
         return $this->subject->getState();
     }
+
     public function getCountry()
     {
         return $this->subject->getCountry();
     }
+
     public function getOrganizationalUnit()
     {
         return $this->subject->getOrganizationalUnit();
     }
+
     public function getPublicKey()
     {
         return $this->publicKey;
     }
+
     public function getSignature()
     {
         return $this->signature;
     }
+
     public function getSignatureAlgorithm()
     {
         return $this->signatureAlgorithm;
