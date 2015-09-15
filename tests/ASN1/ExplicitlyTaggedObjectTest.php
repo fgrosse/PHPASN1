@@ -15,7 +15,7 @@ use FG\Test\ASN1TestCase;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\ASN1\Universal\PrintableString;
 
-class ExplicitlyTaggedConstructTest extends ASN1TestCase
+class ExplicitlyTaggedObjectTest extends ASN1TestCase
 {
     public function testGetType()
     {
@@ -86,5 +86,29 @@ class ExplicitlyTaggedConstructTest extends ASN1TestCase
             [0x02],
             [0x00004002],
         ];
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Context-Specific explicitly tagged object [1] starting at offset 2 is shorter than required in the outer tag
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithInvalidOuterLengthThrowsException1()
+    {
+        $data = hex2bin('a104040101');
+        //                  ^- this is wrong. correct would be "3"
+        ExplicitlyTaggedObject::fromBinary($data);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Context-Specific explicitly tagged object [1] starting at offset 2 is longer than allowed in the outer tag
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithInvalidOuterLengthThrowsException2()
+    {
+        $data = hex2bin('a102040101');
+        //                  ^- this is wrong. correct would be "3"
+        ExplicitlyTaggedObject::fromBinary($data);
     }
 }
