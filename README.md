@@ -145,6 +145,10 @@ If you found an issue or have a question submit a github issue with detailed inf
 In case you already know what caused the issue and feel in the mood to fix it, your code contributions are always welcome. Just fork the repository, implement your changes and make sure that you covered everything with tests.
 Afterwards submit a pull request via github and be a little patient :) I usually try to comment and/or merge as soon as possible.
 
+#### Mailing list
+
+New features or questions can be discussed in [this google group/mailing list][12].
+
 ### Thanks
 
 To [all contributors][1] so far!
@@ -164,3 +168,4 @@ This library is distributed under the [MIT License](LICENSE).
 [9]: https://styleci.io
 [10]: https://coveralls.io/github/fgrosse/PHPASN1
 [11]: https://github.com/fgrosse/PHPASN1/blob/master/tests/ASN1/TemplateParserTest.php#L16
+[12]: https://groups.google.com/d/forum/phpasn1
