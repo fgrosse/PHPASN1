@@ -15,8 +15,6 @@ use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
-use FG\ASN1\Universal\BitString;
-use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\Set;
 use FG\ASN1\Universal\Sequence;
@@ -34,40 +32,39 @@ class CertificateExtensions extends Set implements Parsable
         parent::__construct($this->innerSequence);
     }
 
+    public function addBasicConstraints(BasicConstraints $constraints)
+    {
+        $this->addExtension(OID::CERT_EXT_BASIC_CONSTRAINTS, $constraints);
+    }
+
+    public function addKeyUsage(KeyUsage $keyUsage)
+    {
+        $this->addExtension(OID::CERT_EXT_KEY_USAGE, $keyUsage);
+    }
+
+    public function addExtendedKeyUsage(ExtendedKeyUsage $usage)
+    {
+        $this->addExtension(OID::CERT_EXT_EXTENDED_KEY_USAGE, $usage);
+    }
+
     public function addSubjectAlternativeNames(SubjectAlternativeNames $sans)
     {
         $this->addExtension(OID::CERT_EXT_SUBJECT_ALT_NAME, $sans);
     }
 
-    public function addSubjectKeyIdentifier($hashHex)
+    public function addSubjectKeyIdentifier(SubjectKeyIdentifier $identifier)
     {
         $this->addEmbeddedExtension(
             OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER,
-            new OctetString($hashHex)
+            $identifier
         );
     }
 
-    public function addIssuerKeyIdentifier($hashHex)
+    public function addAuthorityKeyIdentifier(AuthorityKeyIdentifier $identifier)
     {
         $this->addEmbeddedExtension(
             OID::CERT_EXT_AUTHORITY_KEY_IDENTIFIER,
-            new Sequence(new OctetString($hashHex))
-        );
-    }
-
-    public function addCertAuthorityConstraint($flag)
-    {
-        $this->addEmbeddedExtension(
-            OID::CERT_EXT_BASIC_CONSTRAINTS,
-            new Sequence(new Boolean($flag))
-        );
-    }
-
-    public function addKeyUsage($bitmap)
-    {
-        $this->addExtension(
-            OID::CERT_EXT_KEY_USAGE,
-            new BitString(dechex($bitmap))
+            $identifier
         );
     }
 
@@ -133,19 +130,18 @@ class CertificateExtensions extends Set implements Parsable
             if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
                 $sans = SubjectAlternativeNames::fromBinary($binaryData, $tmpOffset);
                 $parsedObject->addSubjectAlternativeNames($sans);
-            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER) {
-                $identifier = Object::fromBinary(hex2bin($octetString->getContent()))->getContent();
-                $parsedObject->addSubjectKeyIdentifier($identifier);
-            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_AUTHORITY_KEY_IDENTIFIER) {
-                $identifier = Object::fromBinary(hex2bin($octetString->getContent()))[0]->getContent();
-                $parsedObject->addIssuerKeyIdentifier($identifier);
             } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_BASIC_CONSTRAINTS) {
-                $sequence = Object::fromBinary(hex2bin($octetString->getContent()));
-                $bool = $sequence->getContent()[0]->getContent() == 'TRUE';
-                $parsedObject->addCertAuthorityConstraint($bool);
+                $constraints = BasicConstraints::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addBasicConstraints($constraints);
             } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_KEY_USAGE) {
-                $dec = (int) gmp_strval(gmp_init($octetString->getContent(), 16), 10);
-                $parsedObject->addKeyUsage($dec);
+                $keyUsage = KeyUsage::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addKeyUsage($keyUsage);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_EXTENDED_KEY_USAGE) {
+                $extKeyUsage = ExtendedKeyUsage::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addExtendedKeyUsage($extKeyUsage);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER) {
+                $subjectKey = SubjectKeyIdentifier::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addSubjectKeyIdentifier($subjectKey);
             } else {
                 // can now only parse SANs. There might be more in the future
                 $tmpOffset += $octetString->getObjectLength();

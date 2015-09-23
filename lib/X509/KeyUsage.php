@@ -3,77 +3,98 @@
 namespace FG\X509;
 
 
-use FG\ASN1\OID;
+use FG\ASN1\Identifier;
+use FG\ASN1\Object;
+use FG\ASN1\Parsable;
+use FG\ASN1\Universal\BitString;
 
-class KeyUsage
+class KeyUsage extends Object implements Parsable
 {
-    const OID = OID::CERT_EXT_KEY_USAGE;
-    const BITMAP_SIZE = 8;
-    const DIGITAL_SIGNATURE = 0;
-    const NON_REPUDIATION = 1;
-    const KEY_ENCIPHERMENT = 2;
-    const DATA_ENCIPHERMENT = 3;
-    const KEY_AGREEMENT = 4;
-    const KEY_CERT_SIGN = 5;
-    const CRL_SIGN = 6;
-    const ENCIPHER_ONLY = 7;
-    const DECIPHER_ONLY = 8;
-
-    static private $keyMap = [
-        'digitalSignature' => self::DIGITAL_SIGNATURE,
-        'nonRepudiation' => self::NON_REPUDIATION,
-        'keyEncipherment' => self::KEY_ENCIPHERMENT,
-        'dataEncipherment' => self::DATA_ENCIPHERMENT,
-        'keyAgreement' => self::KEY_AGREEMENT,
-        'keyCertSign' => self::KEY_CERT_SIGN,
-        'cRLSign' => self::CRL_SIGN,
-        'encipherOnly' => self::ENCIPHER_ONLY,
-        'decipherOnly' => self::DECIPHER_ONLY
-    ];
+    /**
+     * @var resource|\Gmp
+     */
+    private $mask;
+    /**
+     * @var bool
+     */
+    private $changed = false;
 
     /**
-     * @return string[]
+     * @var BitString
      */
-    public static function getNames()
+    private $bitString;
+
+    public function __construct()
     {
-        return array_keys(self::$keyMap);
+        $this->mask = gmp_init(0, 10);
+        $this->bitString = new BitString(0);
+    }
+
+    public function addBits($flags)
+    {
+        $theirBits = gmp_init($flags, 10);
+
+        for ($i = 0; $i < 8; $i++) {
+            if (gmp_testbit($theirBits, $i) && !$this->testBit($i)) {
+                $this->setBit($i);
+            }
+        }
+    }
+
+    public function setBit($index)
+    {
+        if (!($index >= 0 && $index < 8)) {
+            throw new \InvalidArgumentException('KeyUsage: bit index must be within 0 - 7');
+        }
+
+        $this->changed = true;
+        gmp_setbit($this->mask, $index);
+    }
+
+    public function testBit($index)
+    {
+        return gmp_testbit($this->mask, $index);
+    }
+
+    public function getType()
+    {
+        return Identifier::BITSTRING;
     }
 
     /**
-     * @param array $keys
-     * @return int
+     * @return BitString
      */
-    public static function makeFlagsFromNames(array $keys)
+    public function getContent()
     {
-        $flags = 0;
-        foreach ($keys as $indicator) {
-            if (!is_string($indicator) || !isset(self::$keyMap[$indicator])) {
-                throw new \RuntimeException('Invalid KeyUsage indicator');
-            }
-            $flags |= self::$keyMap[$indicator];
+        if ($this->changed) {
+            $this->bitString = new BitString(gmp_strval($this->mask, 10));
         }
 
-        return $flags;
+        return $this->bitString;
     }
 
-    /**
-     * @param int $flags
-     * @return string[]
-     */
-    public static function decodeFlags($flags)
+    protected function calculateContentLength()
     {
-        if (!is_numeric($flags)) {
-            throw new \RuntimeException('Flags must be an integer');
+        return $this->getContent()->calculateContentLength();
+    }
+
+    protected function getEncodedValue()
+    {
+        return $this->getContent()->getEncodedValue();
+    }
+
+    public static function fromBinary(&$binaryData, &$offsetIndex = 0)
+    {
+        $o = BitString::fromBinary($binaryData, $offsetIndex);
+        $content = $o->getContent();
+        if (strlen($content) !== 2) {
+            throw new \RuntimeException('KeyUsage must be a Bit String of one byte');
         }
 
-        $reverseMap = array_flip(self::$keyMap);
-        $found = [];
-        for ($testBit = 0; $testBit <= self::BITMAP_SIZE; $testBit++) {
-            if ($flags & $testBit == $testBit) {
-                $found[] = $reverseMap[$testBit];
-            }
-        }
+        $dec = hexdec($content);
+        $parsedObject = new self;
+        $parsedObject->addBits($dec);
 
-        return $found;
+        return $parsedObject;
     }
 }
