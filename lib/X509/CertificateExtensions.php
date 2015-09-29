@@ -73,7 +73,7 @@ class CertificateExtensions extends Set implements Parsable
             if (count($children) < 2) {
                 throw new ParserException('Could not parse Certificate Extensions: Needs at least two child elements per extension sequence (object identifier and octet string)', $tmpOffset);
             }
-            /** @var Object $objectIdentifier */
+            /** @var \FG\ASN1\Object $objectIdentifier */
             $objectIdentifier = $children[0];
 
             /** @var OctetString $octetString */

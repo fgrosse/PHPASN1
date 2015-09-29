@@ -19,7 +19,7 @@ class TemplateParser
     /**
      * @param string $data
      * @param array $template
-     * @return Object|Sequence
+     * @return \FG\ASN1\Object|Sequence
      * @throws ParserException if there was an issue parsing
      */
     public function parseBase64($data, array $template)
@@ -31,7 +31,7 @@ class TemplateParser
     /**
      * @param string $binary
      * @param array $template
-     * @return Object|Sequence
+     * @return \FG\ASN1\Object|Sequence
      * @throws ParserException if there was an issue parsing
      */
     public function parseBinary($binary, array $template)

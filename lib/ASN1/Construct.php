@@ -17,12 +17,12 @@ use Iterator;
 
 abstract class Construct extends Object implements Countable, ArrayAccess, Iterator, Parsable
 {
-    /** @var Object[] */
+    /** @var \FG\ASN1\Object[] */
     protected $children;
     private $iteratorPosition;
 
     /**
-     * @param Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
+     * @param \FG\ASN1\Object[] $children the variadic type hint is commented due to https://github.com/facebook/hhvm/issues/4858
      */
     public function __construct(/* HH_FIXME[4858]: variadic + strict */ ...$children)
     {
@@ -130,7 +130,7 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Itera
     }
 
     /**
-     * @return Object[]
+     * @return \FG\ASN1\Object[]
      */
     public function getChildren()
     {
@@ -138,7 +138,7 @@ abstract class Construct extends Object implements Countable, ArrayAccess, Itera
     }
 
     /**
-     * @return Object
+     * @return \FG\ASN1\Object
      */
     public function getFirstChild()
     {

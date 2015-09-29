@@ -77,7 +77,7 @@ class SubjectAlternativeNames extends Object implements Parsable
         }
 
         $parsedObject = new self();
-        /** @var Object $object */
+        /** @var \FG\ASN1\Object $object */
         foreach ($sequence as $object) {
             if ($object->getType() == DNSName::IDENTIFIER) {
                 $domainName = DNSName::fromBinary($binaryData, $offsetOfSequence);
