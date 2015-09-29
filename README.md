@@ -21,6 +21,12 @@ PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects tha
 
 ## Changelog
 
+#### v.1.4.2
+* fix a bug that would prevent you from decoding empty tagged objects [#57](https://github.com/fgrosse/PHPASN1/issues/57)
+
+#### v.1.4.1
+* improve exception messages and general error handling [#55](https://github.com/fgrosse/PHPASN1/pull/55)
+
 #### v.1.4.0
 * **require PHP 5.6**
 * support big integers (closes #1 and #37)
