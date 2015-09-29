@@ -87,4 +87,14 @@ class ExplicitlyTaggedConstructTest extends ASN1TestCase
             [0x00004002],
         ];
     }
+
+    public function testFromBinaryWithZeroContent()
+    {
+        $data = hex2bin('A000');
+        $object =ExplicitlyTaggedObject::fromBinary($data);
+        $this->assertEquals(2, $object->getObjectLength());
+        $this->assertNull($object->getContent());
+        $this->assertEquals('Context specific empty object with tag [0]', $object->__toString());
+        $this->assertEquals($data, $object->getBinary());
+    }
 }
