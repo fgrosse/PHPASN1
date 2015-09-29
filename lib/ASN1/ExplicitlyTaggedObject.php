@@ -36,9 +36,9 @@ class ExplicitlyTaggedObject extends Object
 
     /**
      * @param int $tag
-     * @param \FG\ASN1\Object $object
+     * @param \FG\ASN1\Object|null $object
      */
-    public function __construct($tag, Object $object)
+    public function __construct($tag, Object $object = null)
     {
         $this->tag = $tag;
         $this->decoratedObject = $object;
@@ -46,12 +46,20 @@ class ExplicitlyTaggedObject extends Object
 
     protected function calculateContentLength()
     {
-        return $this->decoratedObject->getObjectLength();
+        if (isset($this->decoratedObject)) {
+            return $this->decoratedObject->getObjectLength();
+        } else {
+            return 0;
+        }
     }
 
     protected function getEncodedValue()
     {
-        return $this->decoratedObject->getBinary();
+        if (isset($this->decoratedObject)) {
+            return $this->decoratedObject->getBinary();
+        } else {
+            return '';
+        }
     }
 
     public function getContent()
@@ -61,8 +69,12 @@ class ExplicitlyTaggedObject extends Object
 
     public function __toString()
     {
-        $decoratedType = Identifier::getShortName($this->decoratedObject->getType());
-        return "Context specific $decoratedType with tag [{$this->tag}]";
+        if (isset($this->decoratedObject)) {
+            $decoratedType = Identifier::getShortName($this->decoratedObject->getType());
+            return "Context specific $decoratedType with tag [{$this->tag}]";
+        } else {
+            return "Context specific empty object with tag [{$this->tag}]";
+        }
     }
 
     public function getType()
@@ -91,6 +103,10 @@ class ExplicitlyTaggedObject extends Object
         $tag = Identifier::getTagNumber($identifier);
 
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
+        if ($contentLength == 0) {
+            return new self($tag);
+        }
+
         $offsetIndexOfDecoratedObject = $offsetIndex;
         $decoratedObject = Object::fromBinary($binaryData, $offsetIndex);
         $decoratedObjectLength = $decoratedObject->getObjectLength();

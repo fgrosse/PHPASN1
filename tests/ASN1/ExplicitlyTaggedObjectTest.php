@@ -111,4 +111,14 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
         //                  ^- this is wrong. correct would be "3"
         ExplicitlyTaggedObject::fromBinary($data);
     }
+
+    public function testFromBinaryWithZeroContent()
+    {
+        $data = hex2bin('A000');
+        $object = ExplicitlyTaggedObject::fromBinary($data);
+        $this->assertEquals(2, $object->getObjectLength());
+        $this->assertNull($object->getContent());
+        $this->assertEquals('Context specific empty object with tag [0]', $object->__toString());
+        $this->assertEquals($data, $object->getBinary());
+    }
 }
