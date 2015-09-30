@@ -11,6 +11,8 @@
 namespace FG\Test\ASN1;
 
 use FG\ASN1\Identifier;
+use FG\ASN1\Universal\Boolean;
+use FG\ASN1\Universal\Integer;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\ASN1\Universal\PrintableString;
@@ -51,7 +53,7 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
     {
         $string = new PrintableString('test');
         $object = new ExplicitlyTaggedObject(0, $string);
-        $this->assertEquals($string, $object->getContent());
+        $this->assertEquals([$string], $object->getContent());
     }
 
     public function testGetBinary()
@@ -88,37 +90,29 @@ class ExplicitlyTaggedObjectTest extends ASN1TestCase
         ];
     }
 
-    /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Context-Specific explicitly tagged object [1] starting at offset 2 is shorter than required in the outer tag
-     * @depends testFromBinary
-     */
-    public function testFromBinaryWithInvalidOuterLengthThrowsException1()
-    {
-        $data = hex2bin('a104040101');
-        //                  ^- this is wrong. correct would be "3"
-        ExplicitlyTaggedObject::fromBinary($data);
-    }
-
-    /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Context-Specific explicitly tagged object [1] starting at offset 2 is longer than allowed in the outer tag
-     * @depends testFromBinary
-     */
-    public function testFromBinaryWithInvalidOuterLengthThrowsException2()
-    {
-        $data = hex2bin('a102040101');
-        //                  ^- this is wrong. correct would be "3"
-        ExplicitlyTaggedObject::fromBinary($data);
-    }
-
     public function testFromBinaryWithZeroContent()
     {
         $data = hex2bin('A000');
         $object = ExplicitlyTaggedObject::fromBinary($data);
         $this->assertEquals(2, $object->getObjectLength());
-        $this->assertNull($object->getContent());
+        $this->assertEquals([], $object->getContent());
         $this->assertEquals('Context specific empty object with tag [0]', $object->__toString());
         $this->assertEquals($data, $object->getBinary());
+    }
+
+    public function testFromBinaryWithMultipleObjects()
+    {
+        $object1 = new Boolean(true);
+        $object2 = new Integer(42);
+
+        $identifier = 0xA0;
+        $length = $object1->getObjectLength()+$object2->getObjectLength();
+        $data = chr($identifier).chr($length).$object1->getBinary().$object2->getBinary();
+
+        $object = ExplicitlyTaggedObject::fromBinary($data);
+        $this->assertEquals(2+$length, $object->getObjectLength());
+        $this->assertEquals([$object1, $object2], $object->getContent());
+        $this->assertEquals($data, $object->getBinary());
+        $this->assertEquals('2 context specific objects with tag [0]', $object->__toString());
     }
 }

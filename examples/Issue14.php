@@ -9,6 +9,7 @@
  */
 
 require_once __DIR__.'/../vendor/autoload.php';
+require_once 'shared.php';
 
 use FG\ASN1\OID;
 use FG\ASN1\Object;
@@ -16,27 +17,6 @@ use FG\ASN1\Identifier;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\OctetString;
 use FG\ASN1\Universal\Sequence;
-
-function printObject(Object $object, $depth = 0)
-{
-    $treeSymbol = '';
-    $depthString = str_repeat('─', $depth);
-    if ($depth > 0) {
-        $treeSymbol = '├';
-    }
-
-    $name = Identifier::getShortName($object->getType());
-    echo "{$treeSymbol}{$depthString}{$name} : ";
-
-    echo $object->__toString().PHP_EOL;
-
-    $content = $object->getContent();
-    if (is_array($content)) {
-        foreach ($object as $child) {
-            printObject($child, $depth + 1);
-        }
-    }
-}
 
 $base64 = 'MIIINTCCBh2gAwIBAgIQbVVJc10C7UUjfYRHQ//7nTANBgkqhkiG9w0BAQsFADB0
 MQswCQYDVQQGEwJCUjETMBEGA1UEChMKSUNQLUJyYXNpbDEtMCsGA1UECxMkQ2Vy
