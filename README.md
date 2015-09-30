@@ -21,6 +21,11 @@ PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects tha
 
 ## Changelog
 
+#### v.1.5.0
+* fix a bug that would prevent you from decoding context specific tags on multiple objects [#57](https://github.com/fgrosse/PHPASN1/issues/57)
+  - `ExplicitlyTaggedObject::__construct` does now accept multiple objects to be tagged with a single tag
+  - `ExplicitlyTaggedObject::getContent` will now always return an array (even if only one object is tagged)
+
 #### v.1.4.2
 * fix a bug that would prevent you from decoding empty tagged objects [#57](https://github.com/fgrosse/PHPASN1/issues/57)
 
