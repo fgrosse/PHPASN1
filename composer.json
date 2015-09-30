@@ -39,8 +39,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.4.x-dev",
-            "dev-compat/php5-5": "1.4.x-dev"
+            "dev-master": "1.5.x-dev",
+            "dev-compat/php5-5": "1.5.x-dev"
         }
     }
 }
