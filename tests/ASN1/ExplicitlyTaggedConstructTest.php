@@ -11,6 +11,8 @@
 namespace FG\Test\ASN1;
 
 use FG\ASN1\Identifier;
+use FG\ASN1\Universal\Boolean;
+use FG\ASN1\Universal\Integer;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\ExplicitlyTaggedObject;
 use FG\ASN1\Universal\PrintableString;
@@ -51,7 +53,7 @@ class ExplicitlyTaggedConstructTest extends ASN1TestCase
     {
         $string = new PrintableString('test');
         $object = new ExplicitlyTaggedObject(0, $string);
-        $this->assertEquals($string, $object->getContent());
+        $this->assertEquals([$string], $object->getContent());
     }
 
     public function testGetBinary()
@@ -93,8 +95,24 @@ class ExplicitlyTaggedConstructTest extends ASN1TestCase
         $data = hex2bin('A000');
         $object =ExplicitlyTaggedObject::fromBinary($data);
         $this->assertEquals(2, $object->getObjectLength());
-        $this->assertNull($object->getContent());
+        $this->assertEquals([], $object->getContent());
         $this->assertEquals('Context specific empty object with tag [0]', $object->__toString());
         $this->assertEquals($data, $object->getBinary());
+    }
+
+    public function testFromBinaryWithMultipleObjects()
+    {
+        $object1 = new Boolean(true);
+        $object2 = new Integer(42);
+
+        $identifier = 0xA0;
+        $length = $object1->getObjectLength()+$object2->getObjectLength();
+        $data = chr($identifier).chr($length).$object1->getBinary().$object2->getBinary();
+
+        $object = ExplicitlyTaggedObject::fromBinary($data);
+        $this->assertEquals(2+$length, $object->getObjectLength());
+        $this->assertEquals([$object1, $object2], $object->getContent());
+        $this->assertEquals($data, $object->getBinary());
+        $this->assertEquals('2 context specific objects with tag [0]', $object->__toString());
     }
 }
