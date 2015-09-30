@@ -39,7 +39,7 @@ class ExplicitlyTaggedObject extends Object
      * @param int $tag
      * @param \FG\ASN1\Object $objects,...
      */
-    public function __construct($tag, Object ...$objects)
+    public function __construct($tag, /* HH_FIXME[4858]: variadic + strict */ ...$objects)
     {
         $this->tag = $tag;
         $this->decoratedObjects = $objects;
