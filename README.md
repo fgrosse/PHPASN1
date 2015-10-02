@@ -19,27 +19,7 @@ The API allows you to encode ASN.1 structures to create binary data such as cert
 signing requests (CSR), X.509 certificates or certificate revocation lists (CRL).
 PHPASN1 can also read [BER encoded][6] binary data into separate PHP objects that can be manipulated by the user and reencoded afterwards.
 
-## Changelog
-
-#### v.1.5.0
-* fix a bug that would prevent you from decoding context specific tags on multiple objects [#57](https://github.com/fgrosse/PHPASN1/issues/57)
-  - `ExplicitlyTaggedObject::__construct` does now accept multiple objects to be tagged with a single tag
-  - `ExplicitlyTaggedObject::getContent` will now always return an array (even if only one object is tagged)
-
-#### v.1.4.2
-* fix a bug that would prevent you from decoding empty tagged objects [#57](https://github.com/fgrosse/PHPASN1/issues/57)
-
-#### v.1.4.1
-* improve exception messages and general error handling [#55](https://github.com/fgrosse/PHPASN1/pull/55)
-
-#### v.1.4.0
-* **require PHP 5.6**
-* support big integers (closes #1 and #37)
-* enforce one code style via [styleci.io][9]
-* track code coverage via [coveralls.io][10]
-* replace obsolete `FG\ASN1\Exception\GeneralException` with `\Exception`
-* `Construct` (`Sequence`, `Set`) does now implement `ArrayAccess`, `Countable` and `Iterator` so its easier to use
-* add [`TemplateParser`][11]
+The **changelog** can now be found at [CHANGELOG.md](CHANGELOG.md).
 
 ## Dependencies
 
