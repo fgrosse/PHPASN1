@@ -46,7 +46,7 @@ class BasicConstraints extends Object implements Parsable
             return null;
         }
 
-        return $this->constraintsSequence->getContent();
+        return $this->constraintsSequence[1];
     }
 
     public function getType()
@@ -73,7 +73,6 @@ class BasicConstraints extends Object implements Parsable
     {
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::SEQUENCE, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
-
         if ($contentLength < 1) {
             throw new ParserException('Can not parse Extended Key Usage', $offsetIndex);
         }
@@ -89,7 +88,7 @@ class BasicConstraints extends Object implements Parsable
         $parsedObject = new self();
         $isCa = Boolean::fromBinary($binaryData, $offsetOfSequence);
         $parsedObject->setCa($isCa);
-        if ($contentLength == 2) {
+        if (count($sequence) == 2) {
             /** @var \FG\ASN1\Universal\Integer $pathLength */
             $pathLength = Integer::fromBinary($binaryData, $offsetOfSequence);
             $parsedObject->setPathLengthConstraint($pathLength);

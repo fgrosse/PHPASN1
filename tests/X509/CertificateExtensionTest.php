@@ -15,6 +15,8 @@ use FG\ASN1\OID;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\X509\CertificateExtensions;
+use FG\X509\ExtendedUsageMap;
+use FG\X509\KeyUsageMap;
 use FG\X509\SAN\DNSName;
 use FG\X509\SAN\IPAddress;
 use FG\X509\SAN\SubjectAlternativeNames;
@@ -125,5 +127,38 @@ class CertificateExtensionTest extends ASN1TestCase
         $parsedObject = CertificateExtensions::fromBinary($binaryData, $offset);
         $this->assertEquals($originalObject2, $parsedObject);
         $this->assertEquals($offsetAfterFirstObject + $sans2->getObjectLength() + $objectIdentifier->getObjectLength() + 2  + 2 + 2, $offset);
+    }
+
+    public function testCaExtensions()
+    {
+
+        $i = KeyUsageMap::makeFlagsFromNames(['keyEncipherment', 'nonRepudiation']);
+        $keyUsage = new \FG\X509\KeyUsage();
+        $keyUsage->addBits($i);
+
+        $keyPurposeOid = ExtendedUsageMap::getOid(ExtendedUsageMap::CODESIGNING);
+        $extendedUsage = new \FG\X509\ExtendedKeyUsage();
+        $extendedUsage->addKeyPurpose($keyPurposeOid);
+
+        $constraints = new \FG\X509\BasicConstraints();
+        $constraints->setCa(new \FG\ASN1\Universal\Boolean(true));
+
+        $identifier = strtoupper(hash('sha256', 'test', false));
+        $subjectKeyIden = new \FG\X509\SubjectKeyIdentifier($identifier);
+
+        $authorityIdentifier = hash('sha256', 'testother', true);
+        $authorityKeyIdent = new \FG\X509\AuthorityKeyIdentifier();
+        $authorityKeyIdent->setKeyIdentifier($authorityIdentifier);
+
+        $extension = new \FG\X509\CertificateExtensions();
+        $extension->addKeyUsage($keyUsage);
+        $extension->addExtendedKeyUsage($extendedUsage);
+        $extension->addBasicConstraints($constraints);
+        $extension->addSubjectKeyIdentifier($subjectKeyIden);
+        $extension->addAuthorityKeyIdentifier($authorityKeyIdent);
+
+        $bin = $extension->getBinary();
+        $parsed = \FG\X509\CertificateExtensions::fromBinary($bin);
+        $this->assertEquals($extension, $parsed);
     }
 }

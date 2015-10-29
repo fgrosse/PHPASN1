@@ -54,7 +54,7 @@ class CertificateExtensions extends Set implements Parsable
 
     public function addSubjectKeyIdentifier(SubjectKeyIdentifier $identifier)
     {
-        $this->addEmbeddedExtension(
+        $this->addExtension(
             OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER,
             $identifier
         );
@@ -62,7 +62,7 @@ class CertificateExtensions extends Set implements Parsable
 
     public function addAuthorityKeyIdentifier(AuthorityKeyIdentifier $identifier)
     {
-        $this->addEmbeddedExtension(
+        $this->addExtension(
             OID::CERT_EXT_AUTHORITY_KEY_IDENTIFIER,
             $identifier
         );

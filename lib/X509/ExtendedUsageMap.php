@@ -6,7 +6,7 @@ namespace FG\X509;
 use FG\ASN1\OID;
 use FG\ASN1\Universal\ObjectIdentifier;
 
-class KeyPurposeMap
+class ExtendedUsageMap
 {
     const OID = OID::CERT_EXT_EXTENDED_KEY_USAGE;
 
@@ -38,7 +38,7 @@ class KeyPurposeMap
     }
 
     /**
-     * @param $keyPurpose
+     * @param string $keyPurpose
      * @return ObjectIdentifier
      */
     public static function getOid($keyPurpose)
@@ -58,7 +58,7 @@ class KeyPurposeMap
     {
         $oidContent = $oid->getContent();
         $flipped = array_flip(self::$keyMap);
-        if (!in_array($flipped, $oidContent)) {
+        if (!isset($flipped[$oidContent])) {
             throw new \RuntimeException('Invalid Extended Key Usage oid');
         }
 
