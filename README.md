@@ -44,6 +44,7 @@ The constructors should be pretty self explanatory so you should have no big tro
 All data will be encoded using [DER encoding][8]
 
 ```php
+use FG\ASN1\OID;
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
