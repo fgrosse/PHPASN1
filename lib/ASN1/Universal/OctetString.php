@@ -76,7 +76,7 @@ class OctetString extends Object implements Parsable
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::OCTETSTRING, $offsetIndex++);
-        $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
+        $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
         $value = substr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
