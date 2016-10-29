@@ -1,3 +1,6 @@
+#### v.1.5.2 (2016-10-29)
+* allow empty octet strings
+
 #### v.1.5.1 (2015-10-02)
 * add keywords to composer.json (this is a version on its own so the keywords are found on a stable version at packagist.org)
 
