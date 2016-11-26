@@ -32,9 +32,51 @@ class CertificateExtensions extends Set implements Parsable
         parent::__construct($this->innerSequence);
     }
 
+    public function addBasicConstraints(BasicConstraints $constraints)
+    {
+        $this->addExtension(OID::CERT_EXT_BASIC_CONSTRAINTS, $constraints);
+    }
+
+    public function addKeyUsage(KeyUsage $keyUsage)
+    {
+        $this->addExtension(OID::CERT_EXT_KEY_USAGE, $keyUsage);
+    }
+
+    public function addExtendedKeyUsage(ExtendedKeyUsage $usage)
+    {
+        $this->addExtension(OID::CERT_EXT_EXTENDED_KEY_USAGE, $usage);
+    }
+
     public function addSubjectAlternativeNames(SubjectAlternativeNames $sans)
     {
         $this->addExtension(OID::CERT_EXT_SUBJECT_ALT_NAME, $sans);
+    }
+
+    public function addSubjectKeyIdentifier(SubjectKeyIdentifier $identifier)
+    {
+        $this->addExtension(
+            OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER,
+            $identifier
+        );
+    }
+
+    public function addAuthorityKeyIdentifier(AuthorityKeyIdentifier $identifier)
+    {
+        $this->addExtension(
+            OID::CERT_EXT_AUTHORITY_KEY_IDENTIFIER,
+            $identifier
+        );
+    }
+
+    private function addEmbeddedExtension($oidString, Object $extension)
+    {
+        $internal = bin2hex($extension->getBinary());
+        $sequence = new Sequence();
+        $sequence->addChild(new ObjectIdentifier($oidString));
+        $sequence->addChild(new OctetString($internal));
+
+        $this->innerSequence->addChild($sequence);
+        $this->extensions[] = $extension;
     }
 
     private function addExtension($oidString, Object $extension)
@@ -88,6 +130,18 @@ class CertificateExtensions extends Set implements Parsable
             if ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_ALT_NAME) {
                 $sans = SubjectAlternativeNames::fromBinary($binaryData, $tmpOffset);
                 $parsedObject->addSubjectAlternativeNames($sans);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_BASIC_CONSTRAINTS) {
+                $constraints = BasicConstraints::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addBasicConstraints($constraints);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_KEY_USAGE) {
+                $keyUsage = KeyUsage::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addKeyUsage($keyUsage);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_EXTENDED_KEY_USAGE) {
+                $extKeyUsage = ExtendedKeyUsage::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addExtendedKeyUsage($extKeyUsage);
+            } elseif ($objectIdentifier->getContent() == OID::CERT_EXT_SUBJECT_KEY_IDENTIFIER) {
+                $subjectKey = SubjectKeyIdentifier::fromBinary($binaryData, $tmpOffset);
+                $parsedObject->addSubjectKeyIdentifier($subjectKey);
             } else {
                 // can now only parse SANs. There might be more in the future
                 $tmpOffset += $octetString->getObjectLength();
