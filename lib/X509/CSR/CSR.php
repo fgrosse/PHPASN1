@@ -77,9 +77,9 @@ class CSR extends Sequence
     {
         $tmp = base64_encode($this->getBinary());
 
-        for ($i = 0; $i < strlen($tmp); $i++) {
+        for ($i = 0; $i < mb_strlen($tmp, '8bit'); $i++) {
             if (($i + 2) % 65 == 0) {
-                $tmp = substr($tmp, 0, $i + 1)."\n".substr($tmp, $i + 1);
+                $tmp = mb_substr($tmp, 0, $i + 1, '8bit')."\n".mb_substr($tmp, $i + 1, null, '8bit');
             }
         }
 

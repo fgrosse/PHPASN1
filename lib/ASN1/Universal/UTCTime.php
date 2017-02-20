@@ -47,14 +47,14 @@ class UTCTime extends AbstractTime implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 11);
 
         $format = 'ymdGi';
-        $dateTimeString = substr($binaryData, $offsetIndex, 10);
+        $dateTimeString = mb_substr($binaryData, $offsetIndex, 10, '8bit');
         $offsetIndex += 10;
 
         // extract optional seconds part
         if ($binaryData[$offsetIndex] != 'Z'
         && $binaryData[$offsetIndex] != '+'
         && $binaryData[$offsetIndex] != '-') {
-            $dateTimeString .= substr($binaryData, $offsetIndex, 2);
+            $dateTimeString .= mb_substr($binaryData, $offsetIndex, 2, '8bit');
             $offsetIndex += 2;
             $format .= 's';
         }

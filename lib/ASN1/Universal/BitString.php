@@ -68,7 +68,7 @@ class BitString extends OctetString implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 2);
 
         $nrOfUnusedBits = ord($binaryData[$offsetIndex]);
-        $value = substr($binaryData, $offsetIndex + 1, $contentLength - 1);
+        $value = mb_substr($binaryData, $offsetIndex + 1, $contentLength - 1, '8bit');
         $offsetIndex += $contentLength;
 
         $parsedObject = new self(bin2hex($value), $nrOfUnusedBits);
