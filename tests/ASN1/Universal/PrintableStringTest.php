@@ -44,7 +44,7 @@ class PrintableStringTest extends ASN1TestCase
     {
         $string = 'Hello World';
         $object = new PrintableString($string);
-        $expectedSize = 2 + strlen($string);
+        $expectedSize = 2 + mb_strlen($string, '8bit');
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
 
@@ -52,7 +52,7 @@ class PrintableStringTest extends ASN1TestCase
     {
         $string = 'Hello World';
         $expectedType = chr(Identifier::PRINTABLE_STRING);
-        $expectedLength = chr(strlen($string));
+        $expectedLength = chr(mb_strlen($string, '8bit'));
 
         $object = new PrintableString($string);
         $this->assertEquals($expectedType.$expectedLength.$string, $object->getBinary());

@@ -109,7 +109,7 @@ class ObjectTest extends ASN1TestCase
         /* @var IA5String $parsedObject */
         $string = 'Hello Foo World!!!11EinsEins!1';
         $binaryData = chr(Identifier::IA5_STRING);
-        $binaryData .= chr(strlen($string));
+        $binaryData .= chr(mb_strlen($string, '8bit'));
         $binaryData .= $string;
 
         $expectedObject = new IA5String($string);
@@ -150,7 +150,7 @@ class ObjectTest extends ASN1TestCase
         /* @var PrintableString $parsedObject */
         $string = 'This is a test string. #?!%&""';
         $binaryData = chr(Identifier::PRINTABLE_STRING);
-        $binaryData .= chr(strlen($string));
+        $binaryData .= chr(mb_strlen($string, '8bit'));
         $binaryData .= $string;
 
         $expectedObject = new PrintableString($string);
