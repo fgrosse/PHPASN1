@@ -23,7 +23,7 @@ The **changelog** can now be found at [CHANGELOG.md](CHANGELOG.md).
 
 ## Dependencies
 
-PHPASN1 requires at least `PHP 5.6` and the `gmp` extension.
+PHPASN1 requires at least `PHP 5.6` and the following extensions: `gmp` and `mbstring`.
 It has also been successfully tested using `PHP 7` and `HHVM`
 For the loading of object identifier names directly from the web [curl][7] is used.
 
