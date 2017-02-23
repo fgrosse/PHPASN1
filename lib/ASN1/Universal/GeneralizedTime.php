@@ -50,7 +50,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
         $contentSize = 15; // YYYYMMDDHHmmSSZ
 
         if ($this->containsFractionalSecondsElement()) {
-            $contentSize += 1 + strlen($this->microseconds);
+            $contentSize += 1 + mb_strlen($this->microseconds, '8bit');
         }
 
         return $contentSize;
@@ -88,8 +88,8 @@ class GeneralizedTime extends AbstractTime implements Parsable
         $maximumBytesToRead = $contentLength;
 
         $format = 'YmdGis';
-        $content = substr($binaryData, $offsetIndex, $contentLength);
-        $dateTimeString = substr($content, 0, $lengthOfMinimumTimeString);
+        $content = mb_substr($binaryData, $offsetIndex, $contentLength, '8bit');
+        $dateTimeString = mb_substr($content, 0, $lengthOfMinimumTimeString, '8bit');
         $offsetIndex += $lengthOfMinimumTimeString;
         $maximumBytesToRead -= $lengthOfMinimumTimeString;
 
@@ -109,7 +109,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
                     $maximumBytesToRead--;
                 }
 
-                $dateTimeString .= substr($binaryData, $offsetIndex, $nrOfFractionalSecondElements);
+                $dateTimeString .= mb_substr($binaryData, $offsetIndex, $nrOfFractionalSecondElements, '8bit');
                 $offsetIndex += $nrOfFractionalSecondElements;
                 $format .= '.u';
             }

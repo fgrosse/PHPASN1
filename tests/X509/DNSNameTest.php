@@ -37,7 +37,7 @@ class DNSNameTest extends ASN1TestCase
     {
         $string = 'test.corvespace.de';
         $object = new DNSName($string);
-        $expectedSize = 2 + strlen($string);
+        $expectedSize = 2 + mb_strlen($string, '8bit');
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
 
@@ -45,7 +45,7 @@ class DNSNameTest extends ASN1TestCase
     {
         $string = 'test.corvespace.de';
         $expectedType = chr(0x82);
-        $expectedLength = chr(strlen($string));
+        $expectedLength = chr(mb_strlen($string, '8bit'));
 
         $object = new DNSName($string);
         $this->assertEquals($expectedType.$expectedLength.$string, $object->getBinary());

@@ -297,7 +297,7 @@ class Identifier
         if (is_numeric($identifier)) {
             $identifier = chr($identifier);
         }
-        return Base128::decode(substr($identifier, 1));
+        return Base128::decode(mb_substr($identifier, 1, null, '8bit'));
     }
 
     public static function isUniversalClass($identifier)

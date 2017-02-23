@@ -170,7 +170,7 @@ abstract class Object implements Parsable
      */
     public function getObjectLength()
     {
-        $nrOfIdentifierOctets = strlen($this->getIdentifier());
+        $nrOfIdentifierOctets = mb_strlen($this->getIdentifier(), '8bit');
         $contentLength = $this->getContentLength();
         $nrOfLengthOctets = $this->getNumberOfLengthOctets($contentLength);
 
@@ -202,7 +202,7 @@ abstract class Object implements Parsable
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {
-        if (strlen($binaryData) <= $offsetIndex) {
+        if (mb_strlen($binaryData, '8bit') <= $offsetIndex) {
             throw new ParserException('Can not parse binary from data: Offset index larger than input size', $offsetIndex);
         }
 
@@ -288,7 +288,7 @@ abstract class Object implements Parsable
 
     protected static function parseBinaryIdentifier($binaryData, &$offsetIndex)
     {
-        if (strlen($binaryData) <= $offsetIndex) {
+        if (mb_strlen($binaryData, '8bit') <= $offsetIndex) {
             throw new ParserException('Can not parse identifier from data: Offset index larger than input size', $offsetIndex);
         }
 
@@ -299,7 +299,7 @@ abstract class Object implements Parsable
         }
 
         while (true) {
-            if (strlen($binaryData) <= $offsetIndex) {
+            if (mb_strlen($binaryData, '8bit') <= $offsetIndex) {
                 throw new ParserException('Can not parse identifier (long form) from data: Offset index larger than input size', $offsetIndex);
             }
             $nextOctet = $binaryData[$offsetIndex++];
@@ -316,7 +316,7 @@ abstract class Object implements Parsable
 
     protected static function parseContentLength(&$binaryData, &$offsetIndex, $minimumLength = 0)
     {
-        if (strlen($binaryData) <= $offsetIndex) {
+        if (mb_strlen($binaryData, '8bit') <= $offsetIndex) {
             throw new ParserException('Can not parse content length from data: Offset index larger than input size', $offsetIndex);
         }
 
@@ -326,7 +326,7 @@ abstract class Object implements Parsable
             $nrOfLengthOctets = $contentLength & 0x7F;
             $contentLength = 0x00;
             for ($i = 0; $i < $nrOfLengthOctets; $i++) {
-                if (strlen($binaryData) <= $offsetIndex) {
+                if (mb_strlen($binaryData, '8bit') <= $offsetIndex) {
                     throw new ParserException('Can not parse content length (long form) from data: Offset index larger than input size', $offsetIndex);
                 }
                 $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);

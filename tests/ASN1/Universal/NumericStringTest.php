@@ -41,7 +41,7 @@ class NumericStringTest extends ASN1TestCase
     {
         $string = '123  4 55677 0987';
         $object = new NumericString($string);
-        $expectedSize = 2 + strlen($string);
+        $expectedSize = 2 + mb_strlen($string, '8bit');
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
 
@@ -49,7 +49,7 @@ class NumericStringTest extends ASN1TestCase
     {
         $string = '123  4 55677 0987';
         $expectedType = chr(Identifier::NUMERIC_STRING);
-        $expectedLength = chr(strlen($string));
+        $expectedLength = chr(mb_strlen($string, '8bit'));
 
         $object = new NumericString($string);
         $this->assertEquals($expectedType.$expectedLength.$string, $object->getBinary());

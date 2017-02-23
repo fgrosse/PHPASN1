@@ -38,7 +38,7 @@ class ObjectDescriptorTest extends ASN1TestCase
     {
         $string = 'Basic Encoding of a single ASN.1 type';
         $object = new ObjectDescriptor($string);
-        $expectedSize = 2 + strlen($string);
+        $expectedSize = 2 + mb_strlen($string, '8bit');
         $this->assertEquals($expectedSize, $object->getObjectLength());
     }
 
@@ -46,7 +46,7 @@ class ObjectDescriptorTest extends ASN1TestCase
     {
         $string = 'Basic Encoding of a single ASN.1 type';
         $expectedType = chr(Identifier::OBJECT_DESCRIPTOR);
-        $expectedLength = chr(strlen($string));
+        $expectedLength = chr(mb_strlen($string, '8bit'));
 
         $object = new ObjectDescriptor($string);
         $this->assertEquals($expectedType.$expectedLength.$string, $object->getBinary());
