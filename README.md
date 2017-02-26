@@ -24,8 +24,12 @@ The **changelog** can now be found at [CHANGELOG.md](CHANGELOG.md).
 ## Dependencies
 
 PHPASN1 requires at least `PHP 5.6` and the `gmp` extension.
-It has also been successfully tested using `PHP 7` and `HHVM`
+It has also been successfully tested using `PHP 7` and `HHVM`.
 For the loading of object identifier names directly from the web [curl][7] is used.
+
+PHPASN1 tolerates the `mbstring.func_overload` setting of the `mbstring` extension by automatically using the
+correct `mbstring` functions internally. Usage of this setting is however **not recommended** as it may
+introduce undesirable side effects or security issues and will decrease overall performance.
 
 ## Installation
 

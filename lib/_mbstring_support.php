@@ -1,5 +1,7 @@
 <?php
 
+// This file is automatically included by the composer autoloader.
+
 namespace FG;
 
 function safeStrlen($string)
