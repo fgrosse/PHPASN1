@@ -1,5 +1,7 @@
 <?php
 
+namespace FG;
+
 function safeStrlen($string)
 {
     if (extension_loaded('mbstring')) {

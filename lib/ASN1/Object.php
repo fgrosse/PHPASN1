@@ -10,6 +10,9 @@
 
 namespace FG\ASN1;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\Exception\ParserException;
 use FG\ASN1\Universal\BitString;
 use FG\ASN1\Universal\Boolean;

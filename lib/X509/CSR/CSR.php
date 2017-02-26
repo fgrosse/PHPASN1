@@ -10,6 +10,9 @@
 
 namespace FG\X509\CSR;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\OID;
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\BitString;

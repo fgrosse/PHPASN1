@@ -10,6 +10,9 @@
 
 namespace FG\ASN1;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use DateInterval;
 use DateTime;
 use DateTimeZone;

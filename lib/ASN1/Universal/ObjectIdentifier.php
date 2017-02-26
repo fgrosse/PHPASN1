@@ -10,6 +10,9 @@
 
 namespace FG\ASN1\Universal;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use Exception;
 use FG\ASN1\Base128;
 use FG\ASN1\OID;
