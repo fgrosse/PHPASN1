@@ -38,7 +38,7 @@ use FG\X509\CSR\CSR;
 
 // check if openssl is installed on this system
 $openSSLVersionOutput = shell_exec('openssl version');
-if (substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
+if (safeSubstr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
     $openSSLisAvailable = true;
 } else {
     $openSSLisAvailable = false;

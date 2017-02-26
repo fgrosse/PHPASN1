@@ -29,7 +29,7 @@ function hexdump($data, $htmloutput = true, $uppercase = false, $return = false)
     $ascii  = '';
     $dump   = ($htmloutput === true) ? '<pre>' : '';
     $offset = 0;
-    $len    = strlen($data);
+    $len    = safeStrlen($data);
 
     // Upper or lower case hexadecimal
     $x = ($uppercase === false) ? 'x' : 'X';

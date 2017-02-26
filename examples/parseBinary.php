@@ -57,7 +57,7 @@ $asnObject = Object::fromBinary($binaryData);
   <meta name="author" content="Friedrich Große">
 </head>
 <body>
-    <p>Got <?= strlen($binaryData) ?> byte of binary data: </p>
+    <p>Got <?= safeStrlen($binaryData) ?> byte of binary data: </p>
     <pre><?php printObject($asnObject);?></pre>
 </body>
 </html>

@@ -51,7 +51,7 @@ abstract class AbstractTime extends Object
             $messages .= "{$errorMessage}, ";
         }
 
-        return substr($messages, 0, -2);
+        return safeSubstr($messages, 0, -2);
     }
 
     public function __toString()
@@ -62,8 +62,8 @@ abstract class AbstractTime extends Object
     protected static function extractTimeZoneData(&$binaryData, &$offsetIndex, DateTime $dateTime)
     {
         $sign = $binaryData[$offsetIndex++];
-        $timeOffsetHours   = intval(substr($binaryData, $offsetIndex, 2));
-        $timeOffsetMinutes = intval(substr($binaryData, $offsetIndex + 2, 2));
+        $timeOffsetHours   = intval(safeSubstr($binaryData, $offsetIndex, 2));
+        $timeOffsetMinutes = intval(safeSubstr($binaryData, $offsetIndex + 2, 2));
         $offsetIndex += 4;
 
         $interval = new DateInterval("PT{$timeOffsetHours}H{$timeOffsetMinutes}M");

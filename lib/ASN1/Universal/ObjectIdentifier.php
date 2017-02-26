@@ -133,6 +133,6 @@ class ObjectIdentifier extends Object implements Parsable
         }
 
         // Remove trailing '.'
-        return substr($oid, 0, -1) ?: '';
+        return safeSubstr($oid, 0, -1) ?: '';
     }
 }

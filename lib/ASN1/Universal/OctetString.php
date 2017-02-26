@@ -32,7 +32,7 @@ class OctetString extends Object implements Parsable
             throw new Exception('OctetString: unrecognized input type!');
         }
 
-        if (strlen($value) % 2 != 0) {
+        if (safeStrlen($value) % 2 != 0) {
             // transform values like 1F2 to 01F2
             $value = '0'.$value;
         }
@@ -47,7 +47,7 @@ class OctetString extends Object implements Parsable
 
     protected function calculateContentLength()
     {
-        return strlen($this->value) / 2;
+        return safeStrlen($this->value) / 2;
     }
 
     protected function getEncodedValue()
@@ -56,10 +56,10 @@ class OctetString extends Object implements Parsable
         $result = '';
 
         //Actual content
-        while (strlen($value) >= 2) {
+        while (safeStrlen($value) >= 2) {
             // get the hex value byte by byte from the string and and add it to binary result
-            $result .= chr(hexdec(substr($value, 0, 2)));
-            $value = substr($value, 2);
+            $result .= chr(hexdec(safeSubstr($value, 0, 2)));
+            $value = safeSubstr($value, 2);
         }
 
         return $result;
@@ -80,7 +80,7 @@ class OctetString extends Object implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::OCTETSTRING, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
 
-        $value = substr($binaryData, $offsetIndex, $contentLength);
+        $value = safeSubstr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
 
         $parsedObject = new self(bin2hex($value));

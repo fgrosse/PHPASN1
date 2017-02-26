@@ -85,7 +85,7 @@ abstract class AbstractString extends Object implements Parsable
 
     protected function calculateContentLength()
     {
-        return strlen($this->value);
+        return safeStrlen($this->value);
     }
 
     protected function getEncodedValue()
@@ -114,7 +114,7 @@ abstract class AbstractString extends Object implements Parsable
 
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex);
-        $string = substr($binaryData, $offsetIndex, $contentLength);
+        $string = safeSubstr($binaryData, $offsetIndex, $contentLength);
         $offsetIndex += $contentLength;
 
         $parsedObject->value = $string;
