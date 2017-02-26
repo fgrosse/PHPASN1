@@ -11,6 +11,9 @@
 require_once __DIR__.'/hexdump.php';
 require_once __DIR__.'/../vendor/autoload.php';
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Universal\Boolean;

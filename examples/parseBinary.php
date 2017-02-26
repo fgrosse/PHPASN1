@@ -11,6 +11,9 @@
 require_once __DIR__.'/../vendor/autoload.php';
 require_once 'shared.php';
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\Object;
 
 $base64String =
