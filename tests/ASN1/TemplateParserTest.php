@@ -9,9 +9,9 @@ use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\Set;
-use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_TestCase;
 
-class TemplateParserTest extends TestCase
+class TemplateParserTest extends PHPUnit_Framework_TestCase
 {
     public function testParseBase64()
     {
