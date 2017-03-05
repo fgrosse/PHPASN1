@@ -12,6 +12,7 @@ namespace FG\ASN1\Universal;
 
 use function FG\safeStrlen;
 use function FG\safeSubstr;
+use function FG\safeStrtoupper;
 
 use Exception;
 use FG\ASN1\Object;
@@ -70,7 +71,7 @@ class OctetString extends Object implements Parsable
 
     public function getContent()
     {
-        return strtoupper($this->value);
+        return safeStrtoupper($this->value);
     }
 
     public function getBinaryContent()

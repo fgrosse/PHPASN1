@@ -25,3 +25,12 @@ function safeSubstr($string, $start, $length = 2147483647)
 
     return substr($string, $start, $length);
 }
+
+function safeStrtoupper($string)
+{
+    if (extension_loaded('mbstring') && ini_get('mbstring.func_overload') != '0') {
+        mb_strtoupper($string, '8bit');
+    }
+
+    return strtoupper($string);
+}
