@@ -3,8 +3,9 @@
 namespace FG\tests\ASN1;
 
 use FG\ASN1\Base128;
+use PHPUnit\Framework\TestCase;
 
-class Base128Test extends \PHPUnit_Framework_TestCase
+class Base128Test extends TestCase
 {
     /**
      * @dataProvider getDataToDecode
