@@ -10,6 +10,9 @@
 
 namespace FG\ASN1\Universal;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\AbstractTime;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -50,7 +53,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
         $contentSize = 15; // YYYYMMDDHHmmSSZ
 
         if ($this->containsFractionalSecondsElement()) {
-            $contentSize += 1 + strlen($this->microseconds);
+            $contentSize += 1 + safeStrlen($this->microseconds);
         }
 
         return $contentSize;
@@ -88,8 +91,8 @@ class GeneralizedTime extends AbstractTime implements Parsable
         $maximumBytesToRead = $contentLength;
 
         $format = 'YmdGis';
-        $content = substr($binaryData, $offsetIndex, $contentLength);
-        $dateTimeString = substr($content, 0, $lengthOfMinimumTimeString);
+        $content = safeSubstr($binaryData, $offsetIndex, $contentLength);
+        $dateTimeString = safeSubstr($content, 0, $lengthOfMinimumTimeString);
         $offsetIndex += $lengthOfMinimumTimeString;
         $maximumBytesToRead -= $lengthOfMinimumTimeString;
 
@@ -109,7 +112,7 @@ class GeneralizedTime extends AbstractTime implements Parsable
                     $maximumBytesToRead--;
                 }
 
-                $dateTimeString .= substr($binaryData, $offsetIndex, $nrOfFractionalSecondElements);
+                $dateTimeString .= safeSubstr($binaryData, $offsetIndex, $nrOfFractionalSecondElements);
                 $offsetIndex += $nrOfFractionalSecondElements;
                 $format .= '.u';
             }

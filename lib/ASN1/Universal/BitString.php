@@ -10,6 +10,9 @@
 
 namespace FG\ASN1\Universal;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use Exception;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -68,7 +71,7 @@ class BitString extends OctetString implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 2);
 
         $nrOfUnusedBits = ord($binaryData[$offsetIndex]);
-        $value = substr($binaryData, $offsetIndex + 1, $contentLength - 1);
+        $value = safeSubstr($binaryData, $offsetIndex + 1, $contentLength - 1);
         $offsetIndex += $contentLength;
 
         $parsedObject = new self(bin2hex($value), $nrOfUnusedBits);

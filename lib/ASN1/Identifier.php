@@ -10,6 +10,9 @@
 
 namespace FG\ASN1;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use Exception;
 
 /**
@@ -297,7 +300,7 @@ class Identifier
         if (is_numeric($identifier)) {
             $identifier = chr($identifier);
         }
-        return Base128::decode(substr($identifier, 1));
+        return Base128::decode(safeSubstr($identifier, 1));
     }
 
     public static function isUniversalClass($identifier)

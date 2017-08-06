@@ -1,3 +1,6 @@
+#### v.1.6.0 (2017-02-26)
+* tolerate evil `mbstring.func_overload` setting
+
 #### v.1.5.2 (2016-10-29)
 * allow empty octet strings
 

@@ -11,6 +11,9 @@
 require_once __DIR__.'/hexdump.php';
 require_once __DIR__.'/../vendor/autoload.php';
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\OID;
 use FG\ASN1\Object;
 use FG\ASN1\Universal\Boolean;
@@ -38,7 +41,7 @@ use FG\X509\CSR\CSR;
 
 // check if openssl is installed on this system
 $openSSLVersionOutput = shell_exec('openssl version');
-if (substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
+if (safeSubstr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
     $openSSLisAvailable = true;
 } else {
     $openSSLisAvailable = false;

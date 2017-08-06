@@ -10,6 +10,9 @@
 
 namespace FG\ASN1\Universal;
 
+use function FG\safeStrlen;
+use function FG\safeSubstr;
+
 use FG\ASN1\AbstractTime;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -47,14 +50,14 @@ class UTCTime extends AbstractTime implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 11);
 
         $format = 'ymdGi';
-        $dateTimeString = substr($binaryData, $offsetIndex, 10);
+        $dateTimeString = safeSubstr($binaryData, $offsetIndex, 10);
         $offsetIndex += 10;
 
         // extract optional seconds part
         if ($binaryData[$offsetIndex] != 'Z'
         && $binaryData[$offsetIndex] != '+'
         && $binaryData[$offsetIndex] != '-') {
-            $dateTimeString .= substr($binaryData, $offsetIndex, 2);
+            $dateTimeString .= safeSubstr($binaryData, $offsetIndex, 2);
             $offsetIndex += 2;
             $format .= 's';
         }

@@ -32,7 +32,10 @@
     "autoload": {
         "psr-4": {
             "FG\\": "lib/"
-        }
+        },
+        "files": [
+            "lib/_mbstring_support.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
