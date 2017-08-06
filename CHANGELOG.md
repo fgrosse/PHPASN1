@@ -1,3 +1,8 @@
+#### v.2.0.0 (2017-08)
+* rename `FG\ASN1\Object` to `FG\ASN1\ASNObject` because `Object` is a special class name in the next major PHP release
+  - when you upgrade you have to adapt all corresponding `use` and `extends` statements as well as type hints and all
+    usages of `Object::fromBinary(…)`.
+
 #### v.1.5.2 (2016-10-29)
 * allow empty octet strings
 

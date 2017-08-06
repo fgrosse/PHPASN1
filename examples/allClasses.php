@@ -12,7 +12,7 @@ require_once __DIR__.'/hexdump.php';
 require_once __DIR__.'/../vendor/autoload.php';
 
 use FG\ASN1\OID;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\Enumerated;
@@ -44,7 +44,7 @@ if (substr($openSSLVersionOutput, 0, 7) == 'OpenSSL') {
     $openSSLisAvailable = false;
 }
 
-function printVariableInfo(Object $variable)
+function printVariableInfo(ASNObject $variable)
 {
     $className = get_class($variable);
     $stringValue = nl2br($variable->__toString());

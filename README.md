@@ -79,11 +79,13 @@ echo base64_encode($myBinary);
 Decoding BER encoded binary data is just as easy as encoding it:
 
 ```php
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 
 $base64String = ...
 $binaryData = base64_decode($base64String);        
-$asnObject = Object::fromBinary($binaryData);
+$asnObject = ASNObject::fromBinary($binaryData);
+
+
 // do stuff
 ```
 

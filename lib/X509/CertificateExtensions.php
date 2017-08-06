@@ -12,7 +12,7 @@ namespace FG\X509;
 
 use FG\ASN1\Exception\ParserException;
 use FG\ASN1\OID;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\OctetString;
@@ -37,7 +37,7 @@ class CertificateExtensions extends Set implements Parsable
         $this->addExtension(OID::CERT_EXT_SUBJECT_ALT_NAME, $sans);
     }
 
-    private function addExtension($oidString, Object $extension)
+    private function addExtension($oidString, ASNObject $extension)
     {
         $sequence = new Sequence();
         $sequence->addChild(new ObjectIdentifier($oidString));
@@ -73,7 +73,7 @@ class CertificateExtensions extends Set implements Parsable
             if (count($children) < 2) {
                 throw new ParserException('Could not parse Certificate Extensions: Needs at least two child elements per extension sequence (object identifier and octet string)', $tmpOffset);
             }
-            /** @var \FG\ASN1\Object $objectIdentifier */
+            /** @var \FG\ASN1\ASNObject $objectIdentifier */
             $objectIdentifier = $children[0];
 
             /** @var OctetString $octetString */

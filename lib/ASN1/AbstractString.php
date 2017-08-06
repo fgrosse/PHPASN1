@@ -12,7 +12,7 @@ namespace FG\ASN1;
 
 use Exception;
 
-abstract class AbstractString extends Object implements Parsable
+abstract class AbstractString extends ASNObject implements Parsable
 {
     /** @var string */
     protected $value;

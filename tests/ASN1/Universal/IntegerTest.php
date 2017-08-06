@@ -10,7 +10,7 @@
 
 namespace FG\Test\ASN1\Universal;
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Integer;
@@ -164,7 +164,7 @@ class IntegerTest extends ASN1TestCase
         $binary = $object->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
 
-        $obj = Object::fromBinary($binary);
+        $obj = ASNObject::fromBinary($binary);
         $this->assertEquals($obj, $object);
 
         // Test a negative number
@@ -178,7 +178,7 @@ class IntegerTest extends ASN1TestCase
         $binary = $object->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
 
-        $obj = Object::fromBinary($binary);
+        $obj = ASNObject::fromBinary($binary);
         $this->assertEquals($object, $obj);
     }
 
@@ -190,7 +190,7 @@ class IntegerTest extends ASN1TestCase
         $object = new Integer($i);
         $binary = $object->getBinary();
 
-        $obj = Object::fromBinary($binary);
+        $obj = ASNObject::fromBinary($binary);
         $this->assertEquals($obj->getContent(), $object->getContent());
     }
 
