@@ -23,7 +23,7 @@
         "ext-gmp": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5",
+        "phpunit/phpunit": "~6.3",
         "satooshi/php-coveralls": "dev-master"
     },
     "suggest": {
