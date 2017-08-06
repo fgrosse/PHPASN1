@@ -11,6 +11,7 @@
 namespace FG\Test\ASN1\Universal;
 
 use DateTime;
+use DateTimeZone;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\GeneralizedTime;
@@ -21,7 +22,7 @@ class GeneralizedTimeTest extends ASN1TestCase
 
     public function setUp()
     {
-        $this->UTC = new \DateTimeZone('UTC');
+        $this->UTC = new DateTimeZone('UTC');
     }
 
     public function testGetType()
@@ -55,7 +56,7 @@ class GeneralizedTimeTest extends ASN1TestCase
 
     public function testGetObjectLength()
     {
-        $object = new GeneralizedTime();
+        $object = new GeneralizedTime('1987-01-15 12:12');
         $expectedSize = 2 + 15; // Identifier + length + YYYYMMDDHHmmSSZ
         $this->assertEquals($expectedSize, $object->getObjectLength());
 
@@ -70,12 +71,13 @@ class GeneralizedTimeTest extends ASN1TestCase
 
     public function testGetBinary()
     {
+        $now = new DateTime('1987-01-15 12:12');
+        $now->setTimezone($this->UTC);
+
         $expectedType = chr(Identifier::GENERALIZED_TIME);
         $expectedLength = chr(15); // YYYYMMDDHHmmSSZ
 
-        $object = new GeneralizedTime();
-        $now = new DateTime();
-        $now->setTimezone($this->UTC);
+        $object = new GeneralizedTime($now);
         $expectedContent  = $now->format('YmdHis').'Z';
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $object->getBinary());
 
