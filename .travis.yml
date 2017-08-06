@@ -6,6 +6,10 @@ php:
   - 7.1
   - 7.2
 
+matrix:
+  allow_failures:
+  - php: 7.0 # Does not work until https://github.com/sebastianbergmann/phpunit/issues/2754 is resolved
+
 cache:
   directories:
     - vendor
