@@ -38,9 +38,9 @@ use FG\ASN1\Universal\ObjectDescriptor;
 use LogicException;
 
 /**
- * Class Object is the base class for all concrete ASN.1 objects.
+ * Class ASNObject is the base class for all concrete ASN.1 objects.
  */
-abstract class Object implements Parsable
+abstract class ASNObject implements Parsable
 {
     private $contentLength;
     private $nrOfLengthOctets;
@@ -93,7 +93,7 @@ abstract class Object implements Parsable
         $firstOctet = $this->getType();
 
         if (Identifier::isLongForm($firstOctet)) {
-            throw new LogicException(sprintf('Identifier of %s uses the long form and must therefor override "Object::getIdentifier()".', get_class($this)));
+            throw new LogicException(sprintf('Identifier of %s uses the long form and must therefor override "ASNObject::getIdentifier()".', get_class($this)));
         }
 
         return chr($firstOctet);
@@ -198,7 +198,7 @@ abstract class Object implements Parsable
      *
      * @throws ParserException
      *
-     * @return \FG\ASN1\Object
+     * @return \FG\ASN1\ASNObject
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {

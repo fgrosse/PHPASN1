@@ -12,7 +12,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 require_once 'shared.php';
 
 use FG\ASN1\OID;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\OctetString;
@@ -67,7 +67,7 @@ try {
     $binaryData = base64_decode($base64);
     //hexdump($binaryData, false);
 
-    $rootObject = Object::fromBinary($binaryData);
+    $rootObject = ASNObject::fromBinary($binaryData);
     //printObject($rootObject);
 
     // first navigate to the certificate extensions
@@ -86,7 +86,7 @@ try {
     $certExtensions = $certInfoFields[7];
 
     // check if this is really the certificate extensions sequence
-    /* @var \FG\ASN1\Object $certExtensions */
+    /* @var \FG\ASN1\ASNObject $certExtensions */
     $certExtensionsType = $certExtensions->getType();
     assert(Identifier::isContextSpecificClass($certExtensionsType));
     assert(Identifier::getTagNumber($certExtensions->getType()) == 3);
@@ -96,7 +96,7 @@ try {
     assert($certExtensions->getType() == Identifier::SEQUENCE);
 
     // now check all extensions and search for the SAN
-    /** @var \FG\ASN1\Object $extensionSequence */
+    /** @var \FG\ASN1\ASNObject $extensionSequence */
     foreach ($certExtensions as $extensionSequence) {
         assert($extensionSequence->getType() == Identifier::SEQUENCE);
         assert($extensionSequence->getNumberofChildren() >= 2);

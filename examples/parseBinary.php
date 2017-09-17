@@ -11,7 +11,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 require_once 'shared.php';
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 
 $base64String =
 'MIIFGDCCAwACAQAwOjEWMBQGCgmSJomT8ixkARkWBnNlY3VyZTEgMB4GA1UEAxMX
@@ -44,7 +44,7 @@ secxBTTCNgI48YezK3GDkn65cmlnkt6F6Mf0MwoDaXTuB88Jycbwb5ihKnHEJIsO
 draiRBZruwMPwPIP';
 
 $binaryData = base64_decode($base64String);
-$asnObject = Object::fromBinary($binaryData);
+$asnObject = ASNObject::fromBinary($binaryData);
 
 ?>
 

@@ -20,7 +20,7 @@ class PublicKey extends Sequence
 {
     /**
      * @param string $hexKey
-     * @param \FG\ASN1\Object|string $algorithmIdentifierString
+     * @param \FG\ASN1\ASNObject|string $algorithmIdentifierString
      */
     public function __construct($hexKey, $algorithmIdentifierString = OID::RSA_ENCRYPTION)
     {

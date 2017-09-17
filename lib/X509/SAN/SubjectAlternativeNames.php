@@ -11,7 +11,7 @@
 namespace FG\X509\SAN;
 
 use FG\ASN1\Exception\ParserException;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\OID;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -20,7 +20,7 @@ use FG\ASN1\Universal\Sequence;
 /**
  * See section 8.3.2.1 of ITU-T X.509.
  */
-class SubjectAlternativeNames extends Object implements Parsable
+class SubjectAlternativeNames extends ASNObject implements Parsable
 {
     private $alternativeNamesSequence;
 
@@ -77,7 +77,7 @@ class SubjectAlternativeNames extends Object implements Parsable
         }
 
         $parsedObject = new self();
-        /** @var \FG\ASN1\Object $object */
+        /** @var \FG\ASN1\ASNObject $object */
         foreach ($sequence as $object) {
             if ($object->getType() == DNSName::IDENTIFIER) {
                 $domainName = DNSName::fromBinary($binaryData, $offsetOfSequence);

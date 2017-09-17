@@ -29,7 +29,7 @@ class UnknownConstructedObject extends Construct
         $children = [];
         $octetsToRead = $this->contentLength;
         while ($octetsToRead > 0) {
-            $newChild = Object::fromBinary($binaryData, $offsetIndex);
+            $newChild = ASNObject::fromBinary($binaryData, $offsetIndex);
             $octetsToRead -= $newChild->getObjectLength();
             $children[] = $newChild;
         }

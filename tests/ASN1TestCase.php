@@ -10,7 +10,9 @@
 
 namespace FG\Test;
 
-abstract class ASN1TestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class ASN1TestCase extends TestCase
 {
     /**
      * Call a method on an object regardless of the visibility.
