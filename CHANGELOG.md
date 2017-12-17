@@ -1,3 +1,6 @@
+#### v.2.0.1 & v.1.5.3 (2017-12)
+* add .gitattributes file to prevent examples and tests to be installed via composer when --prefer-dist was set
+
 #### v.2.0.0 (2017-08)
 * rename `FG\ASN1\Object` to `FG\ASN1\ASNObject` because `Object` is a special class name in the next major PHP release
   - when you upgrade you have to adapt all corresponding `use` and `extends` statements as well as type hints and all
