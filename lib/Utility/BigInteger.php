@@ -93,7 +93,7 @@ abstract class BigInteger
 
     /**
      * Subclasses must provide clone functionality.
-     * @return self
+     * @return BigInteger
      */
     abstract public function __clone();
 
@@ -102,6 +102,12 @@ abstract class BigInteger
      * @param string $str
      */
     abstract protected function _fromString($str);
+
+    /**
+     * Assign the instance value from an integer type.
+     * @param int $integer
+     */
+    abstract protected function _fromInteger($integer);
 
     /**
      * Must provide string implementation that returns base 10 number.
@@ -127,7 +133,7 @@ abstract class BigInteger
     /**
      * Compare the integer with $number, returns a negative integer if $this is less than number, returns 0 if $this is
      * equal to number and returns a positive integer if $this is greater than number.
-     * @param self|string|int $number
+     * @param BigInteger|string|int $number
      * @return int
      */
     abstract public function compare($number);
@@ -136,56 +142,56 @@ abstract class BigInteger
 
     /**
      * Add another integer $b and returns the result.
-     * @param self|string|int $b
-     * @return self
+     * @param BigInteger|string|int $b
+     * @return BigInteger
      */
     abstract public function add($b);
 
     /**
      * Subtract $b from $this and returns the result.
-     * @param self|string|int $b
-     * @return self
+     * @param BigInteger|string|int $b
+     * @return BigInteger
      */
     abstract public function subtract($b);
 
     /**
      * Multiply value.
-     * @param self|string|int $b
-     * @return self
+     * @param BigInteger|string|int $b
+     * @return BigInteger
      */
     abstract public function multiply($b);
 
     /**
      * The value $this modulus $b.
-     * @param self|string|int $b
-     * @return self
+     * @param BigInteger|string|int $b
+     * @return BigInteger
      */
     abstract public function modulus($b);
 
     /**
      * Raise $this to the power of $b and returns the result.
-     * @param self|string|int $b
-     * @return self
+     * @param BigInteger|string|int $b
+     * @return BigInteger
      */
     abstract public function toPower($b);
 
     /**
      * Shift the value to the right by a set number of bits and returns the result.
      * @param int $bits
-     * @return self
+     * @return BigInteger
      */
     abstract public function shiftRight($bits = 8);
 
     /**
      * Shift the value to the left by a set number of bits and returns the result.
      * @param int $bits
-     * @return self
+     * @return BigInteger
      */
     abstract public function shiftLeft($bits = 8);
 
     /**
      * Returns the absolute value.
-     * @return self
+     * @return BigInteger
      */
     abstract public function absoluteValue();
 }

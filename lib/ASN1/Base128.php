@@ -23,7 +23,7 @@ class Base128
         $value = $value->shiftRight(7);
         while ($value->compare(0) > 0) {
             $octets .= chr(0x80 | $value->modulus(0x80)->toInteger());
-	        $value = $value->shiftRight(7);
+            $value = $value->shiftRight(7);
         }
 
         return strrev($octets);
