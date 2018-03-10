@@ -186,21 +186,21 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($object, $obj);
 
         // Test a negative bigint
-	    $expectedType     = chr(Identifier::INTEGER);
-	    $expectedLength   = chr(0x20);
-	    $expectedContent  = "\x80\x00\x00\x00\x00\x00\x00\x00";
-	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
-	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
-	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x01";
+        $expectedType     = chr(Identifier::INTEGER);
+        $expectedLength   = chr(0x20);
+        $expectedContent  = "\x80\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+        $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x01";
 
-	    // -(2 ^ 255 - 1)
-	    $bigint = '-57896044618658097711785492504343953926634992332820282019728792003956564819967';
-	    $object = new Integer($bigint);
-	    $binary = $object->getBinary();
-	    $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
+        // -(2 ^ 255 - 1)
+        $bigint = '-57896044618658097711785492504343953926634992332820282019728792003956564819967';
+        $object = new Integer($bigint);
+        $binary = $object->getBinary();
+        $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
 
-	    $obj = ASNObject::fromBinary($binary);
-	    $this->assertEquals($obj, $object);
+        $obj = ASNObject::fromBinary($binary);
+        $this->assertEquals($obj, $object);
     }
 
     /**

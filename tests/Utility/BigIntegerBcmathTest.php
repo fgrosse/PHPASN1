@@ -10,13 +10,13 @@ namespace FG\Test\Utility;
 
 class BigIntegerBcmathTest extends BigIntegerTest
 {
-	protected function _isSupported()
-	{
-		return extension_loaded('bcmath');
-	}
+    protected function _isSupported()
+    {
+        return extension_loaded('bcmath');
+    }
 
-	protected function _getMode()
-	{
-		return 'bcmath';
-	}
+    protected function _getMode()
+    {
+        return 'bcmath';
+    }
 }

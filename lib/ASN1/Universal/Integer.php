@@ -47,10 +47,10 @@ class Integer extends ASNObject implements Parsable
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-	    $tmpValue = BigInteger::create($this->value, 10);
-	    $tmpValue = $tmpValue->absoluteValue();
+        $tmpValue = BigInteger::create($this->value, 10);
+        $tmpValue = $tmpValue->absoluteValue();
         while ($tmpValue->compare(127) > 0) {
-        	$tmpValue = $tmpValue->shiftRight(8);
+            $tmpValue = $tmpValue->shiftRight(8);
             $nrOfOctets++;
         }
         return $nrOfOctets;
@@ -62,13 +62,13 @@ class Integer extends ASNObject implements Parsable
         $contentLength = $this->getContentLength();
 
         if ($numericValue->isNegative()) {
-        	$numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
-        	$numericValue = $numericValue->add(1);
+            $numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
+            $numericValue = $numericValue->add(1);
         }
 
         $result = '';
         for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
-        	$octet = $numericValue->shiftRight($shiftLength)->modulus(256)->toInteger();
+            $octet = $numericValue->shiftRight($shiftLength)->modulus(256)->toInteger();
             $result .= chr($octet);
         }
 
@@ -85,11 +85,11 @@ class Integer extends ASNObject implements Parsable
         $number = BigInteger::create(ord($binaryData[$offsetIndex++]) & 0x7F);
 
         for ($i = 0; $i < $contentLength - 1; $i++) {
-        	$number = $number->multiply(0x100)->add(ord($binaryData[$offsetIndex++]));
+            $number = $number->multiply(0x100)->add(ord($binaryData[$offsetIndex++]));
         }
 
         if ($isNegative) {
-        	$number = $number->subtract(BigInteger::create(2)->toPower(8 * $contentLength - 1));
+            $number = $number->subtract(BigInteger::create(2)->toPower(8 * $contentLength - 1));
         }
 
         $parsedObject = new static((string)$number);

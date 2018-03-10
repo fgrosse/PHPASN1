@@ -10,13 +10,13 @@ namespace FG\Test\Utility;
 
 class BigIntegerGmpTest extends BigIntegerTest
 {
-	protected function _isSupported()
-	{
-		return extension_loaded('gmp');
-	}
+    protected function _isSupported()
+    {
+        return extension_loaded('gmp');
+    }
 
-	protected function _getMode()
-	{
-		return 'gmp';
-	}
+    protected function _getMode()
+    {
+        return 'gmp';
+    }
 }
