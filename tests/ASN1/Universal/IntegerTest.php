@@ -10,6 +10,7 @@
 
 namespace FG\Test\ASN1\Universal;
 
+use FG\Utility\BigInteger;
 use FG\ASN1\ASNObject;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
@@ -159,7 +160,8 @@ class IntegerTest extends ASN1TestCase
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
         $expectedContent .= "\xff\xff\xff\xff\xff\xff\xff\xff";
 
-        $bigint = gmp_strval(gmp_sub(gmp_pow(2, 255), 1));
+        // 2 ^ 255 - 1
+        $bigint = '57896044618658097711785492504343953926634992332820282019728792003956564819967';
         $object = new Integer($bigint);
         $binary = $object->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
@@ -167,19 +169,38 @@ class IntegerTest extends ASN1TestCase
         $obj = ASNObject::fromBinary($binary);
         $this->assertEquals($obj, $object);
 
-        // Test a negative number
+        // Test a bigint with a 1 in the most significant byte
         $expectedLength   = chr(0x21);
         $expectedContent  = "\x00\x80\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
         $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
-        $bigint = gmp_strval(gmp_pow(2, 255));
+
+        // 2 ^ 255
+        $bigint = '57896044618658097711785492504343953926634992332820282019728792003956564819968';
         $object = new Integer($bigint);
         $binary = $object->getBinary();
         $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
 
         $obj = ASNObject::fromBinary($binary);
         $this->assertEquals($object, $obj);
+
+        // Test a negative bigint
+	    $expectedType     = chr(Identifier::INTEGER);
+	    $expectedLength   = chr(0x20);
+	    $expectedContent  = "\x80\x00\x00\x00\x00\x00\x00\x00";
+	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x00";
+	    $expectedContent .= "\x00\x00\x00\x00\x00\x00\x00\x01";
+
+	    // -(2 ^ 255 - 1)
+	    $bigint = '-57896044618658097711785492504343953926634992332820282019728792003956564819967';
+	    $object = new Integer($bigint);
+	    $binary = $object->getBinary();
+	    $this->assertEquals($expectedType.$expectedLength.$expectedContent, $binary);
+
+	    $obj = ASNObject::fromBinary($binary);
+	    $this->assertEquals($obj, $object);
     }
 
     /**
@@ -198,12 +219,12 @@ class IntegerTest extends ASN1TestCase
     {
         for ($i = 1; $i <= 256; $i *= 2) {
             // 2 ^ n [0, 256]  large positive numbers
-            yield [gmp_strval(gmp_pow(2, $i), 10)];
+            yield [(string)BigInteger::create(2)->toPower($i)];
         }
 
         for ($i = 1; $i <= 256; $i *= 2) {
             // 0 - 2 ^ n [0, 256]  large negative numbers
-            yield [gmp_strval(gmp_sub(0, gmp_pow(2, $i)), 10)];
+            yield [(string)BigInteger::create(0)->subtract(BigInteger::create(2)->toPower($i))];
         }
     }
 

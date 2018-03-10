@@ -80,7 +80,14 @@ class BigIntegerBcmath extends BigInteger
 	public function modulus($b)
 	{
 		$ret = new self();
-		$ret->_str = bcmod($this->_str, $this->_unwrap($b));
+		if ($this->isNegative()) {
+			// bcmod handles negative numbers differently
+			$b = $this->_unwrap($b);
+			$ret->_str = bcsub($b, bcmod(bcsub('0', $this->_str, 0), $b), 0);
+		}
+		else {
+			$ret->_str = bcmod($this->_str, $this->_unwrap($b));
+		}
 		return $ret;
 	}
 

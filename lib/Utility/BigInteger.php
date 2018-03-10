@@ -106,11 +106,14 @@ abstract class BigInteger
 	 * Is represented integer negative?
 	 * @return bool
 	 */
-	abstract public function isNegative();
+	public function isNegative()
+	{
+		return $this->compare(0) === -1;
+	}
 
 	/**
-	 * Compare the integer with $number, returns -1 if $this is less than number, returns 0 if $this is equal
-	 * to number and returns 1 if $this is greater than number.
+	 * Compare the integer with $number, returns a negative integer if $this is less than number, returns 0 if $this is
+	 * equal to number and returns a positive integer if $this is greater than number.
 	 * @param self|string|int $number
 	 * @return int
 	 */
