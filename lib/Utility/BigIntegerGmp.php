@@ -1,9 +1,16 @@
 <?php
+/*
+ * This file is part of the PHPASN1 library.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace FG\Utility;
 
 /**
  * Class BigIntegerGmp
+ * Integer representation of big numbers using the GMP extension to perform operations.
  * @package FG\Utility
  * @internal
  */
@@ -15,63 +22,76 @@ class BigIntegerGmp extends BigInteger
 	 */
 	protected $_rh;
 
-	public function __clone() {
+	public function __clone()
+	{
 		$this->_rh = gmp_add($this->_rh, 0);
 	}
 
-	protected function _fromString($str) {
+	protected function _fromString($str)
+	{
 		$this->_rh = gmp_init($str, 10);
 	}
 
-	public function __toString() {
+	public function __toString()
+	{
 		return gmp_strval($this->_rh, 10);
 	}
 
-	public function toInteger() {
+	public function toInteger()
+	{
 		return gmp_intval($this->_rh);
 	}
 
-	public function isNegative() {
+	public function isNegative()
+	{
 		return gmp_sign($this->_rh) === -1;
 	}
 
-	protected function _unwrap($number) {
+	protected function _unwrap($number)
+	{
 		if ($number instanceof self) {
 			return $number->_rh;
 		}
 		return $number;
 	}
 
-	public function compare($number) {
+	public function compare($number)
+	{
 		return gmp_cmp($this->_rh, $this->_unwrap($number));
 	}
 
-	public function add($b) {
+	public function add($b)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_add($this->_rh, $this->_unwrap($b));
 		return $ret;
 	}
 
-	public function subtract($b) {
+	public function subtract($b)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_sub($this->_rh, $this->_unwrap($b));
 		return $ret;
 	}
 
-	public function multiply($b) {
+	public function multiply($b)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_mul($this->_rh, $this->_unwrap($b));
 		return $ret;
 	}
 
-	public function modulus($b) {
+	public function modulus($b)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_mod($this->_rh, $this->_unwrap($b));
 		return $ret;
 	}
 
-	public function toPower($b) {
+	public function toPower($b)
+	{
 		if ($b instanceof self) {
+			// gmp_pow accepts just an integer
 			if ($b->compare(PHP_INT_MAX) > 0) {
 				throw new \UnexpectedValueException('Unable to raise to power greater than PHP_INT_MAX.');
 			}
@@ -82,19 +102,22 @@ class BigIntegerGmp extends BigInteger
 		return $ret;
 	}
 
-	public function shiftRight($bits=8) {
+	public function shiftRight($bits=8)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_div($this->_rh, gmp_pow(2, $bits));
 		return $ret;
 	}
 
-	public function shiftLeft($bits=8) {
+	public function shiftLeft($bits=8)
+	{
 		$ret = new self();
 		$ret->_rh = gmp_mul($this->_rh, gmp_pow(2, $bits));
 		return $ret;
 	}
 
-	public function absoluteValue() {
+	public function absoluteValue()
+	{
 		$ret = new self();
 		$ret->_rh = gmp_abs($this->_rh);
 		return $ret;
