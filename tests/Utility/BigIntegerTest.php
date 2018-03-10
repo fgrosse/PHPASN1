@@ -52,6 +52,14 @@ abstract class BigIntegerTest extends TestCase
         $this->assertSame('18446744073709551616', (string)$a);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testCreateFromInvalidString()
+    {
+        BigInteger::create('0x1');
+    }
+
     public function testCreateFromInteger()
     {
         $a = BigInteger::create(8888);
@@ -65,6 +73,9 @@ abstract class BigIntegerTest extends TestCase
 
         $a = BigInteger::create(PHP_INT_MAX);
         $this->assertSame((string)PHP_INT_MAX, (string)$a);
+
+        $a = BigInteger::create(PHP_INT_MIN);
+        $this->assertSame((string)PHP_INT_MIN, (string)$a);
     }
 
     public function testToInteger()
@@ -80,6 +91,15 @@ abstract class BigIntegerTest extends TestCase
 
         $a = BigInteger::create(PHP_INT_MAX);
         $this->assertSame(PHP_INT_MAX, $a->toInteger());
+    }
+
+    /**
+     * @expectedException \OverflowException
+     */
+    public function testIntegerOverflow()
+    {
+        $a = BigInteger::create(PHP_INT_MAX);
+        $a->add(1)->toInteger();
     }
 
     public function testClone()

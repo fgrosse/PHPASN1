@@ -32,6 +32,11 @@ class BigIntegerGmp extends BigInteger
         $this->_rh = gmp_init($str, 10);
     }
 
+    protected function _fromInteger($integer)
+    {
+        $this->_rh = gmp_init($integer, 10);
+    }
+
     public function __toString()
     {
         return gmp_strval($this->_rh, 10);
@@ -39,6 +44,9 @@ class BigIntegerGmp extends BigInteger
 
     public function toInteger()
     {
+        if ($this->compare(PHP_INT_MAX) > 0 || $this->compare(PHP_INT_MIN) < 0) {
+            throw new \OverflowException(sprintf('Can not represent %s as integer.', $this->_str));
+        }
         return gmp_intval($this->_rh);
     }
 

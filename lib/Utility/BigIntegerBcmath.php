@@ -28,6 +28,11 @@ class BigIntegerBcmath extends BigInteger
         $this->_str = (string)$str;
     }
 
+    protected function _fromInteger($integer)
+    {
+        $this->_str = (string)$integer;
+    }
+
     public function __toString()
     {
         return $this->_str;
@@ -35,6 +40,9 @@ class BigIntegerBcmath extends BigInteger
 
     public function toInteger()
     {
+        if ($this->compare(PHP_INT_MAX) > 0 || $this->compare(PHP_INT_MIN) < 0) {
+            throw new \OverflowException(sprintf('Can not represent %s as integer.', $this->_str));
+        }
         return (int)$this->_str;
     }
 

@@ -32,11 +32,12 @@ abstract class BigInteger
     }
 
     /**
-     * Create a BigInteger instance based off the base 10 string.
-     * @param $str
-     * @return self
+     * Create a BigInteger instance based off the base 10 string or an integer.
+     * @param string|int $val
+     * @return BigInteger
+     * @throws \InvalidArgumentException
      */
-    public static function create($str)
+    public static function create($val)
     {
         if (self::$_prefer) {
             switch (self::$_prefer) {
@@ -63,7 +64,21 @@ abstract class BigInteger
                 throw new \RuntimeException('Requires GMP or bcmath extension.');
             }
         }
-        $ret->_fromString($str);
+
+        if (is_int($val)) {
+            $ret->_fromInteger($val);
+        }
+        else {
+            // convert to string, if not already one
+            $val = (string)$val;
+
+            // validate string
+            if (!preg_match('/^-?[0-9]+$/', $val)) {
+                throw new \InvalidArgumentException('Expects a string representation of an integer.');
+            }
+            $ret->_fromString($val);
+        }
+
         return $ret;
     }
 
@@ -97,8 +112,9 @@ abstract class BigInteger
     /* INFORMATIONAL FUNCTIONS */
 
     /**
-     * Return integer, if possible. Result is not defined if the number can not be represented in native integer.
+     * Return integer, if possible. Throws an exception if the number can not be represented as a native integer.
      * @return int
+     * @throws \OverflowException
      */
     abstract public function toInteger();
 
