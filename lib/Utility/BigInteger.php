@@ -24,7 +24,7 @@ abstract class BigInteger
 	 * Force a preference on the underlying big number implementation, useful for testing.
 	 * @var string|null
 	 */
-	private static $_prefer = 'bcmath';
+	private static $_prefer;
 
 	public static function setPrefer($prefer = null)
 	{
