@@ -11,7 +11,7 @@
 namespace FG\ASN1\Universal;
 
 use Exception;
-use FG\ASN1\Utility\Number;
+use FG\Utility\BigInteger;
 use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -47,7 +47,7 @@ class Integer extends ASNObject implements Parsable
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-	    $tmpValue = Number::create($this->value, 10);
+	    $tmpValue = BigInteger::create($this->value, 10);
 	    $tmpValue = $tmpValue->absoluteValue();
         while ($tmpValue->compare(127) > 0) {
         	$tmpValue = $tmpValue->shiftRight(8);
@@ -58,11 +58,11 @@ class Integer extends ASNObject implements Parsable
 
     protected function getEncodedValue()
     {
-        $numericValue = Number::create($this->value);
+        $numericValue = BigInteger::create($this->value);
         $contentLength = $this->getContentLength();
 
         if ($numericValue->isNegative()) {
-        	$numericValue = $numericValue->add(Number::create(2)->toPower(8 * $contentLength)->subtract(1));
+        	$numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
         	$numericValue = $numericValue->add(1);
         }
 
@@ -82,14 +82,14 @@ class Integer extends ASNObject implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
-        $number = Number::create(ord($binaryData[$offsetIndex++]) & 0x7F);
+        $number = BigInteger::create(ord($binaryData[$offsetIndex++]) & 0x7F);
 
         for ($i = 0; $i < $contentLength - 1; $i++) {
         	$number = $number->multiply(0x100)->add(ord($binaryData[$offsetIndex++]));
         }
 
         if ($isNegative) {
-        	$number = $number->subtract(Number::create(2)->toPower(8 * $contentLength - 1));
+        	$number = $number->subtract(BigInteger::create(2)->toPower(8 * $contentLength - 1));
         }
 
         $parsedObject = new static((string)$number);

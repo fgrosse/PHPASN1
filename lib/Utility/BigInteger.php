@@ -1,15 +1,15 @@
 <?php
 
-namespace FG\ASN1\Utility;
+namespace FG\Utility;
 
 /**
- * Class Number
+ * Class BigInteger
  * Utility class to remove dependence on a single large number library. Not intended for external use, this class only
  * implements the functionality needed throughout this project.
- * @package FG\ASN1\Utility
+ * @package FG\Utility
  * @internal
  */
-abstract class Number
+abstract class BigInteger
 {
 	/**
 	 * Force a preference on the underlying big number implementation, useful for testing.
@@ -25,10 +25,10 @@ abstract class Number
 		if (self::$_prefer) {
 			switch (self::$_prefer) {
 				case 'gmp':
-					$ret = new NumberGmp();
+					$ret = new BigIntegerGmp();
 					break;
 				case 'bcmath':
-					$ret = new NumberBcmath();
+					$ret = new BigIntegerBcmath();
 					break;
 				default:
 					throw new \UnexpectedValueException('Unknown number implementation: ' . self::$_prefer);
@@ -37,10 +37,10 @@ abstract class Number
 		else {
 			// autodetect
 			if (extension_loaded('gmp')) {
-				$ret = new NumberGmp();
+				$ret = new BigIntegerGmp();
 			}
 			elseif (extension_loaded('bcmath')) {
-				$ret = new NumberBcmath();
+				$ret = new BigIntegerBcmath();
 			}
 			else {
 				// TODO: potentially offer pure php implementation?

@@ -1,14 +1,14 @@
 <?php
 
-namespace FG\ASN1\Utility;
+namespace FG\Utility;
 
 /**
- * Class NumberBcmath
+ * Class BigIntegerBcmath
  * Integer representation of big numbers using the bcmath library to perform large operations.
- * @package FG\ASN1\Utility
+ * @package FG\Utility
  * @internal
  */
-class NumberBcmath extends Number
+class BigIntegerBcmath extends BigInteger
 {
 	protected $_str;
 

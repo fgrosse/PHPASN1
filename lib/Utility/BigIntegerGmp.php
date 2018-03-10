@@ -1,13 +1,13 @@
 <?php
 
-namespace FG\ASN1\Utility;
+namespace FG\Utility;
 
 /**
- * Class NumberGmp
- * @package FG\ASN1\Utility
+ * Class BigIntegerGmp
+ * @package FG\Utility
  * @internal
  */
-class NumberGmp extends Number
+class BigIntegerGmp extends BigInteger
 {
 	/**
 	 * Resource handle.

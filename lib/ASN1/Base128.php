@@ -2,7 +2,7 @@
 
 namespace FG\ASN1;
 
-use FG\ASN1\Utility\Number;
+use FG\Utility\BigInteger;
 use InvalidArgumentException;
 
 /**
@@ -17,7 +17,7 @@ class Base128
      */
     public static function encode($value)
     {
-        $value = Number::create($value);
+        $value = BigInteger::create($value);
         $octets = chr($value->modulus(0x80)->toInteger());
 
         $value = $value->shiftRight(7);
@@ -39,7 +39,7 @@ class Base128
     public static function decode($octets)
     {
         $bitsPerOctet = 7;
-        $value = Number::create(0);
+        $value = BigInteger::create(0);
         $i = 0;
 
         while (true) {
