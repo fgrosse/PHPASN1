@@ -1,3 +1,7 @@
+#### v.2.1.0 (2018-03)
+* add support for `bcmath` extension (making `gmp` optional)<br>
+  https://github.com/fgrosse/PHPASN1/pull/68
+
 #### v.2.0.1 & v.1.5.3 (2017-12)
 * add .gitattributes file to prevent examples and tests to be installed via composer when --prefer-dist was set
 
