@@ -11,6 +11,7 @@
 namespace FG\ASN1\Universal;
 
 use Exception;
+use FG\Utility\BigInteger;
 use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -46,39 +47,28 @@ class Integer extends ASNObject implements Parsable
     protected function calculateContentLength()
     {
         $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = gmp_abs(gmp_init($this->value, 10));
-        while (gmp_cmp($tmpValue, 127) > 0) {
-            $tmpValue = $this->rightShift($tmpValue, 8);
+        $tmpValue = BigInteger::create($this->value, 10);
+        $tmpValue = $tmpValue->absoluteValue();
+        while ($tmpValue->compare(127) > 0) {
+            $tmpValue = $tmpValue->shiftRight(8);
             $nrOfOctets++;
         }
         return $nrOfOctets;
     }
 
-    /**
-     * @param resource|\GMP $number
-     * @param int $positions
-     *
-     * @return resource|\GMP
-     */
-    private function rightShift($number, $positions)
-    {
-        // Shift 1 right = div / 2
-        return gmp_div($number, gmp_pow(2, (int) $positions));
-    }
-
     protected function getEncodedValue()
     {
-        $numericValue = gmp_init($this->value, 10);
+        $numericValue = BigInteger::create($this->value);
         $contentLength = $this->getContentLength();
 
-        if (gmp_sign($numericValue) < 0) {
-            $numericValue = gmp_add($numericValue, (gmp_sub(gmp_pow(2, 8 * $contentLength), 1)));
-            $numericValue = gmp_add($numericValue, 1);
+        if ($numericValue->isNegative()) {
+            $numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
+            $numericValue = $numericValue->add(1);
         }
 
         $result = '';
         for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
-            $octet = gmp_strval(gmp_mod($this->rightShift($numericValue, $shiftLength), 256));
+            $octet = $numericValue->shiftRight($shiftLength)->modulus(256)->toInteger();
             $result .= chr($octet);
         }
 
@@ -92,17 +82,17 @@ class Integer extends ASNObject implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
-        $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
+        $number = BigInteger::create(ord($binaryData[$offsetIndex++]) & 0x7F);
 
         for ($i = 0; $i < $contentLength - 1; $i++) {
-            $number = gmp_or(gmp_mul($number, 0x100), ord($binaryData[$offsetIndex++]));
+            $number = $number->multiply(0x100)->add(ord($binaryData[$offsetIndex++]));
         }
 
         if ($isNegative) {
-            $number = gmp_sub($number, gmp_pow(2, 8 * $contentLength - 1));
+            $number = $number->subtract(BigInteger::create(2)->toPower(8 * $contentLength - 1));
         }
 
-        $parsedObject = new static(gmp_strval($number, 10));
+        $parsedObject = new static((string)$number);
         $parsedObject->setContentLength($contentLength);
 
         return $parsedObject;

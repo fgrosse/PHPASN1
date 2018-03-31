@@ -22,7 +22,7 @@ The **changelog** can now be found at [CHANGELOG.md](CHANGELOG.md).
 
 ## Dependencies
 
-PHPASN1 requires at least `PHP 7.0` and the `gmp` extension.
+PHPASN1 requires at least `PHP 7.0` and either the `gmp` or `bcmath` extension.
 Support for older PHP versions (i.e. PHP 5.6) was dropped starting with `v2.0`.
 If you must use an outdated PHP version consider using [PHPASN v1.5][13].
 
