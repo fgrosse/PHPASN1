@@ -11,11 +11,11 @@
 namespace FG\ASN1\Universal;
 
 use Exception;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
-class OctetString extends Object implements Parsable
+class OctetString extends ASNObject implements Parsable
 {
     protected $value;
 

@@ -10,7 +10,7 @@
 
 namespace FG\X509\CSR;
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\X509\CertificateExtensions;
 use FG\ASN1\OID;
 use FG\ASN1\Parsable;
@@ -54,7 +54,7 @@ class Attributes extends Construct implements Parsable
             if ($oidString == OID::PKCS9_EXTENSION_REQUEST) {
                 $attribute = CertificateExtensions::fromBinary($binaryData, $offsetIndex);
             } else {
-                $attribute = Object::fromBinary($binaryData, $offsetIndex);
+                $attribute = ASNObject::fromBinary($binaryData, $offsetIndex);
             }
 
             $parsedObject->addAttribute($objectIdentifier, $attribute);

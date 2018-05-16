@@ -10,12 +10,12 @@
 
 namespace FG\ASN1\Universal;
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 use FG\ASN1\Exception\ParserException;
 
-class Boolean extends Object implements Parsable
+class Boolean extends ASNObject implements Parsable
 {
     private $value;
 

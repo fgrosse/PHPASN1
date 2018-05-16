@@ -10,7 +10,7 @@
 
 namespace FG\ASN1\Composite;
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Universal\Sequence;
 use FG\ASN1\Universal\ObjectIdentifier;
 
@@ -18,9 +18,9 @@ class AttributeTypeAndValue extends Sequence
 {
     /**
      * @param ObjectIdentifier|string $objIdentifier
-     * @param \FG\ASN1\Object $value
+     * @param \FG\ASN1\ASNObject $value
      */
-    public function __construct($objIdentifier, Object $value)
+    public function __construct($objIdentifier, ASNObject $value)
     {
         if ($objIdentifier instanceof ObjectIdentifier == false) {
             $objIdentifier = new ObjectIdentifier($objIdentifier);

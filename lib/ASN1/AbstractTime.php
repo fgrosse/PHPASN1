@@ -15,7 +15,7 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 
-abstract class AbstractTime extends Object
+abstract class AbstractTime extends ASNObject
 {
     /** @var DateTime */
     protected $value;

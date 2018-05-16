@@ -18,7 +18,7 @@ class RDNString extends RelativeDistinguishedName
 {
     /**
      * @param string|\FG\ASN1\Universal\ObjectIdentifier $objectIdentifierString
-     * @param string|\FG\ASN1\Object $value
+     * @param string|\FG\ASN1\ASNObject $value
      */
     public function __construct($objectIdentifierString, $value)
     {

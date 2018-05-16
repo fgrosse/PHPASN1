@@ -40,7 +40,7 @@ use LogicException;
 /**
  * Class Object is the base class for all concrete ASN.1 objects.
  */
-abstract class Object implements Parsable
+abstract class ASNObject implements Parsable
 {
     private $contentLength;
     private $nrOfLengthOctets;
@@ -198,7 +198,7 @@ abstract class Object implements Parsable
      *
      * @throws ParserException
      *
-     * @return \FG\ASN1\Object
+     * @return \FG\ASN1\ASNObject
      */
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
     {

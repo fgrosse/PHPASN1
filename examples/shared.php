@@ -1,9 +1,9 @@
 <?php
 
 use FG\ASN1\Identifier;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 
-function printObject(Object $object, $depth = 0)
+function printObject(ASNObject $object, $depth = 0)
 {
     $treeSymbol = '';
     $depthString = str_repeat('─', $depth);

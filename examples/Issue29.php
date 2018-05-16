@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 
 require_once __DIR__.'/../vendor/autoload.php';
 require_once 'shared.php';
 
 $hex = 'a02b302906092a864886f70d01090e311c301a30180603551d110411300f820d636f72766573706163652e6465';
-$asn = Object::fromBinary(hex2bin($hex));
+$asn = ASNObject::fromBinary(hex2bin($hex));
 
 printObject($asn);

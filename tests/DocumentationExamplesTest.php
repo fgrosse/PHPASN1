@@ -11,7 +11,7 @@
 namespace FG\Test;
 
 use FG\ASN1\OID;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Universal\Integer;
 use FG\ASN1\Universal\Boolean;
 use FG\ASN1\Universal\Enumerated;
@@ -52,7 +52,7 @@ class DocumentationExamplesTest extends ASN1TestCase
         $base64String = 'MBgCAwHiQAEB/woBARYLSGVsbG8gd29ybGQxODAYAgMB4kABAf8KAQEWC0hlbGxvIHdvcmxkBQAGBiqBegEQCQYJKoZIhvcNAQEBEwdGb28gYmFy';
         $binaryData = base64_decode($base64String);
 
-        $asnObject = Object::fromBinary($binaryData);
+        $asnObject = ASNObject::fromBinary($binaryData);
         $this->assertInstanceOf(Sequence::class, $asnObject);
     }
 }

@@ -1,3 +1,6 @@
+### v.1.6.0 (2018-05-16)
+* fix PHP 7.2 compatibility
+
 #### v.1.5.2 (2016-10-29)
 * allow empty octet strings
 

@@ -9,7 +9,7 @@
  */
 
 use FG\ASN1\ExplicitlyTaggedObject;
-use FG\ASN1\Object;
+use FG\ASN1\ASNObject;
 use FG\ASN1\Universal\Enumerated;
 use FG\ASN1\Universal\ObjectIdentifier;
 use FG\ASN1\Universal\Sequence;
@@ -84,7 +84,7 @@ qXDFVov9UZ+sGy8CJ5ahII79yrfKpxY=
 
 try {
     echo 'Input 1:' . PHP_EOL;
-    printObject(Object::fromBinary(base64_decode($input1)));
+    printObject(ASNObject::fromBinary(base64_decode($input1)));
 } catch (Exception $exception) {
     echo "ERROR: " . $exception->getMessage();
 }
@@ -93,7 +93,7 @@ echo PHP_EOL;
 
 try {
     echo 'Input 2:' . PHP_EOL;
-    printObject(Object::fromBinary(base64_decode($input2)));
+    printObject(ASNObject::fromBinary(base64_decode($input2)));
 } catch (Exception $exception) {
     echo "ERROR: " . $exception->getMessage();
 }
@@ -102,7 +102,7 @@ echo PHP_EOL;
 
 try {
     echo 'Input 3:' . PHP_EOL;
-    printObject(Object::fromBinary(base64_decode($input3)));
+    printObject(ASNObject::fromBinary(base64_decode($input3)));
 } catch (Exception $exception) {
     echo "ERROR: " . $exception->getMessage();
 }
