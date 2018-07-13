@@ -71,9 +71,11 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(128);
-        $negativeObj = new Integer(-128);
         $expectedSize = 2 + 2;
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
+
+        $negativeObj = new Integer(-128);
+        $expectedSize = 2 + 1;
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x7FFF);
@@ -83,9 +85,11 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x8000);
-        $negativeObj = new Integer(-0x8000);
         $expectedSize = 2 + 3;
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
+
+        $negativeObj = new Integer(-0x8000);
+        $expectedSize = 1 + 3;
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x7FFFFF);
@@ -95,9 +99,11 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x800000);
-        $negativeObj = new Integer(-0x800000);
         $expectedSize = 2 + 4;
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
+
+        $negativeObj = new Integer(-0x800000);
+        $expectedSize = 1 + 4;
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x7FFFFFFF);
@@ -281,4 +287,35 @@ class IntegerTest extends ASN1TestCase
         $binaryData .= chr(0xA0);
         Integer::fromBinary($binaryData);
     }
+
+    public function getNearLimitsFixtures()
+    {
+        return [
+            [0,"020100"],
+            [127,"02017f"],
+            [128,"02020080"],
+            [256,"02020100"],
+            [-128,"020180"],
+            [-129,"0202ff7f"],
+        ];
+    }
+
+    /**
+     * @dataProvider getNearLimitsFixtures
+     * @param $integerValue
+     * @param $der
+     * @throws \FG\ASN1\Exception\ParserException
+     */
+    public function testIntegerNearLimits($integerValue, $der)
+    {
+        $integer = new Integer($integerValue);
+        $this->assertEquals($der, bin2hex($integer->getBinary()));
+
+        $bin = hex2bin($der);
+        $parsed = Integer::fromBinary($bin);
+        $this->assertEquals($parsed->getType(), $integer->getType());
+        $this->assertEquals($parsed->getContent(), $integer->getContent());
+        $this->assertEquals($parsed->getObjectLength(), $integer->getObjectLength());
+    }
+
 }

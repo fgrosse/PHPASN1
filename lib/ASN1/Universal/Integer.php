@@ -46,33 +46,49 @@ class Integer extends ASNObject implements Parsable
 
     protected function calculateContentLength()
     {
-        $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = BigInteger::create($this->value, 10);
-        $tmpValue = $tmpValue->absoluteValue();
-        while ($tmpValue->compare(127) > 0) {
-            $tmpValue = $tmpValue->shiftRight(8);
-            $nrOfOctets++;
-        }
-        return $nrOfOctets;
+        return strlen($this->getEncodedValue());
     }
 
     protected function getEncodedValue()
     {
-        $numericValue = BigInteger::create($this->value);
-        $contentLength = $this->getContentLength();
-
-        if ($numericValue->isNegative()) {
-            $numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
-            $numericValue = $numericValue->add(1);
+        $value = BigInteger::create($this->value, 10);
+        $negative = $value->compare(0) < 0;
+        if ($negative) {
+             $value = $value->absoluteValue();
+             $limit = 0x80;
+        } else {
+             $limit = 0x7f;
         }
 
-        $result = '';
-        for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
-            $octet = $numericValue->shiftRight($shiftLength)->modulus(256)->toInteger();
-            $result .= chr($octet);
+        $mod = 0xff+1;
+        $values = [];
+        while($value->compare($limit) > 0) {
+            $values[] = $value->modulus($mod)->toInteger();
+            $value = $value->shiftRight(8);
         }
 
-        return $result;
+        $values[] = $value->modulus($mod)->toInteger();
+        $numValues = count($values);
+
+        if ($negative) {
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] = 0xff - $values[$i];
+            }
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] += 1;
+                if ($values[$i] <= 0xff) {
+                    break;
+                }
+                assert($i != $numValues - 1);
+                $values[$i] = 0;
+            }
+            if ($values[$numValues - 1] == 0x7f) {
+                $values[] = 0xff;
+            }
+        }
+        $values = array_reverse($values);
+        $r = pack("C*", ...$values);
+        return $r;
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
