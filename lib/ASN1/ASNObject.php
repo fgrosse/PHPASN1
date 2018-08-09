@@ -35,6 +35,7 @@ use FG\ASN1\Universal\GraphicString;
 use FG\ASN1\Universal\BMPString;
 use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
+use FG\Utility\BigInteger;
 use LogicException;
 
 /**
@@ -324,13 +325,19 @@ abstract class ASNObject implements Parsable
         if (($contentLength & 0x80) != 0) {
             // bit 8 is set -> this is the long form
             $nrOfLengthOctets = $contentLength & 0x7F;
-            $contentLength = 0x00;
+            $contentLength = gmp_init(0x00);
             for ($i = 0; $i < $nrOfLengthOctets; $i++) {
                 if (strlen($binaryData) <= $offsetIndex) {
                     throw new ParserException('Can not parse content length (long form) from data: Offset index larger than input size', $offsetIndex);
                 }
-                $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
+                $contentLength = gmp_add(gmp_mul($contentLength, gmp_pow(2, 8)), ord($binaryData[$offsetIndex++]));
             }
+
+            if (gmp_cmp($contentLength, PHP_INT_MAX) > 0) {
+                throw new ParserException("Can not parse content length from data: length > maximum integer", $offsetIndex);
+            }
+
+            $contentLength = (int) gmp_strval($contentLength);
         }
 
         if ($contentLength < $minimumLength) {
