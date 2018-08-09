@@ -300,4 +300,15 @@ class ObjectTest extends ASN1TestCase
 
         Object::fromBinary($binaryData);
     }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 11: Can not parse content length from data: length > maximum integer
+     * @depends testFromBinary
+     */
+    public function testFromBinaryExceedsMaxInt()
+    {
+        $bin = hex2bin("308901000000000000004502202ba3a8be6b94d5ec80a6d9d1190a436effe50d85a1eee859b8cc6af9bd5c2e18022100b329f479a2bbd0a5c384ee1493b1f5186a87139cac5df4087c134b49156847db");
+        Object::fromBinary($bin);
+    }
 }
