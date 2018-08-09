@@ -163,4 +163,32 @@ class SequenceTest extends ASN1TestCase
         $sequence = new Sequence(); // this should be legal
         $this->assertEmpty($sequence);
     }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage Sequence length incorrect
+     */
+    public function testInvalidLengthTooShort()
+    {
+        $str = chr(Identifier::SEQUENCE);
+        $str .= chr(11); // should be 12
+
+        // Integer(1), 3 bytes
+        $str .= chr(0x02);
+        $str .= chr(0x01);
+        $str .= chr(0x01);
+
+        // Integer(1), 9 bytes
+        $str .= chr(0x02);
+        $str .= chr(0x07);
+        $str .= chr(0x01);
+        $str .= chr(0x02);
+        $str .= chr(0x03);
+        $str .= chr(0x04);
+        $str .= chr(0x05);
+        $str .= chr(0x06);
+        $str .= chr(0x07);
+
+        Sequence::fromBinary($str);
+    }
 }
