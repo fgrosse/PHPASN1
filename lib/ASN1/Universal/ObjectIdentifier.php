@@ -88,6 +88,9 @@ class ObjectIdentifier extends ASNObject implements Parsable
     {
         self::parseIdentifier($binaryData[$offsetIndex], Identifier::OBJECT_IDENTIFIER, $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
+        if (strlen($binaryData) - $offsetIndex < $contentLength) {
+            throw new ParserException("Cannot read OID, content length incorrect", $offsetIndex);
+        }
 
         $firstOctet = ord($binaryData[$offsetIndex++]);
         $oidString = floor($firstOctet / 40).'.'.($firstOctet % 40);
