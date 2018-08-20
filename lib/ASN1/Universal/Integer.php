@@ -11,6 +11,7 @@
 namespace FG\ASN1\Universal;
 
 use Exception;
+use FG\ASN1\Exception\ParserException;
 use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -107,7 +108,9 @@ class Integer extends ASNObject implements Parsable
         $parsedObject = new static(0);
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
-
+        if (strlen($binaryData) - $offsetIndex < $contentLength) {
+            throw new ParserException("Invalid length for content", $offsetIndex);
+        }
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
         $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
 
