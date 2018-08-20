@@ -259,6 +259,18 @@ class IntegerTest extends ASN1TestCase
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\ASN1\Universal\Integer should have a content length of at least 1. Extracted length was 0
      * @depends testFromBinary
      */
+    public function testFromBinaryWithInvalidLength00()
+    {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x00);
+        Integer::fromBinary($binaryData);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\ASN1\Universal\Integer should have a content length of at least 1. Extracted length was 0
+     * @depends testFromBinary
+     */
     public function testFromBinaryWithInvalidLength01()
     {
         $binaryData  = chr(Identifier::INTEGER);
@@ -299,6 +311,48 @@ class IntegerTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage Integer not minimally encoded
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithUnnecessary00Byte()
+    {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x02);
+        $binaryData .= chr(0x00);
+        $binaryData .= chr(0x01);
+        Integer::fromBinary($binaryData); // 02020001 should be encoded as 020101
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage Integer not minimally encoded
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithUnnecessaryFFByte()
+    {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x02);
+        $binaryData .= chr(0xFF);
+        $binaryData .= chr(0xFF);
+        Integer::fromBinary($binaryData);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Integer not minimally encoded
+     * @depends testFromBinary
+     */
+    public function testRejectsNonMinimalEncodingExtraZero()
+    {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x02);
+        $binaryData .= chr(0x00);
+        $binaryData .= chr(0x01);
+        Integer::fromBinary($binaryData);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
      * @expectedExceptionMessage Invalid length for content
      * @depends testFromBinary
      */
@@ -307,6 +361,20 @@ class IntegerTest extends ASN1TestCase
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xA0);
+        Integer::fromBinary($binaryData);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Integer not minimally encoded
+     * @depends testFromBinary
+     */
+    public function testRejectsNonMinimalEncodingExtraFF()
+    {
+        $binaryData  = chr(Identifier::INTEGER);
+        $binaryData .= chr(0x02);
+        $binaryData .= chr(0xff);
+        $binaryData .= chr(0x80);
         Integer::fromBinary($binaryData);
     }
 }
