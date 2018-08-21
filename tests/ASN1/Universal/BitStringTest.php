@@ -147,6 +147,36 @@ class BitStringTest extends ASN1TestCase
         $this->assertEquals(10, $offset);
     }
 
+    public function testFromBinaryWithNoUnusedBits()
+    {
+        $content = chr(0x00);
+        $content .= chr(0x00);
+
+        $binaryData  = chr(Identifier::BITSTRING);
+        $binaryData .= chr(0x02);
+        $binaryData .= $content;
+
+        $bitString = BitString::fromBinary($binaryData);
+        $this->assertEquals($content, $bitString->getBinaryContent());
+    }
+
+    public function testFromBinaryWith7UnusedBits()
+    {
+        $content = chr(0x01);
+        $content .= chr(0xFF);
+        $content .= chr(0x80);
+
+        $binaryData  = chr(Identifier::BITSTRING);
+        $binaryData .= chr(0x03);
+        $binaryData .= $content;
+
+        $bitString = BitString::fromBinary($binaryData);
+        $this->assertEquals($content, $bitString->getBinaryContent());
+
+        $newBitString = new BitString(bin2hex("\xff\x80"), 1);
+        $this->assertEquals($content, $newBitString->getBinaryContent());
+    }
+
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\ASN1\Universal\BitString should have a content length of at least 2. Extracted length was 1
@@ -158,5 +188,27 @@ class BitStringTest extends ASN1TestCase
         $binaryData .= chr(0x01);
         $binaryData .= chr(0x00);
         BitString::fromBinary($binaryData);
+    }
+
+    public function getInvalidPaddingFixtures()
+    {
+        return [
+            [bin2hex("\x03\x03\x08\xff\x00")], // num used bits > 7
+            [bin2hex("\x03\x02\x01\x00")], // content len = 1 but specified unused bits
+            [bin2hex("\x03\x03\x01\xff\xff")], // using 7, using 1st 'unused bit'
+            [bin2hex("\x03\x03\x02\xff\x03")], // using 6, using 2nd+3rd 'unused bit'
+            [bin2hex("\x03\x03\x03\xff\x07")], // using 0, using 4th 'unused bit'
+        ];
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse bit string with invalid padding
+     * @dataProvider getInvalidPaddingFixtures
+     */
+    public function testFromBinaryWithInvalidUnusedBits(string $hex)
+    {
+        $bin = hex2bin($hex);
+        BitString::fromBinary($bin);
     }
 }

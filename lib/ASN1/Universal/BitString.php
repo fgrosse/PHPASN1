@@ -11,6 +11,7 @@
 namespace FG\ASN1\Universal;
 
 use Exception;
+use FG\ASN1\Exception\ParserException;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
@@ -69,6 +70,14 @@ class BitString extends OctetString implements Parsable
 
         $nrOfUnusedBits = ord($binaryData[$offsetIndex]);
         $value = substr($binaryData, $offsetIndex + 1, $contentLength - 1);
+
+        if ($nrOfUnusedBits > 7 || // no less than 1 used, otherwise non-minimal
+            ($contentLength - 1) == 1 && $nrOfUnusedBits > 0 || // content length only 1, no
+            (ord($value[strlen($value)-1])&((1<<$nrOfUnusedBits)-1)) != 0 // unused bits set
+        ) {
+            throw new ParserException("Can not parse bit string with invalid padding", $offsetIndex);
+        }
+
         $offsetIndex += $contentLength;
 
         $parsedObject = new self(bin2hex($value), $nrOfUnusedBits);
