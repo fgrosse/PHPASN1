@@ -344,6 +344,12 @@ abstract class ASNObject implements Parsable
             throw new ParserException('A '.get_called_class()." should have a content length of at least {$minimumLength}. Extracted length was {$contentLength}", $offsetIndex);
         }
 
+        $lenDataRemaining = strlen($binaryData) - $offsetIndex;
+
+        if ($lenDataRemaining < $contentLength) {
+            throw new ParserException("Can not parse content length from data. Content length {$contentLength} exceeds remaining data length {$lenDataRemaining}", $offsetIndex);
+        }
+
         return $contentLength;
     }
 }
