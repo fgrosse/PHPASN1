@@ -374,19 +374,6 @@ class IntegerTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage Invalid length for content
-     * @depends testFromBinary
-     */
-    public function testFromBinaryWithInvalidLengthTooLarge()
-    {
-        $binaryData  = chr(Identifier::INTEGER);
-        $binaryData .= chr(0x02);
-        $binaryData .= chr(0xA0);
-        Integer::fromBinary($binaryData);
-    }
-
-    /**
-     * @expectedException \FG\ASN1\Exception\ParserException
      * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Integer not minimally encoded
      * @depends testFromBinary
      */

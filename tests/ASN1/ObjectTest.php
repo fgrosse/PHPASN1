@@ -244,12 +244,12 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse binary from data: Offset index larger than input size
-     * @depends testFromBinary
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 3: Can not parse content length from data: Offset index larger than input size
+     * @ depends testFromBinary
      */
     public function testFromBinaryWithSpacyStringThrowsException()
     {
-        $data = '  ';
+        $data = "\x32\x01\x32";
         ASNObject::fromBinary($data);
     }
 
@@ -266,7 +266,7 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 25: Can not parse content length from data: Offset index larger than input size
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 101 exceeds remaining data length 23
      * @depends testFromBinary
      */
     public function testFromBinaryWithGarbageStringThrowsException()
@@ -310,5 +310,17 @@ class ObjectTest extends ASN1TestCase
     {
         $bin = hex2bin("308901000000000000004502202ba3a8be6b94d5ec80a6d9d1190a436effe50d85a1eee859b8cc6af9bd5c2e18022100b329f479a2bbd0a5c384ee1493b1f5186a87139cac5df4087c134b49156847db");
         ASNObject::fromBinary($bin);
+    }
+
+    /**
+     * @expectedException \FG\ASN1\Exception\ParserException
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 1 exceeds remaining data length 0
+     * @depends testFromBinary
+     */
+    public function testFromBinaryWithInconsistentLength()
+    {
+        $binaryData  = chr(Identifier::NULL);
+        $binaryData .= chr(0x01);
+        ASNObject::fromBinary($binaryData);
     }
 }
