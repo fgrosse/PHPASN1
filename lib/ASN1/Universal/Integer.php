@@ -105,9 +105,6 @@ class Integer extends ASNObject implements Parsable
         $parsedObject = new static(0);
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
-        if (strlen($binaryData) - $offsetIndex < $contentLength) {
-            throw new ParserException("Invalid length for content", $offsetIndex);
-        }
 
         if ($contentLength > 1) {
             self::checkBytes($binaryData, $offsetIndex);
