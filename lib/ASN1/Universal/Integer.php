@@ -105,6 +105,8 @@ class Integer extends Object implements Parsable
 
     private static function ensureMinimalEncoding($binaryData, $offsetIndex)
     {
+        // All the first nine bits cannot equal 0 or 1, which would
+        // be non-minimal encoding for positive and negative integers respectively
         if ((ord($binaryData[$offsetIndex]) == 0x00 && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0) ||
             (ord($binaryData[$offsetIndex]) == 0xff && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0x80)) {
             throw new ParserException("Integer not minimally encoded", $offsetIndex);
