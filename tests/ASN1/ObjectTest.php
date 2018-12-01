@@ -244,12 +244,12 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 3: Can not parse content length from data: Offset index larger than input size
-     * @ depends testFromBinary
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 50 exceeds remaining data length 1
+     * @depends testFromBinary
      */
     public function testFromBinaryWithSpacyStringThrowsException()
     {
-        $data = "\x32\x01\x32";
+        $data = "\x32\x32\x32";
         ASNObject::fromBinary($data);
     }
 
