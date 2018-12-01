@@ -347,7 +347,7 @@ abstract class ASNObject implements Parsable
         $lenDataRemaining = strlen($binaryData) - $offsetIndex;
 
         if ($lenDataRemaining < $contentLength) {
-            throw new ParserException("Can not parse content length from data. Content length {$contentLength} exceeds remaining data length {$lenDataRemaining}", $offsetIndex);
+            throw new ParserException("Content length {$contentLength} exceeds remaining data length {$lenDataRemaining}", $offsetIndex);
         }
 
         return $contentLength;
