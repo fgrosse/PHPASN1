@@ -92,7 +92,7 @@ class Integer extends ASNObject implements Parsable
         return $r;
     }
 
-    protected static function checkBytes($binaryData, $offsetIndex)
+    private static function ensureMinimalEncoding($binaryData, $offsetIndex)
     {
         if ((ord($binaryData[$offsetIndex]) == 0x00 && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0) ||
             (ord($binaryData[$offsetIndex]) == 0xff && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0x80)) {
@@ -107,7 +107,7 @@ class Integer extends ASNObject implements Parsable
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
         if ($contentLength > 1) {
-            self::checkBytes($binaryData, $offsetIndex);
+            self::ensureMinimalEncoding($binaryData, $offsetIndex);
         }
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
         $number = BigInteger::create(ord($binaryData[$offsetIndex++]) & 0x7F);
