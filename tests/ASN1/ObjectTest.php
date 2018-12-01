@@ -244,7 +244,7 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 50 exceeds remaining data length 1
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Content length 50 exceeds remaining data length 1
      * @depends testFromBinary
      */
     public function testFromBinaryWithSpacyStringThrowsException()
@@ -266,7 +266,7 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 101 exceeds remaining data length 23
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Content length 101 exceeds remaining data length 23
      * @depends testFromBinary
      */
     public function testFromBinaryWithGarbageStringThrowsException()
@@ -314,7 +314,7 @@ class ObjectTest extends ASN1TestCase
 
     /**
      * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Can not parse content length from data. Content length 1 exceeds remaining data length 0
+     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Content length 1 exceeds remaining data length 0
      * @depends testFromBinary
      */
     public function testFromBinaryWithInconsistentLength()
