@@ -88,7 +88,7 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
 
         $negativeObj = new Integer(-0x8000);
-        $expectedSize = 1 + 3;
+        $expectedSize = 2 + 2;
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x7FFFFF);
@@ -102,7 +102,7 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals($expectedSize, $positiveObj->getObjectLength());
 
         $negativeObj = new Integer(-0x800000);
-        $expectedSize = 1 + 4;
+        $expectedSize = 2 + 3;
         $this->assertEquals($expectedSize, $negativeObj->getObjectLength());
 
         $positiveObj = new Integer(0x7FFFFFFF);
