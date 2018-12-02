@@ -109,7 +109,7 @@ class UTCTimeTest extends ASN1TestCase
     {
         $dateTime = new \DateTime('1987-01-15 13:15:00', $this->UTC);
         $binaryData  = chr(Identifier::UTC_TIME);
-        $binaryData .= chr(13);
+        $binaryData .= chr(11);
         $binaryData .= '8701151315Z';
         $parsedObject = UTCTime::fromBinary($binaryData);
         $this->assertEquals($dateTime, $parsedObject->getContent());

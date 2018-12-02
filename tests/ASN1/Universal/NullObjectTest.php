@@ -88,6 +88,7 @@ class NullObjectTest extends ASN1TestCase
     {
         $binaryData  = chr(Identifier::NULL);
         $binaryData .= chr(0x01);
+        $binaryData .= chr(0x01);
         NullObject::fromBinary($binaryData);
     }
 }

@@ -12,6 +12,7 @@ namespace FG\ASN1\Universal;
 
 use Exception;
 use FG\ASN1\Object;
+use FG\ASN1\Exception\ParserException;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
 
@@ -45,13 +46,7 @@ class Integer extends Object implements Parsable
 
     protected function calculateContentLength()
     {
-        $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = gmp_abs(gmp_init($this->value, 10));
-        while (gmp_cmp($tmpValue, 127) > 0) {
-            $tmpValue = $this->rightShift($tmpValue, 8);
-            $nrOfOctets++;
-        }
-        return $nrOfOctets;
+        return strlen($this->getEncodedValue());
     }
 
     /**
@@ -68,21 +63,54 @@ class Integer extends Object implements Parsable
 
     protected function getEncodedValue()
     {
-        $numericValue = gmp_init($this->value, 10);
-        $contentLength = $this->getContentLength();
-
-        if (gmp_sign($numericValue) < 0) {
-            $numericValue = gmp_add($numericValue, (gmp_sub(gmp_pow(2, 8 * $contentLength), 1)));
-            $numericValue = gmp_add($numericValue, 1);
+        $value = gmp_init($this->value, 10);
+        $negative = gmp_cmp($value, 0) < 0;
+        if ($negative) {
+             $value = gmp_abs($value);
+             $limit = 0x80;
+        } else {
+             $limit = 0x7f;
         }
 
-        $result = '';
-        for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
-            $octet = gmp_strval(gmp_mod($this->rightShift($numericValue, $shiftLength), 256));
-            $result .= chr($octet);
+        $mod = 0xff+1;
+        $values = [];
+        while(gmp_cmp($value, $limit) > 0) {
+            $values[] = (int) gmp_strval(gmp_mod($value, $mod), 10);
+            $value = $this->rightShift($value, 8);
         }
 
-        return $result;
+        $values[] = (int) gmp_strval(gmp_mod($value, $mod), 10);
+        $numValues = count($values);
+
+        if ($negative) {
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] = 0xff - $values[$i];
+            }
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] += 1;
+                if ($values[$i] <= 0xff) {
+                    break;
+                }
+                assert($i != $numValues - 1);
+                $values[$i] = 0;
+            }
+            if ($values[$numValues - 1] == 0x7f) {
+                $values[] = 0xff;
+            }
+        }
+        $values = array_reverse($values);
+        $r = pack("C*", ...$values);
+        return $r;
+    }
+
+    private static function ensureMinimalEncoding($binaryData, $offsetIndex)
+    {
+        // All the first nine bits cannot equal 0 or 1, which would
+        // be non-minimal encoding for positive and negative integers respectively
+        if ((ord($binaryData[$offsetIndex]) == 0x00 && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0) ||
+            (ord($binaryData[$offsetIndex]) == 0xff && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0x80)) {
+            throw new ParserException("Integer not minimally encoded", $offsetIndex);
+        }
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
@@ -91,9 +119,12 @@ class Integer extends Object implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
+        if ($contentLength > 1) {
+            self::ensureMinimalEncoding($binaryData, $offsetIndex);
+        }
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
         $number = gmp_init(ord($binaryData[$offsetIndex++]) & 0x7F, 10);
-
+        
         for ($i = 0; $i < $contentLength - 1; $i++) {
             $number = gmp_or(gmp_mul($number, 0x100), ord($binaryData[$offsetIndex++]));
         }
