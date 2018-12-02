@@ -12,6 +12,7 @@ namespace FG\ASN1\Universal;
 
 use Exception;
 use FG\Utility\BigInteger;
+use FG\ASN1\Exception\ParserException;
 use FG\ASN1\ASNObject;
 use FG\ASN1\Parsable;
 use FG\ASN1\Identifier;
@@ -46,33 +47,59 @@ class Integer extends ASNObject implements Parsable
 
     protected function calculateContentLength()
     {
-        $nrOfOctets = 1; // we need at least one octet
-        $tmpValue = BigInteger::create($this->value, 10);
-        $tmpValue = $tmpValue->absoluteValue();
-        while ($tmpValue->compare(127) > 0) {
-            $tmpValue = $tmpValue->shiftRight(8);
-            $nrOfOctets++;
-        }
-        return $nrOfOctets;
+        return strlen($this->getEncodedValue());
     }
 
     protected function getEncodedValue()
     {
-        $numericValue = BigInteger::create($this->value);
-        $contentLength = $this->getContentLength();
-
-        if ($numericValue->isNegative()) {
-            $numericValue = $numericValue->add(BigInteger::create(2)->toPower(8 * $contentLength)->subtract(1));
-            $numericValue = $numericValue->add(1);
+        $value = BigInteger::create($this->value, 10);
+        $negative = $value->compare(0) < 0;
+        if ($negative) {
+             $value = $value->absoluteValue();
+             $limit = 0x80;
+        } else {
+             $limit = 0x7f;
         }
 
-        $result = '';
-        for ($shiftLength = ($contentLength - 1) * 8; $shiftLength >= 0; $shiftLength -= 8) {
-            $octet = $numericValue->shiftRight($shiftLength)->modulus(256)->toInteger();
-            $result .= chr($octet);
+        $mod = 0xff+1;
+        $values = [];
+        while($value->compare($limit) > 0) {
+            $values[] = $value->modulus($mod)->toInteger();
+            $value = $value->shiftRight(8);
         }
 
-        return $result;
+        $values[] = $value->modulus($mod)->toInteger();
+        $numValues = count($values);
+
+        if ($negative) {
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] = 0xff - $values[$i];
+            }
+            for ($i = 0; $i < $numValues; $i++) {
+                $values[$i] += 1;
+                if ($values[$i] <= 0xff) {
+                    break;
+                }
+                assert($i != $numValues - 1);
+                $values[$i] = 0;
+            }
+            if ($values[$numValues - 1] == 0x7f) {
+                $values[] = 0xff;
+            }
+        }
+        $values = array_reverse($values);
+        $r = pack("C*", ...$values);
+        return $r;
+    }
+
+    private static function ensureMinimalEncoding($binaryData, $offsetIndex)
+    {
+        // All the first nine bits cannot equal 0 or 1, which would
+        // be non-minimal encoding for positive and negative integers respectively
+        if ((ord($binaryData[$offsetIndex]) == 0x00 && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0) ||
+            (ord($binaryData[$offsetIndex]) == 0xff && (ord($binaryData[$offsetIndex+1]) & 0x80) == 0x80)) {
+            throw new ParserException("Integer not minimally encoded", $offsetIndex);
+        }
     }
 
     public static function fromBinary(&$binaryData, &$offsetIndex = 0)
@@ -81,6 +108,9 @@ class Integer extends ASNObject implements Parsable
         self::parseIdentifier($binaryData[$offsetIndex], $parsedObject->getType(), $offsetIndex++);
         $contentLength = self::parseContentLength($binaryData, $offsetIndex, 1);
 
+        if ($contentLength > 1) {
+            self::ensureMinimalEncoding($binaryData, $offsetIndex);
+        }
         $isNegative = (ord($binaryData[$offsetIndex]) & 0x80) != 0x00;
         $number = BigInteger::create(ord($binaryData[$offsetIndex++]) & 0x7F);
 

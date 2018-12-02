@@ -35,6 +35,7 @@ use FG\ASN1\Universal\GraphicString;
 use FG\ASN1\Universal\BMPString;
 use FG\ASN1\Universal\T61String;
 use FG\ASN1\Universal\ObjectDescriptor;
+use FG\Utility\BigInteger;
 use LogicException;
 
 /**
@@ -324,17 +325,29 @@ abstract class ASNObject implements Parsable
         if (($contentLength & 0x80) != 0) {
             // bit 8 is set -> this is the long form
             $nrOfLengthOctets = $contentLength & 0x7F;
-            $contentLength = 0x00;
+            $contentLength = BigInteger::create(0x00);
             for ($i = 0; $i < $nrOfLengthOctets; $i++) {
                 if (strlen($binaryData) <= $offsetIndex) {
                     throw new ParserException('Can not parse content length (long form) from data: Offset index larger than input size', $offsetIndex);
                 }
-                $contentLength = ($contentLength << 8) + ord($binaryData[$offsetIndex++]);
+                $contentLength = $contentLength->shiftLeft(8)->add(ord($binaryData[$offsetIndex++]));
             }
+
+            if ($contentLength->compare(PHP_INT_MAX) > 0) {
+                throw new ParserException("Can not parse content length from data: length > maximum integer", $offsetIndex);
+            }
+
+            $contentLength = $contentLength->toInteger();
         }
 
         if ($contentLength < $minimumLength) {
             throw new ParserException('A '.get_called_class()." should have a content length of at least {$minimumLength}. Extracted length was {$contentLength}", $offsetIndex);
+        }
+
+        $lenDataRemaining = strlen($binaryData) - $offsetIndex;
+
+        if ($lenDataRemaining < $contentLength) {
+            throw new ParserException("Content length {$contentLength} exceeds remaining data length {$lenDataRemaining}", $offsetIndex);
         }
 
         return $contentLength;
