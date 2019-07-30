@@ -27,7 +27,7 @@
     },
     "suggest": {
         "ext-gmp": "GMP is the preferred extension for big integer calculations",
-        "php-curl": "For loading OID information from the web if they have not bee defined statically"
+        "ext-curl": "For loading OID information from the web if they have not bee defined statically"
     },
     "autoload": {
         "psr-4": {
