@@ -53,11 +53,13 @@ abstract class BigInteger
         }
         else {
             // autodetect
-            if (extension_loaded('gmp')) {
+            if (function_exists('gmp_add')) {
                 $ret = new BigIntegerGmp();
             }
-            else {
-	            $ret = new BigIntegerBcmath();
+            elseif (function_exists('bcadd')) {
+                $ret = new BigIntegerBcmath();
+            } else {
+                throw new \RuntimeException('Requires GMP or bcmath extension.');
             }
         }
 
