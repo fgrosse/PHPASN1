@@ -12,7 +12,7 @@ class BigIntegerBcmathTest extends BigIntegerTest
 {
     protected function _isSupported()
     {
-        return true;
+	    return function_exists('bcadd');
     }
 
     protected function _getMode()
