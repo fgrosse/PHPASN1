@@ -12,7 +12,7 @@ class BigIntegerGmpTest extends BigIntegerTest
 {
     protected function _isSupported()
     {
-        return extension_loaded('gmp');
+        return function_exists('gmp_add');
     }
 
     protected function _getMode()
