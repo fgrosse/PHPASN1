@@ -70,6 +70,9 @@ class CSR extends Sequence
 
         $certRequestInfo  = new Sequence($versionNr, $this->subject, $publicKey);
 
+        // Clear the underlying Construct
+        $this->rewind();
+        $this->children = [];
         $this->addChild($certRequestInfo);
         $this->addChild($signatureAlgorithm);
         $this->addChild($signature);
