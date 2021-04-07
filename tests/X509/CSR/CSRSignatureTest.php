@@ -131,4 +131,31 @@ AAAAAAAAAAAAAAg=
         $this->assertEquals($expected, $cert);
     }
 
+    public function testCertificate()
+    {
+        $private_key = openssl_pkey_get_private($this->pem);
+        $pem = openssl_pkey_get_details($private_key)['key'];
+        $pemparts = explode("\n", trim($pem));
+        array_pop($pemparts);
+        array_shift($pemparts);
+        $binarykey = base64_decode(implode('', $pemparts));
+        $asn1KeyWrapper = ASNObject::fromBinary($binarykey);
+
+        // Now get the key out in hex format
+        $asn1Key = $asn1KeyWrapper->getContent();
+        $hexkey = $asn1Key[1]->getContent();
+
+        $csr = new CSR('github.org', 'no-reply@github.org', 'Github', 'San Fransisco', '', 'US', 'IT', $hexkey);
+        $digest = $csr->getSignatureSubject();
+        $signature = null;
+        openssl_sign($digest, $signature, $private_key, OPENSSL_ALGO_SHA256);
+        $csr->setSignature($signature, OID::SHA256_WITH_RSA_SIGNATURE);
+
+        $cert = $csr->__toString();
+        $key = openssl_csr_get_public_key($cert);
+        $certPem = openssl_pkey_get_details($key)['key'];
+        
+        $this->assertEquals($certPem, $pem);
+    }
+
 }
