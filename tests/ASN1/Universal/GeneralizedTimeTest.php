@@ -20,7 +20,7 @@ class GeneralizedTimeTest extends ASN1TestCase
 {
     private $UTC;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->UTC = new DateTimeZone('UTC');
     }
