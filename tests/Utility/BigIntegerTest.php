@@ -25,7 +25,7 @@ abstract class BigIntegerTest extends TestCase
      */
     abstract protected function _getMode();
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!$this->_isSupported()) {
             $this->markTestSkipped(sprintf('Mode %s is not supported.', $this->_getMode()));
@@ -285,7 +285,7 @@ abstract class BigIntegerTest extends TestCase
         $this->assertSame('18446744073709551616', (string)$a->absoluteValue());
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         BigInteger::setPrefer(null);
     }
