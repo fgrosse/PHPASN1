@@ -26,5 +26,9 @@ jobs:
           extensions: gmp, bcmath
           tools: composer
       - uses: actions/checkout@v2
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - run: composer install
       - run: vendor/bin/phpunit
