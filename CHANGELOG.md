@@ -1,3 +1,7 @@
+#### v2.3.1 (2021-12)
+* Add `#[\ReturnTypeWillChange]` attributes for PHP 8.1 compatibility
+  https://github.com/fgrosse/PHPASN1/pull/87
+
 #### v2.3.0 (2021-04)
 * Allow creating an unsigned CSR and adding the signature later
   https://github.com/fgrosse/PHPASN1/pull/82
