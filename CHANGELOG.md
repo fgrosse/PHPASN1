@@ -1,3 +1,6 @@
+#### v2.4.0 (2021-12)
+* Drop support for PHP 7.0 [#89](https://github.com/fgrosse/PHPASN1/pull/89)
+
 #### v2.3.1 (2021-12)
 * Add `#[\ReturnTypeWillChange]` attributes for PHP 8.1 compatibility [#87](https://github.com/fgrosse/PHPASN1/pull/87)
 
