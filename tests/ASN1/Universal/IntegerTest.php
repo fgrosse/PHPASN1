@@ -12,6 +12,7 @@ namespace FG\Test\ASN1\Universal;
 
 use FG\Utility\BigInteger;
 use FG\ASN1\ASNObject;
+use FG\ASN1\Exception\ParserException;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Integer;
@@ -30,11 +31,10 @@ class IntegerTest extends ASN1TestCase
         $this->assertEquals(chr(Identifier::INTEGER), $object->getIdentifier());
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testCreateInstanceCanFail()
     {
+        $this->expectException(\Exception::class);
+
         new Integer('a');
     }
 
@@ -276,24 +276,26 @@ class IntegerTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\ASN1\Universal\Integer should have a content length of at least 1. Extracted length was 0
      * @depends testFromBinary
      */
     public function testFromBinaryWithInvalidLength00()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 2: A FG\\ASN1\\Universal\\Integer should have a content length of at least 1. Extracted length was 0");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x00);
         Integer::fromBinary($binaryData);
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\ASN1\Universal\Integer should have a content length of at least 1. Extracted length was 0
      * @depends testFromBinary
      */
     public function testFromBinaryWithInvalidLength01()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 2: A FG\\ASN1\\Universal\\Integer should have a content length of at least 1. Extracted length was 0");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x00);
         $binaryData .= chr(0xA0);
@@ -331,12 +333,13 @@ class IntegerTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage Integer not minimally encoded
      * @depends testFromBinary
      */
     public function testFromBinaryWithUnnecessary00Byte()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("Integer not minimally encoded");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0x00);
@@ -345,12 +348,13 @@ class IntegerTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage Integer not minimally encoded
      * @depends testFromBinary
      */
     public function testFromBinaryWithUnnecessaryFFByte()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("Integer not minimally encoded");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xFF);
@@ -359,12 +363,13 @@ class IntegerTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Integer not minimally encoded
      * @depends testFromBinary
      */
     public function testRejectsNonMinimalEncodingExtraZero()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 2: Integer not minimally encoded");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0x00);
@@ -373,12 +378,13 @@ class IntegerTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: Integer not minimally encoded
      * @depends testFromBinary
      */
     public function testRejectsNonMinimalEncodingExtraFF()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 2: Integer not minimally encoded");
+
         $binaryData  = chr(Identifier::INTEGER);
         $binaryData .= chr(0x02);
         $binaryData .= chr(0xff);

@@ -10,6 +10,7 @@
 
 namespace FG\Test\ASN1\Universal;
 
+use FG\ASN1\Exception\ParserException;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\RelativeObjectIdentifier;
@@ -87,12 +88,13 @@ class RelativeObjectIdentifierTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 4: Malformed ASN.1 Relative Object Identifier
      * @depends testFromBinary
      */
     public function testFromBinaryWithMalformedOID()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 4: Malformed ASN.1 Relative Object Identifier");
+
         $binaryData  = chr(Identifier::RELATIVE_OID);
         $binaryData .= chr(0x03);
         $binaryData .= chr(42);

@@ -10,6 +10,7 @@
 
 namespace FG\Test\ASN1\Universal;
 
+use FG\ASN1\Exception\ParserException;
 use FG\Test\ASN1TestCase;
 use FG\ASN1\Identifier;
 use FG\ASN1\Universal\Sequence;
@@ -164,12 +165,11 @@ class SequenceTest extends ASN1TestCase
         $this->assertEmpty($sequence);
     }
 
-    /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage Sequence length incorrect
-     */
     public function testInvalidLengthTooShort()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("Sequence length incorrect");
+
         $str = chr(Identifier::SEQUENCE);
         $str .= chr(11); // should be 12
 

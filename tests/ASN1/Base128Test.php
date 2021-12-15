@@ -79,12 +79,10 @@ class Base128Test extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Malformed base-128 encoded value (0xFFFF).
-     */
     public function testDecodeFailsIfLastOctetSignificantBitSet()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Malformed base-128 encoded value (0xFFFF).");
         Base128::decode("\xFF\xFF");
     }
 }
