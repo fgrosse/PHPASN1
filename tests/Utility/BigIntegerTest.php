@@ -52,11 +52,10 @@ abstract class BigIntegerTest extends TestCase
         $this->assertSame('18446744073709551616', (string)$a);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testCreateFromInvalidString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         BigInteger::create('0x1');
     }
 
@@ -93,11 +92,10 @@ abstract class BigIntegerTest extends TestCase
         $this->assertSame(PHP_INT_MAX, $a->toInteger());
     }
 
-    /**
-     * @expectedException \OverflowException
-     */
     public function testIntegerOverflow()
     {
+        $this->expectException(\OverflowException::class);
+
         $a = BigInteger::create(PHP_INT_MAX);
         $a->add(1)->toInteger();
     }

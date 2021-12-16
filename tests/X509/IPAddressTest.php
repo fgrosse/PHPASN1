@@ -10,6 +10,7 @@
 
 namespace FG\Test\X509;
 
+use FG\ASN1\Exception\ParserException;
 use FG\Test\ASN1TestCase;
 use FG\X509\SAN\IPAddress;
 
@@ -64,12 +65,13 @@ class IPAddressTest extends ASN1TestCase
     }
 
     /**
-     * @expectedException \FG\ASN1\Exception\ParserException
-     * @expectedExceptionMessage ASN.1 Parser Exception at offset 2: A FG\X509\SAN\IPAddress should have a content length of 4. Extracted length was 2
      * @depends testFromBinary
      */
     public function testFromBinaryWithWrongLengthThrowsException()
     {
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage("ASN.1 Parser Exception at offset 2: A FG\\X509\\SAN\\IPAddress should have a content length of 4. Extracted length was 2");
+
         $binaryData  = chr(0x87);
         $binaryData .= chr(2);
         $binaryData .= chr(192);

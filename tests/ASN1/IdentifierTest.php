@@ -74,12 +74,10 @@ class IdentifierTest extends ASN1TestCase
         $this->assertEquals(0xFF, Identifier::getTagNumber("\x1F\x81\x7F"));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Malformed base-128 encoded value (0x0).
-     */
     public function testGetTagNumberFailsIfLongFormIdentifierMissingSubsequentOctets()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Malformed base-128 encoded value (0x0).");
         Identifier::getTagNumber(Identifier::LONG_FORM);
     }
 
