@@ -46,7 +46,7 @@ abstract class AbstractTime extends ASNObject
     protected function getLastDateTimeErrors()
     {
         $messages = '';
-        $lastErrors = DateTime::getLastErrors();
+        $lastErrors = DateTime::getLastErrors() ?: ['error_count' => 0, 'warning_count' => 0];
         foreach ($lastErrors['errors'] as $errorMessage) {
             $messages .= "{$errorMessage}, ";
         }
