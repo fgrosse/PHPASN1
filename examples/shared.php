@@ -18,7 +18,7 @@ function printObject(ASNObject $object, $depth = 0)
 
     $content = $object->getContent();
     if (is_array($content)) {
-        foreach ($object as $child) {
+        foreach ($content as $child) {
             printObject($child, $depth + 1);
         }
     }
