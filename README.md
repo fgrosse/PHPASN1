@@ -12,7 +12,7 @@ PHPASN1
 
 ---
 
-<div style="color: red; font-size: large">Notice: This library is no longer actively maintained!</div>
+<h2><span style="color:red">Notice: This library is no longer actively maintained!</span></h2>
 If you are currently using PHPASN1, this might not be an immediate problem for you, since this library was always rather stable.
 
 However, you are advised to migrate to alternative packages to ensure that your applications remain functional also with newer PHP versions.
