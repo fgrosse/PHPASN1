@@ -1,13 +1,8 @@
 PHPASN1
 =======
 
-[![Build Status](https://github.com/fgrosse/PHPASN1/actions/workflows/phpunit.yml/badge.svg)](https://github.com/fgrosse/PHPASN1/actions/workflows/phpunit.yml)
-[![PHP 7 ready](http://php7ready.timesplinter.ch/fgrosse/PHPASN1/badge.svg)](https://travis-ci.org/fgrosse/PHPASN1)
-[![Coverage Status](https://coveralls.io/repos/fgrosse/PHPASN1/badge.svg?branch=master&service=github)](https://coveralls.io/github/fgrosse/PHPASN1?branch=master)
-
 [![Latest Stable Version](https://poser.pugx.org/fgrosse/phpasn1/v/stable.png)](https://packagist.org/packages/fgrosse/phpasn1)
 [![Total Downloads](https://poser.pugx.org/fgrosse/phpasn1/downloads.png)](https://packagist.org/packages/fgrosse/phpasn1)
-[![Latest Unstable Version](https://poser.pugx.org/fgrosse/phpasn1/v/unstable.png)](https://packagist.org/packages/fgrosse/phpasn1)
 [![License](https://poser.pugx.org/fgrosse/phpasn1/license.png)](https://packagist.org/packages/fgrosse/phpasn1)
 
 ---
