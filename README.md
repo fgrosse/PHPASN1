@@ -17,6 +17,10 @@ If you are currently using PHPASN1, this might not be an immediate problem for y
 
 However, you are advised to migrate to alternative packages to ensure that your applications remain functional also with newer PHP versions.
 
+Another option is to fork this repository or use [one of the existing forks][14] already.
+
+⚠ **If you are using another fork, please make sure you trust the author** and validate the code you are relying upon!
+
 ---
 
 A PHP Framework that allows you to encode and decode arbitrary [ASN.1][3] structures
@@ -167,3 +171,4 @@ This library is distributed under the [MIT License](LICENSE).
 [11]: https://github.com/fgrosse/PHPASN1/blob/master/tests/ASN1/TemplateParserTest.php#L16
 [12]: https://groups.google.com/d/forum/phpasn1
 [13]: https://packagist.org/packages/fgrosse/phpasn1#1.5.2
+[14]: https://github.com/fgrosse/PHPASN1/forks?include=active&page=1&period=2y&sort_by=last_updated
