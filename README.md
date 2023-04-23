@@ -12,7 +12,7 @@ If you are currently using PHPASN1, this might not be an immediate problem for y
 
 However, you are advised to migrate to alternative packages to ensure that your applications remain functional also with newer PHP versions.
 
-Another option is to fork this repository or use [one of the existing forks][14] already.
+Another option is to fork this repository or use [one of the existing forks][14].
 
 ⚠ **If you are using another fork, please make sure you trust the author** and validate the code you are relying upon!
 
